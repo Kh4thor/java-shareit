@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.exception;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.user.mvc.controller.UserRepository;
 
 @Slf4j
 @Component
