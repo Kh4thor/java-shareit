@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+	  id IDENTITY PRIMARY KEY,
+	  name VARCHAR(50),
+	  email VARCHAR(50),
+	  activity BOOLEAN DEFAULT TRUE
+);
