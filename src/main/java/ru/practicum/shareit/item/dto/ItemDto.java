@@ -16,5 +16,6 @@ public class ItemDto {
 	private String name;
 	private String description;
 	private ItemStatus itemStatus;
+	private Long ownerId;
 	private Long itemRequestId;
 }

@@ -2,7 +2,7 @@ package ru.practicum.shareit.item.utills;
 
 public class ItemStatusConverter {
 
-	public ItemStatus convertStringToItemStatus(String itemStatusString) throws Exception {
+	public static ItemStatus convertStringToItemStatus(String itemStatusString) throws Exception {
 		itemStatusString.toUpperCase();
 		switch (itemStatusString) {
 		case "AVALIABLE":
@@ -11,8 +11,7 @@ public class ItemStatusConverter {
 			return ItemStatus.NOT_AVAILABLE;
 		default:
 			throw new IllegalArgumentException(
-					"Значение полученной строки:" + itemStatusString
-							+ " не соовтетвтует значениям перечисления ItemStatus");
+					"Значение полученной строки:" + itemStatusString + " не соовтетвтует значениям перечисления ItemStatus");
 		}
 	}
 }

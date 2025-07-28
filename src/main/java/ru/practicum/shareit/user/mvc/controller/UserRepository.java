@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.repository;
+package ru.practicum.shareit.user.mvc.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +9,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.mvc.model.User;
 import ru.practicum.shareit.user.utils.UserMapper;
 
 @Component
 public class UserRepository {
 
 
-	private final JdbcTemplate jdbcTemplate;
-	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	protected final JdbcTemplate jdbcTemplate;
+	protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	public UserRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate, JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -36,12 +36,12 @@ public class UserRepository {
 
 		namedParameterJdbcTemplate.update(createUserSql, createUserParams);
 
-		String userIdSql = ""
+		String lastAddedUserIdSql = ""
 				+ "SELECT MAX (id) "
 				+ "FROM users";
 
-		Long userId = jdbcTemplate.queryForObject(userIdSql, Long.class);
-		return getUser(userId);
+		Long lastAddedUserIdId = jdbcTemplate.queryForObject(lastAddedUserIdSql, Long.class);
+		return getUser(lastAddedUserIdId);
 	}
 	
 	public User updateUser(User user) {

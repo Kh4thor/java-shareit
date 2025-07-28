@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.service;
+package ru.practicum.shareit.user.mvc.controller;
 
 import java.util.List;
 
@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.UserException;
-import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.user.mvc.model.User;
 
 @Slf4j
 @Service
@@ -75,5 +74,4 @@ public class UserService {
 		log.info("Получен список удаленных пользователей: " + listOfUsersToDelete);
 		return listOfUsersToDelete;
 	}
-
 }
