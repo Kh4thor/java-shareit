@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.user.model.ext.Booker;
+import ru.practicum.shareit.booker.model.Booker;
 
 @Getter
 @Setter
