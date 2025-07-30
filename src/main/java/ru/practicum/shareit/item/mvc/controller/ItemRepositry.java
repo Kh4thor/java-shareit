@@ -1,15 +1,18 @@
 package ru.practicum.shareit.item.mvc.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mvc.model.Item;
 import ru.practicum.shareit.item.utills.ItemMapper;
 
+@Component
 public class ItemRepositry {
 
 	private final JdbcTemplate jdbcTemplate;
@@ -20,16 +23,13 @@ public class ItemRepositry {
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
-
 	public Item createItem(ItemDto itemDto) {
-
 		String createItemSql = ""
 				+ "INSERT INTO items (name, description, status, owner_id, request_id) "
 				+ "VALUES (:name, :description, :status, :request_id)";
 
 		Map<String, Object> createItemParams = new HashMap<>();
 		createItemParams.put("name", itemDto.getName());
-
 		createItemParams.put("description", itemDto.getDescription());
 		createItemParams.put("status", itemDto.getItemStatus());
 		createItemParams.put("request_id", itemDto.getItemRequestId());
@@ -39,9 +39,27 @@ public class ItemRepositry {
 		String lastAddedItemIdSql = ""
 				+ "SELECT MAX (id) "
 				+ "FROM users";
-
 		Long lastAddedItemId = jdbcTemplate.queryForObject(lastAddedItemIdSql, Long.class);
 		return getItem(lastAddedItemId);
+	}
+	
+	
+	public Item updateItem(ItemDto itemDto) {
+		String createItemSql = ""
+				+ "MERGE INTO items (name, description, status, owner_id, request_id) "
+				+ "VALUES (:name, :description, :status, :request_id) "
+				+ "WHERE id = :id";
+
+		Map<String, Object> createItemParams = new HashMap<>();
+		createItemParams.put("id", itemDto.getId());
+		createItemParams.put("name", itemDto.getName());
+		createItemParams.put("description", itemDto.getDescription());
+		createItemParams.put("status", itemDto.getItemStatus());
+		createItemParams.put("request_id", itemDto.getItemRequestId());
+
+		namedParameterJdbcTemplate.update(createItemSql, createItemParams);
+
+		return getItem(itemDto.getId());
 	}
 	
 	public Item getItem (Long itemId) {
@@ -52,5 +70,23 @@ public class ItemRepositry {
 		Map<String, Object> getItemParams = new HashMap<>();
 		getItemParams.put("id", itemId);
 		return namedParameterJdbcTemplate.queryForObject(getItemSql, getItemParams, new ItemMapper());
+	}
+	
+	public boolean isItemExists (Long itemId) {
+		String isItemExistsSql = ""
+				+ "SELECT EXISTST (SELECT 1 "
+								+ "FROM items "
+								+ "WHERE id = ?";
+		return jdbcTemplate.queryForObject(isItemExistsSql, Boolean.class, itemId);
+	}
+	
+	public List<Item> searchItemByText (String text) {
+		String searchItemByTextSql = ""
+				+ "SELECT * "
+				+ "FROM items "
+				+ "WHERE name LIKE :text OR description LIKE :text";
+		Map<String, Object> searchItemByTextParams = new HashMap<>();
+		searchItemByTextParams.put("text", "%" + text + "%");
+		return namedParameterJdbcTemplate.query(searchItemByTextSql, searchItemByTextParams, new ItemMapper());
 	}
 }
