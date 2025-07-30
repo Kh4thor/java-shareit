@@ -117,9 +117,10 @@ public class UserRepository {
 		String isEmailAllreadyExistsSql  = ""
 				+ "SELECT EXISTS (SELECT 1 "
 								+ "FROM users "
-								+ "WHERE email = :email)";
+								+ "WHERE email = :email AND activity = :activity)";
 		Map<String, Object> isEmailAllreadyExistsParams = new HashMap<>();
 		isEmailAllreadyExistsParams.put("email", email);
+		isEmailAllreadyExistsParams.put("activity", true);
 		return namedParameterJdbcTemplate.queryForObject(isEmailAllreadyExistsSql, isEmailAllreadyExistsParams, Boolean.class);
 	}
 

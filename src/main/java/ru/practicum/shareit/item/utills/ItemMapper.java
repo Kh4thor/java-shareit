@@ -65,7 +65,6 @@ public class ItemMapper implements RowMapper<Item> {
 	public Item mapRow(ResultSet rs, int rowNum) throws SQLException, IllegalArgumentException {
 		
 		try {
-			ItemStatus itemStatus = ItemStatusConverter.convertStringToItemStatus(rs.getString("item_status"));
 			User owner = buildOwner(rs);
 			ItemRequest itemRequest = buildItemRequest (rs);
 
@@ -73,7 +72,7 @@ public class ItemMapper implements RowMapper<Item> {
 					.id(rs.getLong("item_id"))
 					.name(rs.getString("item_name"))
 					.description(rs.getString("item_description"))
-					.itemStatus(itemStatus)
+					.itemStatus(rs.getBoolean("item_status"))
 					.owner(owner)
 					.itemRequest(itemRequest)
 					.build();

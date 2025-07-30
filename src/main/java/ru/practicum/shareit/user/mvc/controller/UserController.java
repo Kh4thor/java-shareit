@@ -21,41 +21,41 @@ import ru.practicum.shareit.user.mvc.model.User;
 @RequestMapping("/users")
 public class UserController {
 
-	private final UserRepository userRepository;
+	private final UserService userService;
 
 
-	public UserController(UserService userService, UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public UserController(UserService userService) {
+		this.userService = userService;
 	}
 
 	@PostMapping
-	public User createUser(@Valid @RequestBody UserDto userDto) {
-		return userRepository.createUser(userDto);
+	public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+		return userService.createUser(userDto);
 	}
 	
 	@PutMapping
 	public User updateUser(@Valid @RequestBody User user) {
-		return userRepository.updateUser(user);
+		return userService.updateUser(user);
 	}
 	
 	@GetMapping("/{id}")
 	public User getUser(@PathVariable("id") Long userId) {
-		return userRepository.getUser(userId);
+		return userService.getUser(userId);
 	}
 
 	@DeleteMapping("/{id}")
 	public User deleteUser(@PathVariable("id") Long userId) {
-		return userRepository.deleteUser(userId);
+		return userService.deleteUser(userId);
 	}
 
 	@GetMapping
 	public List<User> getAllUsers() {
-		return userRepository.getAllUsers();
+		return userService.getAllUsers();
 	}
 
 	@DeleteMapping
 	public List<User> deleteAllUsers() {
-		return userRepository.deleteAllUsers();
+		return userService.deleteAllUsers();
 	}
 
 }

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.item.utills.ItemStatus;
 
 @Getter
 @Setter
@@ -13,6 +12,7 @@ import ru.practicum.shareit.item.utills.ItemStatus;
 @Builder
 @AllArgsConstructor
 public class ItemDto {
+	private Long id;
 	private String name;
 	private String description;
 	private Boolean itemStatus;
