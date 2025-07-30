@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.user.utils.UserMapper;
 
 @Slf4j
 @Service
@@ -21,14 +22,16 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public User createUser(UserDto userDto) {
+	public UserDto createUser(UserDto userDto) {
 		String errorMessage = "Невозможно создать пользователя.";
 		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
 
 		log.info("Начато создание пользователя. Получен объект: " + userDto);
 		User createdUser = userRepository.createUser(userDto);
 		log.info("Создан пользователь: " + createdUser);
-		return createdUser;
+		UserDto createdUserDto = UserMapper.toUserDto(createdUser);
+		log.info("Создан dto пользователя: " + createdUserDto);
+		return createdUserDto;
 	}
 	
 	public User updateUser(User user) {

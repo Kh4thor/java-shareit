@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.item.utills.ItemStatus;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.mvc.model.User;
 
@@ -21,7 +20,7 @@ public class Item {
 	private Long id;
 	private String name;
 	private String description;
-	private ItemStatus itemStatus;
+	private Boolean itemStatus;
 	private User owner;
 	private ItemRequest itemRequest;
 }
