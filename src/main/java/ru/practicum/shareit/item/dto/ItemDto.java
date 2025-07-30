@@ -15,7 +15,7 @@ import ru.practicum.shareit.item.utills.ItemStatus;
 public class ItemDto {
 	private String name;
 	private String description;
-	private ItemStatus itemStatus;
+	private Boolean itemStatus;
 	private Long ownerId;
 	private Long itemRequestId;
 }
