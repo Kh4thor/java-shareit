@@ -1,5 +1,8 @@
 package ru.practicum.shareit.user.exception;
 
+import lombok.Getter;
+
+@Getter
 public class EmailAllreadyExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -10,13 +13,5 @@ public class EmailAllreadyExistsException extends RuntimeException {
 		super("Запись email=" + email + " уже существует");
 		this.email = email;
 		this.errorMessage = errorMessage;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
 	}
 }

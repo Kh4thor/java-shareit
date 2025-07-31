@@ -6,6 +6,7 @@ import javax.management.RuntimeErrorException;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.ResponseUserDto;
@@ -24,7 +25,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public ResponseUserDto createUser(CreateUserDto userDto) {
+	public ResponseUserDto createUser(@NotNull CreateUserDto userDto) {
 		String errorMessage = "Невозможно создать пользователя.";
 		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
 
@@ -35,7 +36,7 @@ public class UserService {
 		return createdUser;
 	}
 	
-	public ResponseUserDto updateUser(UpdateUserDto userDto, Long userId) {
+	public ResponseUserDto updateUser(@NotNull UpdateUserDto userDto, @NotNull Long userId) {
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
@@ -54,7 +55,7 @@ public class UserService {
 		throw new RuntimeErrorException(null, "Поля name и email не могут быть null одновременно");
 	}
 
-	public ResponseUserDto getUser(Long userId) {
+	public ResponseUserDto getUser(@NotNull Long userId) {
 		String errorMessage = "Невозможно получить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
@@ -64,7 +65,7 @@ public class UserService {
 		return getedUser;
 	}
 
-	public ResponseUserDto deleteUser(Long userId) {
+	public ResponseUserDto deleteUser(@NotNull Long userId) {
 		String errorMessage = "Невозможно удалить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
@@ -88,20 +89,20 @@ public class UserService {
 		return listOfUsersToDelete;
 	}
 
-	private ResponseUserDto updateNameOfUser(UpdateUserDto userDto, Long userId) {
+	private ResponseUserDto updateNameOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId) {
 		ResponseUserDto updatedUser = userRepository.updateNameOfUser(userDto, userId);
 		log.info("Обновлено имя пользователя: " + updatedUser);
 		return updatedUser;
 	}
 
-	private ResponseUserDto updateEmailOfUser(UpdateUserDto userDto, Long userId, String errorMessage) {
+	private ResponseUserDto updateEmailOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId, String errorMessage) {
 		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
 		ResponseUserDto updatedUser = userRepository.updateEmailOfUser(userDto, userId);
 		log.info("Обновлен email пользователя: " + updatedUser);
 		return updatedUser;
 	}
 
-	private ResponseUserDto updateNameAndEmailOfUser(UpdateUserDto userDto, Long userId, String errorMessage) {
+	private ResponseUserDto updateNameAndEmailOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId, String errorMessage) {
 		log.info("Начато обновление пользователя. Получен объект: " + userDto);
 		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
 		ResponseUserDto updatedUser = userRepository.updateUser(userDto, userId);
