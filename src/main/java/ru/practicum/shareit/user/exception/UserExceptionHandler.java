@@ -16,14 +16,13 @@ public class UserExceptionHandler {
 
 	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.CONFLICT)
-	public UserErrorResponse emailAllreadyExistsExceptionhandler(final EmailAllreadyExistsException exception) {
-		return new UserErrorResponse(exception.getErrorMessage(), exception.getMessage());
-	}
-	
-	@ExceptionHandler
-	@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-	public UserErrorResponse user(final UserAlreadyExistsException exception) {
+	public UserErrorResponse emailAllreadyExistsExceptionHandler(final EmailAllreadyExistsException exception) {
 		return new UserErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
 
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+	public UserErrorResponse userAlreadyExistsExceptionHandler(final UserAlreadyExistsException exception) {
+		return new UserErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
 }

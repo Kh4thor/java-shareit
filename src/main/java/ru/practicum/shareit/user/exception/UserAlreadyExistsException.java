@@ -7,7 +7,7 @@ public class UserAlreadyExistsException extends RuntimeException {
 	private String errorMessage;
 
 	public UserAlreadyExistsException(Long userId, String errorMessage) {
-		super("Пользователь с id=" + userId + " уже сущствует");
+		super("Пользователь id=" + userId + " уже сущствует");
 		this.userId = userId;
 		this.errorMessage = errorMessage;
 	}

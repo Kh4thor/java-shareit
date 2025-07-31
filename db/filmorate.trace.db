@@ -1538,3 +1538,59 @@ INSERT INTO items (name, description, available) VALUES (?, ?, ?, ?) [21002-232]
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-08-01 00:35:25.771163+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:26.436411+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:26.529280+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:26.609114+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:26.798116+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:27.034396+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:27.257722+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:27.489172+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:27.710542+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:27.947660+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:28.185585+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:28.401421+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:28.594493+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 00:35:28.839764+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]

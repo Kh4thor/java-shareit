@@ -12,12 +12,12 @@ import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.utills.ReponseItemDtoMapper;
 
 @Component
-public class ItemRepositry {
+public class ItemRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public ItemRepositry(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+	public ItemRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
@@ -53,6 +53,15 @@ public class ItemRepositry {
 		Map<String, Object> getItemParams = new HashMap<>();
 		getItemParams.put("id", itemId);
 		return namedParameterJdbcTemplate.queryForObject(getItemSql, getItemParams, new ReponseItemDtoMapper());
+	}
+
+	public Boolean isItemExists(Long itemId) {
+		String isItemExistsSql = ""
+				+ "SELECT EXISTS (SELECT 1 "
+								+ "FROM items "
+								+ "WHERE id = ?";
+		return jdbcTemplate.queryForObject(isItemExistsSql, Boolean.class, itemId);
+		
 	}
 
 //	public Item updateItem(CreateItemDto itemDto) {
