@@ -1,8 +1,19 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS items;
 
 CREATE TABLE users (
-	  id IDENTITY PRIMARY KEY,
-	  name VARCHAR(50),
-	  email VARCHAR(50),
-	  activity BOOLEAN DEFAULT TRUE
+	id IDENTITY PRIMARY KEY,
+	name VARCHAR(50),
+	email VARCHAR(50),
+	activity BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE items (
+	id IDENTITY PRIMARY KEY,
+	name VARCHAR(50),
+	description VARCHAR(250),
+	available BOOLEAN,
+	owner_id INTEGER,
+	request_id INTEGER,
+	activity BOOLEAN DEFAULT TRUE
 );
