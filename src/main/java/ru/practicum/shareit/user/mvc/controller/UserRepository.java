@@ -8,9 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.mvc.model.User;
-import ru.practicum.shareit.user.utils.UserMapper;
+import ru.practicum.shareit.user.dto.CreateUserDto;
+import ru.practicum.shareit.user.dto.ResponseUserDto;
+import ru.practicum.shareit.user.dto.UpdateUserDto;
+import ru.practicum.shareit.user.utils.ResponseUserDtoMapper;
 
 @Component
 public class UserRepository {
@@ -24,7 +25,7 @@ public class UserRepository {
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
-	public User createUser(UserDto userDto) {
+	public ResponseUserDto createUser(CreateUserDto userDto) {
 
 		Map<String, Object> createUserParams = new HashMap<>();
 		createUserParams.put("name", userDto.getName());
@@ -44,25 +45,55 @@ public class UserRepository {
 		return getUser(lastAddedUserIdId);
 	}
 	
-	public User updateUser(User user) {
+	public ResponseUserDto updateEmailOfUser(UpdateUserDto user, Long userId) {
 		String updateUSerSql = ""
 				+ "UPDATE users "
 				+ "SET "
-					+ "name = :name, "
+				+ "email = :email "
+				+ "WHERE id = :id";
+		Map<String, Object> updateUserParams = new HashMap<>();
+		
+		updateUserParams.put("id", userId);
+		updateUserParams.put("email", user.getEmail());
+		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
+		
+		return getUser(userId);
+	}
+	
+	public ResponseUserDto updateNameOfUser(UpdateUserDto user, Long userId) {
+		String updateUSerSql = ""
+				+ "UPDATE users "
+				+ "SET "
+				+ "name = :name "
+				+ "WHERE id = :id";
+		Map<String, Object> updateUserParams = new HashMap<>();
+
+		updateUserParams.put("id", userId);
+		updateUserParams.put("name", user.getName());
+		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
+	
+		return getUser(userId);
+	}
+
+	public ResponseUserDto updateUser(UpdateUserDto user, Long userId) {
+		String updateUSerSql = ""
+				+ "UPDATE users "
+				+ "SET "
+				+ "name = :name, "
 					+ "email = :email "
 				+ "WHERE id = :id";
 	
 		Map<String, Object> updateUserParams = new HashMap<>();
-		updateUserParams.put("id", user.getId());
+
+		updateUserParams.put("id", userId);
 		updateUserParams.put("name", user.getName());
 		updateUserParams.put("email", user.getEmail());
-		
 		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
 	
-		return getUser(user.getId());
+		return getUser(userId);
 	}
 
-	public User getUser(Long id) {
+	public ResponseUserDto getUser(Long id) {
 		String getUserSql = ""
 				+ "SELECT "
 					+ "u.id,"
@@ -75,10 +106,10 @@ public class UserRepository {
 		getUserParams.put("id", id);
 		getUserParams.put("activity", true);
 
-		return namedParameterJdbcTemplate.queryForObject(getUserSql, getUserParams, new UserMapper());
+		return namedParameterJdbcTemplate.queryForObject(getUserSql, getUserParams, new ResponseUserDtoMapper());
 	}
 	
-	public User deleteUser(Long userId) {
+	public ResponseUserDto deleteUser(Long userId) {
 		String removeUserSql = ""
 				+ "UPDATE users "
 				+ "SET activity = :activity "
@@ -90,14 +121,14 @@ public class UserRepository {
 		return getUser(userId);
 	}
 	
-	public List<User> getAllUsers() {
+	public List<ResponseUserDto> getAllUsers() {
 		String getAllUsersSql = ""
 				+ "SELECT * "
 				+ "FROM users "
 				+ "WHERE activity = :activity";
 		Map<String, Object> getAllUsersParams = new HashMap<>();
 		getAllUsersParams.put("activity", true);
-		return namedParameterJdbcTemplate.query(getAllUsersSql, getAllUsersParams, new UserMapper());
+		return namedParameterJdbcTemplate.query(getAllUsersSql, getAllUsersParams, new ResponseUserDtoMapper());
 	}
 	
 
@@ -124,14 +155,14 @@ public class UserRepository {
 		return namedParameterJdbcTemplate.queryForObject(isEmailAllreadyExistsSql, isEmailAllreadyExistsParams, Boolean.class);
 	}
 
-	public List<User> deleteAllUsers() {
+	public List<ResponseUserDto> deleteAllUsers() {
 		String deleteAllUsersSql = ""
 				+ "UPDATE users "
 				+ "SET activity = :newActivity "
 				+ "WHERE activity = :currentActiviry";
 		Map<String, Object> deleteAllUsersParams = new HashMap<>();
 
-		List<User> listOfUsersToDelete = getAllUsers();
+		List<ResponseUserDto> listOfUsersToDelete = getAllUsers();
 
 		deleteAllUsersParams.put("currentActiviry", true);
 		deleteAllUsersParams.put("newActivity", false);
