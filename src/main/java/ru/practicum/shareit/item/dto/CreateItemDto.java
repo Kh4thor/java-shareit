@@ -5,17 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.shareit.request.ItemRequest;
 
 @Getter
 @Setter
 @ToString
 @Builder
 @AllArgsConstructor
-public class ItemDto {
-	private Long id;
+public class CreateItemDto {
 	private String name;
 	private String description;
-	private Boolean itemStatus;
-	private Long ownerId;
-	private Long itemRequestId;
+	private Boolean available;
+	private ItemRequest itemRequest;
 }

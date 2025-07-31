@@ -1,36 +1,26 @@
 package ru.practicum.shareit.item.mvc.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.mvc.model.Item;
-import ru.practicum.shareit.user.mvc.controller.UserService;
+import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.ResponseItemDto;
+import ru.practicum.shareit.user.exception.UserException;
 
 @Service
 public class ItemService {
 
-	public ItemRepositry itemRepository;
-	public UserService userService;
+	private final ItemRepositry itemRepository;
+	private final UserException userException;
+	private final ItemException itemException;
 
-	public ItemService(ItemRepositry itemRepositry, UserService userService) {
+	public ItemService(ItemRepositry itemRepositry, UserException userException) {
 		this.itemRepository = itemRepositry;
-		this.userService = userService;
+		this.userException = userException;
 	}
 
-	public Item createItem(ItemDto itemDto, Long userId) {
-		itemDto.setOwnerId(userId);
-		return itemRepository.createItem(itemDto);
+	public ResponseItemDto createItem(CreateItemDto itemDto, Long ownerId) {
+		String errorMessage = "Невозможно создать объект.";
+		userException.checkUserNotFoundException(ownerId, errorMessage);
+		return itemRepository.createItem(itemDto, ownerId);
 	}
-
-	public Item updateItem(ItemDto itemDto, Long userId) {
-		itemDto.setOwnerId(userId);
-		return itemRepository.updateItem(itemDto);
-	}
-
-	public List<Item> searchItemByText(String text) {
-		return itemRepository.searchItemByText(text);
-	}
-
 }

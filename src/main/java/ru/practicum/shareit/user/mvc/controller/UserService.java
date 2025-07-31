@@ -39,16 +39,19 @@ public class UserService {
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
-		if (userDto.getName() != null & userDto.getEmail() == null) {
+		String name = userDto.getName();
+		String email = userDto.getEmail();
+
+		if (name != null && email == null) {
 			return updateNameOfUser(userDto, userId);
 		}
-		if (userDto.getName() == null & userDto.getEmail() != null) {
+		if (name == null & email != null) {
 			return updateEmailOfUser(userDto, userId, errorMessage);
 		}
-		if (userDto.getName() != null & userDto.getEmail() != null) {
+		if (name != null & email != null) {
 			return updateNameAndEmailOfUser(userDto, userId, errorMessage);
 		}
-		throw new RuntimeErrorException(null, "Поля name и email не могут быть пустыми одновременно");
+		throw new RuntimeErrorException(null, "Поля name и email не могут быть null одновременно");
 	}
 
 	public ResponseUserDto getUser(Long userId) {
