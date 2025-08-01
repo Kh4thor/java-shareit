@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.exception.ItemException;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.mvc.controller.UserRepository;
@@ -40,8 +41,15 @@ public class ItemService {
 
 		return createdItem;
 	}
+	
+	public ResponseItemDto updateItem(UpdateItemDto itemDto, Long ownerId, Long itemId) {
+		log.info("Начато обновление предмета. Получен объект:" + itemDto + ", ownerId:" + ownerId +", itemId:" + itemId);
+		ResponseItemDto updatedItem = itemRepository.updateItem(itemDto, itemId);
+		log.info("Обновлен предмет " + updatedItem);
+		return updatedItem;
+	}
 
-	public ResponseItemDto getItem(@NotNull Long itemId) {
+	public ResponseItemDto getItem(Long itemId) {
 		return itemRepository.getItem(itemId);
 	}
 

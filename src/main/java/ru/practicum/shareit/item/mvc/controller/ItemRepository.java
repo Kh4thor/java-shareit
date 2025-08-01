@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.utills.ResponseItemDtoMapper;
 
 @Component
@@ -39,6 +40,28 @@ public class ItemRepository {
 		return getItemByMaxId();
 	}
 	
+	public ResponseItemDto updateItem(UpdateItemDto itemDto, Long itemId) {
+		String updateItemNameSql = ""
+				+ "UPDATE items "
+				+ "SET name = :name, description = :description, available = :available "
+				+ "WHERE id = :id";
+
+		ResponseItemDto item = getItem(itemId);
+		String name = itemDto.getName() == null ? item.getName() : itemDto.getName();
+		String description = itemDto.getDescription() == null ? item.getDescription() : itemDto.getDescription();
+		Boolean available = itemDto.getAvailable() == null ? item.getAvailable() : itemDto.getAvailable();
+
+		Map<String, Object> updateItemParams = new HashMap<>();
+		updateItemParams.put("id", itemId);
+		updateItemParams.put("name", name);
+		updateItemParams.put("description", description);
+		updateItemParams.put("available", available);
+
+		namedParameterJdbcTemplate.update(updateItemNameSql, updateItemParams);
+
+		return getItem(itemId);
+	}
+
 	public ResponseItemDto getItem(Long itemId) {
 		String getItemSql = ""
 				+ "SELECT * "
@@ -120,6 +143,19 @@ public class ItemRepository {
 		return item;
 	}
 	
+	public boolean isItemBelongsOwner(Long itemId, Long ownerId) {
+		String isItemBelongsOwnerSql = ""
+				+ "SELECT EXISTS (SELECT 1 "
+								+ "FROM items_owners "
+								+ "WHERE item_id = :item_id AND owner_id = :owner_id)";
+
+		Map<String, Object> isItemBelongsOwnerParams = new HashMap<>();
+		isItemBelongsOwnerParams.put("item_id", itemId);
+		isItemBelongsOwnerParams.put("owner_id", itemId);
+
+		return namedParameterJdbcTemplate.queryForObject(isItemBelongsOwnerSql, isItemBelongsOwnerParams, Boolean.class);
+	}
+
 	public List<ResponseItemDto> getAllItems() {
 		String getAllItemsSql = ""
 				+ "SELECT * "
