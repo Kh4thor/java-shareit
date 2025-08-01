@@ -81,10 +81,9 @@ public class UserService {
 		if (itemRepository.isOwnerExists(ownerId)) {
 			log.info("Начато удаление владельца. Получен id: " + ownerId);
 			if (itemRepository.deleteOwner(ownerId)) {
-				log.info("Удален пользователь id= " + ownerId);
+				log.info("Удален владелец id= " + ownerId);
 			}
 		}
-
 		return deletedUser;
 	}
 
