@@ -64,7 +64,7 @@ public class ItemRepository {
 		return namedParameterJdbcTemplate.queryForObject(isItemExistsSql, setOwnerToItemParams, Boolean.class);
 	}
 
-	public void setOwnerToItem(Long itemId, Long ownerId) {
+	public Boolean setOwnerToItem(Long itemId, Long ownerId) {
 		String setOwnerToItemSql = ""
 				+ "INSERT INTO items_owners (item_id, owner_id) "
 				+ "VALUES (:item_id, :owner_id)";
@@ -73,15 +73,14 @@ public class ItemRepository {
 		setOwnerToItemParams.put("item_id", itemId);
 		setOwnerToItemParams.put("owner_id", ownerId);
 		
-		namedParameterJdbcTemplate.update(setOwnerToItemSql, setOwnerToItemParams);
+		return namedParameterJdbcTemplate.update(setOwnerToItemSql, setOwnerToItemParams) == 1;
 	}
 	
 	public Boolean isOwnerExists(Long ownerId) {
 		String isOwnerExistsSql = ""
-				+ "SELECT EXISTS (SELECT id"
+				+ "SELECT EXISTS (SELECT 1 "
 								+ "FROM items_owners "
-								+ "WHERE id = ? AND activity = :activity"
-								+ "GROUP BY id";
+								+ "WHERE owner_id = :owner_id AND activity = :activity)";
 		
 		Map<String, Object> setOwnerToItemParams = new HashMap<>();
 		setOwnerToItemParams.put("owner_id", ownerId);
@@ -145,7 +144,6 @@ public class ItemRepository {
 		namedParameterJdbcTemplate.update(deleteAllItemsSql, deleteAllItemsParams);
 
 		return itemsListToDelete;
-
 	}
 
 //	public 
@@ -179,8 +177,8 @@ public class ItemRepository {
 
 	private ResponseItemDto getItemByMaxId() {
 		String lastAddedItemIdSql = ""
-				+ "SELECT *"
-				+ "FROM items"
+				+ "SELECT * "
+				+ "FROM items "
 				+ "WHERE id = (SELECT MAX (id) "
 							+ "FROM items)";
 		return jdbcTemplate.queryForObject(lastAddedItemIdSql, new ResponseItemDtoMapper());
