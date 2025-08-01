@@ -1594,3 +1594,203 @@ SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
 Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
 SELECT EXISTS (SELECT 1 FROM items WHERE id = ? [42001-232]
+2025-08-01 12:54:34.753351+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:35.423982+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:35.515925+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:35.590606+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:35.794247+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:36.040289+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:36.276345+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:36.495880+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:36.742648+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:36.977055+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:37.210778+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:37.443648+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:37.660820+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 12:54:37.895348+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:21.915084+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:22.506929+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:22.586803+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:22.667545+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:22.896960+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:23.129469+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:23.366096+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:23.598410+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:23.843634+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:24.079508+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:24.314428+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:24.546622+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:24.781316+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:15:25.016741+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMSWHERE" не найдена
+Table "ITEMSWHERE" not found; SQL statement:
+SELECT *FROM itemsWHERE id = (SELECT MAX (id) FROM items) [42102-232]
+2025-08-01 13:16:41.452510+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:42.082095+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:42.176325+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:42.257197+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:42.456333+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:42.716991+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:42.934007+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:43.154208+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:43.403136+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:43.664072+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:43.897327+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:44.131647+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:44.399996+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:16:44.644901+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" не найдена
+Table "ITEMS_OWNERS" not found; SQL statement:
+INSERT INTO items_owners (item_id, owner_id) VALUES (?, ?) [42102-232]
+2025-08-01 13:30:43.316433+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "ITEMS_OWNERS" уже существует
+Table "ITEMS_OWNERS" already exists; SQL statement:
+CREATE TABLE items_owners ( item_id INT, owner_id INT, activity BOOLEAN DEFAULT TRUE ) [42101-232]
+2025-08-01 13:40:57.414545+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT idFROM items_owners WHERE id = ? AND activity = ? GROUP BY id[*]"; ожидалось "(, ., [, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT idFROM items_owners WHERE id = ? AND activity = ? GROUP BY id[*]"; expected "(, ., [, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT idFROM items_owners WHERE id = ? AND activity = ? GROUP BY id [42001-232]
+2025-08-01 13:43:11.412297+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? GROUP BY id[*]"; ожидалось "(, ., [, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? GROUP BY id[*]"; expected "(, ., [, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? GROUP BY id [42001-232]
+2025-08-01 13:47:59.235242+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? [42001-232]
+2025-08-01 13:52:21.978747+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? [42001-232]
+2025-08-01 13:54:54.510673+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? [42001-232]
+2025-08-01 13:55:28.140845+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT id FROM items_owners WHERE id = ? AND activity = ? [42001-232]
+2025-08-01 13:57:28.456267+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items_owners WHERE owner_id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items_owners WHERE owner_id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items_owners WHERE owner_id = ? AND activity = ? [42001-232]

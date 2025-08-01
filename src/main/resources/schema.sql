@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS items_owners;
 
 CREATE TABLE users (
 	id IDENTITY PRIMARY KEY,
@@ -15,5 +16,11 @@ CREATE TABLE items (
 	available BOOLEAN,
 	owner_id INTEGER,
 	request_id INTEGER,
+	activity BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE items_owners (
+	item_id INT,
+	owner_id INT,
 	activity BOOLEAN DEFAULT TRUE
 );

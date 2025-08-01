@@ -102,7 +102,7 @@ public class UserService {
 			if (itemRepository.deleteOwner(ownerId)) {
 				log.info("Удален владелец id= " + ownerId);
 			} else {
-				log.info("Неудачная попытка удалить владельца id= " + ownerId);
+				log.warn("Неудачная попытка удалить владельца id= " + ownerId);
 			}
 		}
 	}

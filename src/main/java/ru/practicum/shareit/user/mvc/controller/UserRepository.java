@@ -95,29 +95,27 @@ public class UserRepository {
 
 	public ResponseUserDto getUser(Long id) {
 		String getUserSql = ""
-				+ "SELECT "
-					+ "u.id,"
-					+ "u.name, "
-					+ "u.email "
-				+ "FROM users AS u "
-				+ "WHERE u.id = :id";
+				+ "SELECT * "
+				+ "FROM users "
+				+ "WHERE id = :id";
 
 		Map<String, Object> getUserParams = new HashMap<>();
 		getUserParams.put("id", id);
-		getUserParams.put("activity", true);
 
 		return namedParameterJdbcTemplate.queryForObject(getUserSql, getUserParams, new ResponseUserDtoMapper());
 	}
 	
 	public ResponseUserDto deleteUser(Long userId) {
-		String removeUserSql = ""
+		String deleteUserSql = ""
 				+ "UPDATE users "
 				+ "SET activity = :activity "
 				+ "WHERE id = :id";
+
 		Map<String, Object> deleteUserParams = new HashMap<>();
 		deleteUserParams.put("id", userId);
 		deleteUserParams.put("activity", false);
-		namedParameterJdbcTemplate.update(removeUserSql, deleteUserParams);
+
+		namedParameterJdbcTemplate.update(deleteUserSql, deleteUserParams);
 		return getUser(userId);
 	}
 	
