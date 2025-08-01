@@ -76,14 +76,9 @@ public class UserService {
 		ResponseUserDto deletedUser = userRepository.deleteUser(userId);
 		log.info("Удален пользователь: " + deletedUser);
 
-		
 		Long ownerId = deletedUser.getId();
-		if (itemRepository.isOwnerExists(ownerId)) {
-			log.info("Начато удаление владельца. Получен id: " + ownerId);
-			if (itemRepository.deleteOwner(ownerId)) {
-				log.info("Удален владелец id= " + ownerId);
-			}
-		}
+		deleteOwner(ownerId);
+		
 		return deletedUser;
 	}
 
@@ -99,6 +94,17 @@ public class UserService {
 		List<ResponseUserDto> listOfUsersToDelete = userRepository.deleteAllUsers();
 		log.info("Получен список удаленных пользователей: " + listOfUsersToDelete);
 		return listOfUsersToDelete;
+	}
+
+	private void deleteOwner(Long ownerId) {
+		if (itemRepository.isOwnerExists(ownerId)) {
+			log.info("Начато удаление владельца. Получен id: " + ownerId);
+			if (itemRepository.deleteOwner(ownerId)) {
+				log.info("Удален владелец id= " + ownerId);
+			} else {
+				log.info("Неудачная попытка удалить владельца id= " + ownerId);
+			}
+		}
 	}
 
 	private ResponseUserDto updateNameOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId) {
