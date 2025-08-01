@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.item.mvc.controller.ItemRepository;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
@@ -19,10 +20,12 @@ public class UserService {
 
 	private final UserException userException;
 	private final UserRepository userRepository;
+	private final ItemRepository itemRepository;
 
-	public UserService(UserException userValidator, UserRepository userRepository) {
+	public UserService(UserException userValidator, UserRepository userRepository, ItemRepository itemRepository) {
 		this.userException = userValidator;
 		this.userRepository = userRepository;
+		this.itemRepository = itemRepository;
 	}
 
 	public ResponseUserDto createUser(@NotNull CreateUserDto userDto) {
@@ -72,6 +75,16 @@ public class UserService {
 		log.info("Начато удаление пользователя. Получен id: " + userId);
 		ResponseUserDto deletedUser = userRepository.deleteUser(userId);
 		log.info("Удален пользователь: " + deletedUser);
+
+		
+		Long ownerId = deletedUser.getId();
+		if (itemRepository.isOwnerExists(ownerId)) {
+			log.info("Начато удаление владельца. Получен id: " + ownerId);
+			if (itemRepository.deleteOwner(ownerId)) {
+				log.info("Удален пользователь id= " + ownerId);
+			}
+		}
+
 		return deletedUser;
 	}
 

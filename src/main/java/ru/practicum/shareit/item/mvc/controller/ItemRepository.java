@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.mvc.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
-import ru.practicum.shareit.item.utills.ReponseItemDtoMapper;
+import ru.practicum.shareit.item.utills.ResponseItemDtoMapper;
 
 @Component
 public class ItemRepository {
@@ -34,35 +35,105 @@ public class ItemRepository {
 		createItemParams.put("owner_id", ownerId);
 
 		namedParameterJdbcTemplate.update(createItemSql, createItemParams);
-
+		
+		return getItemByMaxId();
+	}
+	
+	private ResponseItemDto getItemByMaxId() {
 		String lastAddedItemIdSql = ""
-				+ "SELECT MAX (id) "
-				+ "FROM items";
-
-		Long lastAddedItemId = jdbcTemplate.queryForObject(lastAddedItemIdSql, Long.class);
-		return getItem(lastAddedItemId);
-
+				+ "SELECT *"
+				+ "FROM items"
+				+ "WHERE id = (SELECT MAX (id) "
+							+ "FROM items)";
+		return jdbcTemplate.queryForObject(lastAddedItemIdSql, new ResponseItemDtoMapper());
 	}
 
 	public ResponseItemDto getItem(Long itemId) {
 		String getItemSql = ""
 				+ "SELECT * "
 				+ "FROM items "
-				+ "WHERE id = :id";
+				+ "WHERE id = :id AND activity = :activity";
 
 		Map<String, Object> getItemParams = new HashMap<>();
 		getItemParams.put("id", itemId);
-		return namedParameterJdbcTemplate.queryForObject(getItemSql, getItemParams, new ReponseItemDtoMapper());
+		getItemParams.put("activity", true);
+		return namedParameterJdbcTemplate.queryForObject(getItemSql, getItemParams, new ResponseItemDtoMapper());
 	}
 
 	public Boolean isItemExists(Long itemId) {
 		String isItemExistsSql = ""
 				+ "SELECT EXISTS (SELECT 1 "
 								+ "FROM items "
-								+ "WHERE id = ?";
-		return jdbcTemplate.queryForObject(isItemExistsSql, Boolean.class, itemId);
+								+ "WHERE id = :id AND activity = :activity";
+
+		Map<String, Object> setOwnerToItemParams = new HashMap<>();
+		setOwnerToItemParams.put("id", itemId);
+		setOwnerToItemParams.put("activity", true);
+
+		return namedParameterJdbcTemplate.queryForObject(isItemExistsSql, setOwnerToItemParams, Boolean.class);
+	}
+
+	public void setOwnerToItem(Long itemId, Long ownerId) {
+		String setOwnerToItemSql = ""
+				+ "INSERT INTO items_owners (item_id, owner_id) "
+				+ "VALUES (:item_id, :owner_id)";
+		
+		Map<String, Object> setOwnerToItemParams = new HashMap<>();
+		setOwnerToItemParams.put("item_id", itemId);
+		setOwnerToItemParams.put("owner_id", ownerId);
+		
+		namedParameterJdbcTemplate.update(setOwnerToItemSql, setOwnerToItemParams);
+	}
+	
+	public Boolean isOwnerExists(Long ownerId) {
+		String isOwnerExistsSql = ""
+				+ "SELECT EXISTS (SELECT id"
+								+ "FROM items_owners "
+								+ "WHERE id = ? AND activity = :activity"
+								+ "GROUP BY id";
+		
+		Map<String, Object> setOwnerToItemParams = new HashMap<>();
+		setOwnerToItemParams.put("owner_id", ownerId);
+		setOwnerToItemParams.put("activity", true);
+
+		return namedParameterJdbcTemplate.queryForObject(isOwnerExistsSql, setOwnerToItemParams, Boolean.class);
+	}
+
+	public Boolean deleteOwner(Long ownerId) {
+		String removeOwnerSql = ""
+				+ "UPDATE items_owners"
+				+ "SET activity = :activity "
+				+ "WHERE owner_id = :owner_id";
+
+		Map<String, Object> setOwnerToItemParams = new HashMap<>();
+		setOwnerToItemParams.put("activity", false);
+		setOwnerToItemParams.put("owner_id", ownerId);
+
+		namedParameterJdbcTemplate.update(removeOwnerSql, setOwnerToItemParams);
+		return !isOwnerExists(ownerId);
+	}
+	
+	public ResponseItemDto deleteItem(Long itemId) {
+		
+		ResponseItemDto item = getItem(itemId);
+		
+		String deleteItemSql = ""
+				+ "UPDATE items "
+				+ "SET activity = :activity "
+				+ "WHERE item_id = :id";
+		
+		Map<String, Object> deleteItemParams = new HashMap<>();
+		deleteItemParams.put("activity", false);
+		deleteItemParams.put("owner_id", itemId);
+		
+		namedParameterJdbcTemplate.update(deleteItemSql, deleteItemParams);
+		
+		return item;
+		
 		
 	}
+
+//	public 
 
 //	public Item updateItem(CreateItemDto itemDto) {
 //		String createItemSql = "" + "MERGE INTO items (name, description, status, owner_id, request_id) "
@@ -79,17 +150,15 @@ public class ItemRepository {
 //
 //		return getItem(itemDto.getId());
 //	}
-//
-//	public boolean isItemExists(Long itemId) {
-//		String isItemExistsSql = "" + "SELECT EXISTST (SELECT 1 " + "FROM items " + "WHERE id = ?";
-//		return jdbcTemplate.queryForObject(isItemExistsSql, Boolean.class, itemId);
-//	}
-//
-//	public List<Item> searchItemByText(String text) {
-//		String searchItemByTextSql = "" + "SELECT * " + "FROM items "
-//				+ "WHERE name LIKE :text OR description LIKE :text";
-//		Map<String, Object> searchItemByTextParams = new HashMap<>();
-//		searchItemByTextParams.put("text", "%" + text + "%");
-//		return namedParameterJdbcTemplate.query(searchItemByTextSql, searchItemByTextParams, new ItemMapper());
-//	}
+
+	public List<ResponseItemDto> searchItemByText(String text) {
+		String searchItemByTextSql = ""
+				+ "SELECT * "
+				+ "FROM items "
+				+ "WHERE name LIKE :text OR description LIKE :text";
+		Map<String, Object> searchItemByTextParams = new HashMap<>();
+		searchItemByTextParams.put("text", "%" + text + "%");
+		return namedParameterJdbcTemplate.query(searchItemByTextSql, searchItemByTextParams,
+				new ResponseItemDtoMapper());
+	}
 }
