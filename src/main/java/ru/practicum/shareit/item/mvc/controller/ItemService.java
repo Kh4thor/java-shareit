@@ -43,6 +43,11 @@ public class ItemService {
 	}
 	
 	public ResponseItemDto updateItem(UpdateItemDto itemDto, Long ownerId, Long itemId) {
+		String errorMessage = "Невозможно обновить предмет";
+		itemException.checkItemNotFoundException(itemId, errorMessage);
+		itemException.checkItemDoesNotBelongToTheOwnerException(itemId, ownerId, errorMessage);
+		userException.checkUserNotFoundException(ownerId, errorMessage);
+
 		log.info("Начато обновление предмета. Получен объект:" + itemDto + ", ownerId:" + ownerId +", itemId:" + itemId);
 		ResponseItemDto updatedItem = itemRepository.updateItem(itemDto, itemId);
 		log.info("Обновлен предмет " + updatedItem);
@@ -50,10 +55,16 @@ public class ItemService {
 	}
 
 	public ResponseItemDto getItem(Long itemId) {
-		return itemRepository.getItem(itemId);
+		String errorMessage = "Невозможно вызвать объект";
+		itemException.checkItemNotFoundException(itemId, errorMessage);
+
+		log.info("Начат вызов предмета. Получен id:" + itemId);
+		ResponseItemDto gotItem = itemRepository.getItem(itemId);
+		log.info("Вызван предмет:" + itemId);
+		return gotItem;
 	}
 
-	public ResponseItemDto deleteItem(@NotNull Long itemId) {
+	public ResponseItemDto deleteItem(Long itemId) {
 		String errorMessage = "Невозможно удалить объект";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
 		
@@ -71,6 +82,9 @@ public class ItemService {
 	}
 
 	private void setOwnerToItem(@NotNull Long itemId, @NotNull Long ownerId) {
+		String errorMessage = "Невозможно добавить предмет пользователю";
+		itemException.checkItemAlreadyBelongsToTheOwnerException(itemId, ownerId, errorMessage);
+
 		log.info("Начато добавление предмета id=" + itemId + " пользователю id=" + ownerId);
 		if (itemRepository.setOwnerToItem(itemId, ownerId)) {
 			log.info("Предмет id=" + itemId + " добавлен пользователю id=" + ownerId);
