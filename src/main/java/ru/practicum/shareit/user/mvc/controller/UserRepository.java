@@ -141,6 +141,7 @@ public class UserRepository {
 		Map<String, Object> getUserParams = new HashMap<>();
 		getUserParams.put("id", id);
 		getUserParams.put("activity", true);
+
 		return namedParameterJdbcTemplate.queryForObject(isUserExistsSql, getUserParams, Boolean.class);
 	}
 	
@@ -159,13 +160,13 @@ public class UserRepository {
 		String deleteAllUsersSql = ""
 				+ "UPDATE users "
 				+ "SET activity = :newActivity "
-				+ "WHERE activity = :currentActiviry";
+				+ "WHERE activity = :currentActivity";
 		Map<String, Object> deleteAllUsersParams = new HashMap<>();
 
 		List<ResponseUserDto> listOfUsersToDelete = getAllUsers();
 
-		deleteAllUsersParams.put("currentActiviry", true);
 		deleteAllUsersParams.put("newActivity", false);
+		deleteAllUsersParams.put("currentActivity", true);
 		namedParameterJdbcTemplate.update(deleteAllUsersSql, deleteAllUsersParams);
 		
 		return listOfUsersToDelete;

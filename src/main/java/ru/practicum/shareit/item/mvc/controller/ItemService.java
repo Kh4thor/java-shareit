@@ -15,9 +15,9 @@ public class ItemService {
 	private final ItemException itemException;
 
 	public ItemService(ItemRepository itemRepositry, UserException userException, ItemException itemException) {
-		this.itemRepository = itemRepositry;
-		this.userException = userException;
 		this.itemException = itemException;
+		this.userException = userException;
+		this.itemRepository = itemRepositry;
 	}
 
 	public ResponseItemDto createItem(CreateItemDto itemDto, Long ownerId) {
@@ -25,6 +25,9 @@ public class ItemService {
 		userException.checkUserNotFoundException(ownerId, errorMessage);
 		itemException.checkItemNotFoundException(ownerId, errorMessage);
 
-		return itemRepository.createItem(itemDto, ownerId);
+		ResponseItemDto createdItem = itemRepository.createItem(itemDto, ownerId);
+		itemRepository.setOwnerToItem(createdItem.getId(), ownerId);
+
+		return createdItem;
 	}
 }
