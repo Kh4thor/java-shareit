@@ -39,15 +39,6 @@ public class ItemRepository {
 		return getItemByMaxId();
 	}
 	
-	private ResponseItemDto getItemByMaxId() {
-		String lastAddedItemIdSql = ""
-				+ "SELECT *"
-				+ "FROM items"
-				+ "WHERE id = (SELECT MAX (id) "
-							+ "FROM items)";
-		return jdbcTemplate.queryForObject(lastAddedItemIdSql, new ResponseItemDtoMapper());
-	}
-
 	public ResponseItemDto getItem(Long itemId) {
 		String getItemSql = ""
 				+ "SELECT * "
@@ -109,8 +100,7 @@ public class ItemRepository {
 		setOwnerToItemParams.put("activity", false);
 		setOwnerToItemParams.put("owner_id", ownerId);
 
-		namedParameterJdbcTemplate.update(removeOwnerSql, setOwnerToItemParams);
-		return !isOwnerExists(ownerId);
+		return namedParameterJdbcTemplate.update(removeOwnerSql, setOwnerToItemParams) > 0;
 	}
 	
 	public ResponseItemDto deleteItem(Long itemId) {
@@ -129,8 +119,33 @@ public class ItemRepository {
 		namedParameterJdbcTemplate.update(deleteItemSql, deleteItemParams);
 		
 		return item;
+	}
+	
+	public List<ResponseItemDto> getAllItems() {
+		String getAllItemsSql = ""
+				+ "SELECT * "
+				+ "FROM items "
+				+ "WHERE activity = :activity";
+
+		return jdbcTemplate.query(getAllItemsSql, new ResponseItemDtoMapper(), true);
+	}
+	
+	public List<ResponseItemDto> deleteAllItems() {
+		String deleteAllItemsSql = ""
+				+ "UPDATE items "
+				+ "SET activity = :newActivity "
+				+ "WHERE activity = :currentActivity";
 		
-		
+		Map<String, Object> deleteAllItemsParams = new HashMap<>();
+		deleteAllItemsParams.put("newActivity", false);
+		deleteAllItemsParams.put("currentActivity", true);
+
+		List<ResponseItemDto> itemsListToDelete = getAllItems();
+
+		namedParameterJdbcTemplate.update(deleteAllItemsSql, deleteAllItemsParams);
+
+		return itemsListToDelete;
+
 	}
 
 //	public 
@@ -160,5 +175,14 @@ public class ItemRepository {
 		searchItemByTextParams.put("text", "%" + text + "%");
 		return namedParameterJdbcTemplate.query(searchItemByTextSql, searchItemByTextParams,
 				new ResponseItemDtoMapper());
+	}
+
+	private ResponseItemDto getItemByMaxId() {
+		String lastAddedItemIdSql = ""
+				+ "SELECT *"
+				+ "FROM items"
+				+ "WHERE id = (SELECT MAX (id) "
+							+ "FROM items)";
+		return jdbcTemplate.queryForObject(lastAddedItemIdSql, new ResponseItemDtoMapper());
 	}
 }
