@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,9 @@ public class ItemController {
 		return itemService.getItemsOfOwner(ownerId);
 	}
 
-//	@GetMapping("/search?text={text}")
-//	public List<ResponseItemDto> searchItemByText(@PathVariable("text") String text) {
-//		log.info("Начат поиск предмета. Получена строка:" + text);
-//		return itemService.searchItemByText(text);
-//	}
+	@GetMapping("/search")
+	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+		return itemService.searchItemByText(text, ownerId);
+	}
+
 }
