@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.utills.ResponseItemDtoMapper;
@@ -24,15 +25,20 @@ public class ItemRepository {
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
-	public ResponseItemDto createItem(CreateItemDto itemDto, Long ownerId) {
+	public ResponseItemDto createItem(CreateItemDto createItemDto) {
 		String createItemSql = ""
 				+ "INSERT INTO items (name, description, available, owner_id) "
 				+ "VALUES (:name, :description, :available, :owner_id)";
+		
+		String name = createItemDto.getName();
+		String description = createItemDto.getDescription() != null ? createItemDto.getDescription() : null;
+		Boolean available = createItemDto.getAvailable();
+		Long ownerId = createItemDto.getOwnerId();
 
 		Map<String, Object> createItemParams = new HashMap<>();
-		createItemParams.put("name", itemDto.getName());
-		createItemParams.put("description", itemDto.getDescription() != null ? itemDto.getDescription() : null);
-		createItemParams.put("available", itemDto.getAvailable());
+		createItemParams.put("name", name);
+		createItemParams.put("description", description);
+		createItemParams.put("available", available);
 		createItemParams.put("owner_id", ownerId);
 
 		namedParameterJdbcTemplate.update(createItemSql, createItemParams);
@@ -40,22 +46,23 @@ public class ItemRepository {
 		return getItemByMaxId();
 	}
 	
-	public ResponseItemDto updateItem(UpdateItemDto itemDto, Long itemId) {
+	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 		String updateItemNameSql = ""
 				+ "UPDATE items "
 				+ "SET name = :name, description = :description, available = :available "
 				+ "WHERE id = :id";
 
+		Long itemId = updateItemDto.getItemId();
 		ResponseItemDto item = getItem(itemId);
 
 		String nameCurrentValue = item.getName();
-		String nameToUpdateValue = itemDto.getName();
+		String nameToUpdateValue = updateItemDto.getName();
 
 		String descriptionCurrentValue = item.getDescription();
-		String descriptionToUpdateValue = itemDto.getDescription();
+		String descriptionToUpdateValue = updateItemDto.getDescription();
 
 		Boolean availableCurrentValue = item.getAvailable();
-		Boolean availableToUpdateValue = itemDto.getAvailable();
+		Boolean availableToUpdateValue = updateItemDto.getAvailable();
 
 		String name = nameToUpdateValue == null ? nameCurrentValue : nameToUpdateValue;
 		String description = descriptionToUpdateValue == null ? descriptionCurrentValue : descriptionToUpdateValue;
@@ -207,7 +214,7 @@ public class ItemRepository {
 		return jdbcTemplate.queryForObject(lastAddedItemIdSql, new ResponseItemDtoMapper());
 	}
 
-	public List<ResponseItemDto> searchItemByText(String text, Long ownerId) {
+	public List<ResponseItemDto> searchItemByText(FindItemDto findItemDto) {
 		String searchItemByTextSql = ""
 		        + "SELECT i.* "
 		        + "FROM items i "
@@ -216,6 +223,9 @@ public class ItemRepository {
 		        + "AND i.owner_id = :owner_id "
 				+ "AND i.activity = :activity "
 		        + "AND available = :available;";
+
+		Long ownerId = findItemDto.getOwnerId();
+		String text = findItemDto.getText();
 
 		    Map<String, Object> params = new HashMap<>();
 		    params.put("owner_id", ownerId);

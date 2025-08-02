@@ -22,6 +22,8 @@ public class CreateItemDto {
 	@NotBlank
 	private String description;
 
+	private Long ownerId;
+
 	@NotNull
 	private Boolean available;
 	private ItemRequest itemRequest;

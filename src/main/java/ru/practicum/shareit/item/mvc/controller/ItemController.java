@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 
@@ -34,7 +35,8 @@ public class ItemController {
 	public ResponseItemDto createItem(
 			@RequestHeader("X-Sharer-User-Id") Long ownerId, 
 			@Validated @RequestBody CreateItemDto itemDto) {
-		return itemService.createItem(itemDto, ownerId);
+		itemDto.setOwnerId(ownerId);
+		return itemService.createItem(itemDto);
 	}
 
 	@PatchMapping("/{id}")
@@ -42,7 +44,9 @@ public class ItemController {
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@RequestBody UpdateItemDto itemDto,
 			@PathVariable("id") Long itemId) {
-	    return itemService.updateItem(itemDto, ownerId, itemId);
+		itemDto.setOwnerId(ownerId);
+		itemDto.setItemId(itemId);
+		return itemService.updateItem(itemDto);
 	}
 	@GetMapping("/{id}")
 	public ResponseItemDto getItem(@PathVariable("id") Long itemId) {
@@ -61,7 +65,7 @@ public class ItemController {
 
 	@GetMapping("/search")
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
-		return itemService.searchItemByText(text, ownerId);
+		return itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
 	}
 
 }
