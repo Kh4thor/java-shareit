@@ -45,21 +45,21 @@ public class UserRepository {
 		return getUser(lastAddedUserIdId);
 	}
 
-	public ResponseUserDto updateUser(UpdateUserDto userDto, Long userId) {
+	public ResponseUserDto updateUser(UpdateUserDto updateUserDto) {
 		String updateUSerSql = ""
 				+ "UPDATE users "
 				+ "SET "
 					+ "name = :name, "
 					+ "email = :email "
 				+ "WHERE id = :id";
-	
+		Long userId = updateUserDto.getUserId();
 		ResponseUserDto user = getUser(userId);
 		
 		String nameCurrentValue = user.getName();
-		String nameValueToUpdate = userDto.getName();
+		String nameValueToUpdate = updateUserDto.getName();
 		
 		String emailCurrentValue = user.getEmail();
-		String emailValueToUpdate = userDto.getEmail();
+		String emailValueToUpdate = updateUserDto.getEmail();
 		
 		
 		String name = nameValueToUpdate == null ? nameCurrentValue : nameValueToUpdate;

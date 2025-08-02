@@ -26,23 +26,26 @@ public class UserService {
 		this.itemRepository = itemRepository;
 	}
 
-	public ResponseUserDto createUser(@NotNull CreateUserDto userDto) {
+	public ResponseUserDto createUser(@NotNull CreateUserDto сreateUserDto) {
 		String errorMessage = "Невозможно создать пользователя.";
-		userException.checkEmailAlreadyExistsException(userDto.getEmail(), errorMessage);
+		userException.checkEmailAlreadyExistsException(сreateUserDto.getEmail(), errorMessage);
 
-		log.info("Начато создание пользователя. Получен объект: " + userDto);
-		ResponseUserDto createdUser = userRepository.createUser(userDto);
+		log.info("Начато создание пользователя. Получен объект: " + сreateUserDto);
+		ResponseUserDto createdUser = userRepository.createUser(сreateUserDto);
 		log.info("Создан пользователь: " + createdUser);
 
 		return createdUser;
 	}
 	
-	public ResponseUserDto updateUser(UpdateUserDto userDto, Long userId) {
+	public ResponseUserDto updateUser(UpdateUserDto updateUserDto) {
+		Long userId = updateUserDto.getUserId();
+		String email = updateUserDto.getEmail();
+
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
-		userException.checkEmailAlreadyExistsException(userDto.getEmail(), errorMessage);
+		userException.checkEmailAlreadyExistsException(email, errorMessage);
 
-		return userRepository.updateUser(userDto, userId);
+		return userRepository.updateUser(updateUserDto);
 	}
 
 	public ResponseUserDto getUser(Long userId) {
