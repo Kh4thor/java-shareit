@@ -22,7 +22,7 @@ public class UserException {
 			throw exception;
 		}
 	}
-	
+
 	public void checkUserNotFoundException(Long userId, String errorMessage) {
 		if (!userRepository.isUserExists(userId)) {
 			RuntimeException exception = new UserNotFoundException(userId, errorMessage);
@@ -30,7 +30,7 @@ public class UserException {
 			throw exception;
 		}
 	}
-	
+
 	public void checkUserAleradyExistsException(Long userId, String errorMessage) {
 		if (userRepository.isUserExists(userId)) {
 			RuntimeException exception = new UserAlreadyExistsException(userId, errorMessage);

@@ -33,7 +33,7 @@ public class ItemController {
 
 	@PostMapping
 	public ResponseItemDto createItem(
-			@RequestHeader("X-Sharer-User-Id") Long ownerId, 
+			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@Validated @RequestBody CreateItemDto itemDto) {
 		itemDto.setOwnerId(ownerId);
 		return itemService.createItem(itemDto);
@@ -48,6 +48,7 @@ public class ItemController {
 		itemDto.setItemId(itemId);
 		return itemService.updateItem(itemDto);
 	}
+
 	@GetMapping("/{id}")
 	public ResponseItemDto getItem(@PathVariable("id") Long itemId) {
 		return itemService.getItem(itemId);

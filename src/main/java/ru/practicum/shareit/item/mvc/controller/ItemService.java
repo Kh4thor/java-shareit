@@ -43,7 +43,7 @@ public class ItemService {
 
 		return createdItem;
 	}
-	
+
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 		Long ownerId = updateItemDto.getOwnerId();
 		Long itemId = updateItemDto.getItemId();
@@ -71,7 +71,7 @@ public class ItemService {
 	public ResponseItemDto deleteItem(Long itemId) {
 		String errorMessage = "Невозможно удалить объект";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
-		
+
 		log.info("Начато удаление предмета. Получен id=" + itemId);
 		ResponseItemDto deletedItem = itemRepository.deleteItem(itemId);
 		log.info("Удален предмет:" + deletedItem);

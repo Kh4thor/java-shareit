@@ -16,7 +16,6 @@ import ru.practicum.shareit.user.utils.ResponseUserDtoMapper;
 @Component
 public class UserRepository {
 
-
 	protected final JdbcTemplate jdbcTemplate;
 	protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -25,11 +24,11 @@ public class UserRepository {
 		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
-	public ResponseUserDto createUser(CreateUserDto userDto) {
+	public ResponseUserDto createUser(CreateUserDto createUserDto) {
 
 		Map<String, Object> createUserParams = new HashMap<>();
-		createUserParams.put("name", userDto.getName());
-		createUserParams.put("email", userDto.getEmail());
+		createUserParams.put("name", createUserDto.getName());
+		createUserParams.put("email", createUserDto.getEmail());
 
 		String createUserSql = ""
 				+ "INSERT INTO users (name, email) "
@@ -54,24 +53,23 @@ public class UserRepository {
 				+ "WHERE id = :id";
 		Long userId = updateUserDto.getUserId();
 		ResponseUserDto user = getUser(userId);
-		
+
 		String nameCurrentValue = user.getName();
 		String nameValueToUpdate = updateUserDto.getName();
-		
+
 		String emailCurrentValue = user.getEmail();
 		String emailValueToUpdate = updateUserDto.getEmail();
-		
-		
+
 		String name = nameValueToUpdate == null ? nameCurrentValue : nameValueToUpdate;
 		String email = emailValueToUpdate == null ? emailCurrentValue : emailValueToUpdate;
-		
+
 		Map<String, Object> updateUserParams = new HashMap<>();
 		updateUserParams.put("id", userId);
 		updateUserParams.put("name", name);
 		updateUserParams.put("email", email);
 
 		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
-	
+
 		return getUser(userId);
 	}
 
@@ -86,7 +84,7 @@ public class UserRepository {
 
 		return namedParameterJdbcTemplate.queryForObject(getUserSql, getUserParams, new ResponseUserDtoMapper());
 	}
-	
+
 	public ResponseUserDto deleteUser(Long userId) {
 		String deleteUserSql = ""
 				+ "UPDATE users "
@@ -100,7 +98,7 @@ public class UserRepository {
 		namedParameterJdbcTemplate.update(deleteUserSql, deleteUserParams);
 		return getUser(userId);
 	}
-	
+
 	public List<ResponseUserDto> getAllUsers() {
 		String getAllUsersSql = ""
 				+ "SELECT * "
@@ -111,7 +109,7 @@ public class UserRepository {
 		return namedParameterJdbcTemplate.query(getAllUsersSql, getAllUsersParams, new ResponseUserDtoMapper());
 	}
 
-	public boolean isUserExists (Long id) {
+	public boolean isUserExists(Long id) {
 		String isUserExistsSql = ""
 				+ "SELECT EXISTS (SELECT 1 "
 								+ "FROM users "
@@ -123,7 +121,7 @@ public class UserRepository {
 
 		return namedParameterJdbcTemplate.queryForObject(isUserExistsSql, getUserParams, Boolean.class);
 	}
-	
+
 	public boolean isEmailExists(String email) {
 		String isEmailAllreadyExistsSql  = ""
 				+ "SELECT EXISTS (SELECT 1 "
@@ -149,7 +147,7 @@ public class UserRepository {
 		deleteAllUsersParams.put("newActivity", false);
 		deleteAllUsersParams.put("currentActivity", true);
 		namedParameterJdbcTemplate.update(deleteAllUsersSql, deleteAllUsersParams);
-		
+
 		return listOfUsersToDelete;
 	}
 }
