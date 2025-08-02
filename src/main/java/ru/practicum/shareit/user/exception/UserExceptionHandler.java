@@ -21,7 +21,7 @@ public class UserExceptionHandler {
 	}
 
 	@ExceptionHandler
-	@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+	@ResponseStatus(value = HttpStatus.CONFLICT)
 	public UserErrorResponse userAlreadyExistsExceptionHandler(final UserAlreadyExistsException exception) {
 		return new UserErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
