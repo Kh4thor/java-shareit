@@ -17,13 +17,13 @@ public class ResponseUserDtoMapper implements RowMapper<ResponseUserDto> {
 				.email(user.getEmail())
 				.build();
 	}
-	
+
 	@Override
 	public ResponseUserDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 		return	ResponseUserDto.builder()
 				.id(rs.getLong("id"))
-				.name (rs.getString("name"))
+				.name(rs.getString("name"))
 				.email(rs.getString("email"))
 				.build();
 	}
