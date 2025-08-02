@@ -42,7 +42,7 @@ public class ItemController {
 	@PatchMapping("/{id}")
 	public ResponseItemDto updateItem(
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
-			@RequestBody UpdateItemDto itemDto,
+			@Validated @RequestBody UpdateItemDto itemDto,
 			@PathVariable("id") Long itemId) {
 		itemDto.setOwnerId(ownerId);
 		itemDto.setItemId(itemId);
@@ -67,5 +67,4 @@ public class ItemController {
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		return itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
 	}
-
 }
