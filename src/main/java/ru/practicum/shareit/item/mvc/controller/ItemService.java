@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.mvc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import ru.practicum.shareit.user.mvc.controller.UserRepository;
 @Service
 public class ItemService {
 
+	private final UserRepository userRepository;
+
 	private final ItemRepository itemRepository;
 	private final UserException userException;
 	private final ItemException itemException;
@@ -26,6 +29,7 @@ public class ItemService {
 		this.itemException = itemException;
 		this.userException = userException;
 		this.itemRepository = itemRepositry;
+		this.userRepository = userRepository;
 	}
 
 	public ResponseItemDto createItem(@NotNull CreateItemDto itemDto, Long ownerId) {
@@ -99,4 +103,16 @@ public class ItemService {
 		log.info("Получен список предметов пользователя" + itemsOfUserList);
 		return itemsOfUserList;
 	}
+
+	public List<ResponseItemDto> searchItemByText(String text, Long ownerId) {
+		String errorMessage = "Невозможно начать поиск предмета владельца по строке поиска";
+		userException.checkUserNotFoundException(ownerId, errorMessage);
+		if (text.isBlank()) {
+			return new ArrayList<ResponseItemDto>();
+		}
+
+		log.info("Начат поиск предмета. Получен id-владельца и строка поиска:" + text);
+		return itemRepository.searchItemByText(text, ownerId);
+	}
+
 }

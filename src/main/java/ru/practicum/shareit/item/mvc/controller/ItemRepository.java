@@ -47,9 +47,19 @@ public class ItemRepository {
 				+ "WHERE id = :id";
 
 		ResponseItemDto item = getItem(itemId);
-		String name = itemDto.getName() == null ? item.getName() : itemDto.getName();
-		String description = itemDto.getDescription() == null ? item.getDescription() : itemDto.getDescription();
-		Boolean available = itemDto.getAvailable() == null ? item.getAvailable() : itemDto.getAvailable();
+
+		String nameCurrentValue = item.getName();
+		String nameToUpdateValue = itemDto.getName();
+
+		String descriptionCurrentValue = item.getDescription();
+		String descriptionToUpdateValue = itemDto.getDescription();
+
+		Boolean availableCurrentValue = item.getAvailable();
+		Boolean availableToUpdateValue = itemDto.getAvailable();
+
+		String name = nameToUpdateValue == null ? nameCurrentValue : nameToUpdateValue;
+		String description = descriptionToUpdateValue == null ? descriptionCurrentValue : descriptionToUpdateValue;
+		Boolean available = availableToUpdateValue == null ? availableCurrentValue : availableToUpdateValue;
 
 		Map<String, Object> updateItemParams = new HashMap<>();
 		updateItemParams.put("id", itemId);
@@ -192,41 +202,27 @@ public class ItemRepository {
 		return jdbcTemplate.query(getItemsOfOwnerSql, new ResponseItemDtoMapper(), ownerId);
 	}
 
-//	public 
-
-//	public Item updateItem(CreateItemDto itemDto) {
-//		String createItemSql = "" + "MERGE INTO items (name, description, status, owner_id, request_id) "
-//				+ "VALUES (:name, :description, :status, :request_id) " + "WHERE id = :id";
-//
-//		Map<String, Object> createItemParams = new HashMap<>();
-//		createItemParams.put("id", itemDto.getId());
-//		createItemParams.put("name", itemDto.getName());
-//		createItemParams.put("description", itemDto.getDescription());
-//		createItemParams.put("avaliable", itemDto.getAvailable());
-//		createItemParams.put("request_id", itemDto.getItemRequestId());
-//
-//		namedParameterJdbcTemplate.update(createItemSql, createItemParams);
-//
-//		return getItem(itemDto.getId());
-//	}
-
-	public List<ResponseItemDto> searchItemByText(String text) {
-		String searchItemByTextSql = ""
-				+ "SELECT * "
-				+ "FROM items "
-				+ "WHERE name LIKE :text OR description LIKE :text";
-		Map<String, Object> searchItemByTextParams = new HashMap<>();
-		searchItemByTextParams.put("text", "%" + text + "%");
-		return namedParameterJdbcTemplate.query(searchItemByTextSql, searchItemByTextParams,
-				new ResponseItemDtoMapper());
-	}
-
 	private ResponseItemDto getItemByMaxId() {
-		String lastAddedItemIdSql = ""
-				+ "SELECT * "
-				+ "FROM items "
-				+ "WHERE id = (SELECT MAX (id) "
-							+ "FROM items)";
+		String lastAddedItemIdSql = "" + "SELECT * " + "FROM items " + "WHERE id = (SELECT MAX (id) " + "FROM items)";
 		return jdbcTemplate.queryForObject(lastAddedItemIdSql, new ResponseItemDtoMapper());
 	}
+
+	public List<ResponseItemDto> searchItemByText(String text, Long ownerId) {
+		String searchItemByTextSql = ""
+		        + "SELECT i.* "
+		        + "FROM items i "
+		        + "JOIN items_owners io ON io.item_id = i.id "
+				+ "WHERE (LOWER(i.name) LIKE LOWER(:text) OR LOWER(i.description) LIKE LOWER(:text)) "
+		        + "AND i.owner_id = :owner_id "
+				+ "AND i.activity = :activity "
+		        + "AND available = :available;";
+
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("owner_id", ownerId);
+		    params.put("activity", true);
+		    params.put("text", "%" + text + "%");
+			params.put("available", true);
+
+		    return namedParameterJdbcTemplate.query(searchItemByTextSql, params, new ResponseItemDtoMapper());
+		}
 }
