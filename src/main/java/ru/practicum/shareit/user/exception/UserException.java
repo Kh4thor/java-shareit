@@ -15,8 +15,8 @@ public class UserException {
 		this.userRepository = userRepository;
 	}
 
-	public void checkEmailAllreadyExistsException(String email, String errorMessage) {
-		if (userRepository.isEmailAllreadyExists(email)) {
+	public void checkEmailAlreadyExistsException(String email, String errorMessage) {
+		if (userRepository.isEmailExists(email)) {
 			RuntimeException exception = new EmailAllreadyExistsException(email, errorMessage);
 			log.warn(errorMessage + " " + exception.getMessage());
 			throw exception;

@@ -45,7 +45,6 @@ public class ItemService {
 	public ResponseItemDto updateItem(UpdateItemDto itemDto, Long ownerId, Long itemId) {
 		String errorMessage = "Невозможно обновить предмет";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
-		itemException.checkItemDoesNotBelongToTheOwnerException(itemId, ownerId, errorMessage);
 		userException.checkUserNotFoundException(ownerId, errorMessage);
 
 		log.info("Начато обновление предмета. Получен объект:" + itemDto + ", ownerId:" + ownerId +", itemId:" + itemId);
@@ -89,5 +88,15 @@ public class ItemService {
 		if (itemRepository.setOwnerToItem(itemId, ownerId)) {
 			log.info("Предмет id=" + itemId + " добавлен пользователю id=" + ownerId);
 		}
+	}
+
+	public List<ResponseItemDto> getItemsOfOwner(Long userId) {
+		String errorMessage = "Невозможно получить список предметов пользователя";
+		userException.checkUserNotFoundException(userId, errorMessage);
+
+		log.info("Начат процесс получения списка предметов пользователя. Получен id-пользователя=" + userId);
+		List<ResponseItemDto> itemsOfUserList = itemRepository.getItemsOfOwner(userId);
+		log.info("Получен список предметов пользователя" + itemsOfUserList);
+		return itemsOfUserList;
 	}
 }

@@ -2213,3 +2213,174 @@ SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
 Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
 SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:46:47.418760+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:46:47.850757+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:46:48.066763+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:46:48.286763+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:46:48.521759+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:46:48.752964+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:50:45.508889+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:50:45.960883+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:50:46.198880+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:50:46.415038+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:50:46.637038+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:50:46.870559+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:53:41.130767+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:53:41.599767+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:53:41.836767+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:53:42.055775+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:53:42.277766+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 00:53:42.495122+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; ожидалось "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"
+Syntax error in SQL statement "SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ?[*]"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, ORDER BY, OFFSET, FETCH, FOR, )"; SQL statement:
+SELECT EXISTS (SELECT 1 FROM items WHERE id = ? AND activity = ? [42001-232]
+2025-08-02 13:36:15.205451+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]SELCT * FROM users WHERE id IN (SELECT FROM items_owners WHERE owner_id = :id"; ожидалось "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SELCT * FROM users WHERE id IN (SELECT FROM items_owners WHERE owner_id = :id"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SELCT * FROM users WHERE id IN (SELECT FROM items_owners WHERE owner_id = :id [42001-232]
+2025-08-02 14:03:16.202270+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "[*]SELCT * FROM users WHERE id IN (SELECT * FROM items_owners WHERE owner_id = :id"; ожидалось "SAVEPOINT, SCRIPT, SHUTDOWN"
+Syntax error in SQL statement "[*]SELCT * FROM users WHERE id IN (SELECT * FROM items_owners WHERE owner_id = :id"; expected "SAVEPOINT, SCRIPT, SHUTDOWN"; SQL statement:
+SELCT * FROM users WHERE id IN (SELECT * FROM items_owners WHERE owner_id = :id [42001-232]
+2025-08-02 14:04:17.092801+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT * FROM users WHERE id IN (SELECT * FROM items_owners WHERE owner_id = [*]:id"; ожидалось "ALL (, ANY (, SOME ("
+Syntax error in SQL statement "SELECT * FROM users WHERE id IN (SELECT * FROM items_owners WHERE owner_id = [*]:id"; expected "ALL (, ANY (, SOME ("; SQL statement:
+SELECT * FROM users WHERE id IN (SELECT * FROM items_owners WHERE owner_id = :id [42001-232]
+2025-08-02 14:05:27.138265+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = [*]:id"; ожидалось "ALL (, ANY (, SOME ("
+Syntax error in SQL statement "SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = [*]:id"; expected "ALL (, ANY (, SOME ("; SQL statement:
+SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = :id [42001-232]
+2025-08-02 14:15:45.390189+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = [*]:id"; ожидалось "ALL (, ANY (, SOME ("
+Syntax error in SQL statement "SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = [*]:id"; expected "ALL (, ANY (, SOME ("; SQL statement:
+SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = :id [42001-232]
+2025-08-02 14:16:39.321913+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = [*]:id)"; ожидалось "ALL (, ANY (, SOME ("
+Syntax error in SQL statement "SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = [*]:id)"; expected "ALL (, ANY (, SOME ("; SQL statement:
+SELECT * FROM users WHERE id IN (SELECT owner_id FROM items_owners WHERE owner_id = :id) [42001-232]
+2025-08-02 14:17:36.525830+03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "description" не найден
+Column "description" not found [42122-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getString(JdbcResultSet.java:301)
+	at com.zaxxer.hikari.pool.HikariProxyResultSet.getString(HikariProxyResultSet.java)
+	at ru.practicum.shareit.item.utills.ResponseItemDtoMapper.mapRow(ResponseItemDtoMapper.java:20)
+	at ru.practicum.shareit.item.utills.ResponseItemDtoMapper.mapRow(ResponseItemDtoMapper.java:1)
+	at org.springframework.jdbc.core.RowMapperResultSetExtractor.extractData(RowMapperResultSetExtractor.java:94)
+	at org.springframework.jdbc.core.RowMapperResultSetExtractor.extractData(RowMapperResultSetExtractor.java:61)
+	at org.springframework.jdbc.core.JdbcTemplate$1.doInPreparedStatement(JdbcTemplate.java:733)
+	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:658)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:723)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:754)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:767)
+	at org.springframework.jdbc.core.JdbcTemplate.query(JdbcTemplate.java:825)
+	at ru.practicum.shareit.item.mvc.controller.ItemRepository.getItemsOfOwner(ItemRepository.java:192)
+	at ru.practicum.shareit.item.mvc.controller.ItemService.getItemsOfOwner(ItemService.java:98)
+	at ru.practicum.shareit.item.mvc.controller.ItemController.getItemsOfOwner(ItemController.java:58)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:191)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:986)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:114)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

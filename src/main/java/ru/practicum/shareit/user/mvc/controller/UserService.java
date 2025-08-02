@@ -2,8 +2,6 @@ package ru.practicum.shareit.user.mvc.controller;
 
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +28,7 @@ public class UserService {
 
 	public ResponseUserDto createUser(@NotNull CreateUserDto userDto) {
 		String errorMessage = "Невозможно создать пользователя.";
-		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
+		userException.checkEmailAlreadyExistsException(userDto.getEmail(), errorMessage);
 
 		log.info("Начато создание пользователя. Получен объект: " + userDto);
 		ResponseUserDto createdUser = userRepository.createUser(userDto);
@@ -39,26 +37,15 @@ public class UserService {
 		return createdUser;
 	}
 	
-	public ResponseUserDto updateUser(@NotNull UpdateUserDto userDto, @NotNull Long userId) {
+	public ResponseUserDto updateUser(UpdateUserDto userDto, Long userId) {
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
+		userException.checkEmailAlreadyExistsException(userDto.getEmail(), errorMessage);
 
-		String name = userDto.getName();
-		String email = userDto.getEmail();
-
-		if (name != null && email == null) {
-			return updateNameOfUser(userDto, userId);
-		}
-		if (name == null & email != null) {
-			return updateEmailOfUser(userDto, userId, errorMessage);
-		}
-		if (name != null & email != null) {
-			return updateNameAndEmailOfUser(userDto, userId, errorMessage);
-		}
-		throw new RuntimeErrorException(null, "Поля name и email не могут быть null одновременно");
+		return userRepository.updateUser(userDto, userId);
 	}
 
-	public ResponseUserDto getUser(@NotNull Long userId) {
+	public ResponseUserDto getUser(Long userId) {
 		String errorMessage = "Невозможно получить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
@@ -105,26 +92,5 @@ public class UserService {
 				log.warn("Неудачная попытка удалить владельца id= " + ownerId);
 			}
 		}
-	}
-
-	private ResponseUserDto updateNameOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId) {
-		ResponseUserDto updatedUser = userRepository.updateNameOfUser(userDto, userId);
-		log.info("Обновлено имя пользователя: " + updatedUser);
-		return updatedUser;
-	}
-
-	private ResponseUserDto updateEmailOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId, String errorMessage) {
-		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
-		ResponseUserDto updatedUser = userRepository.updateEmailOfUser(userDto, userId);
-		log.info("Обновлен email пользователя: " + updatedUser);
-		return updatedUser;
-	}
-
-	private ResponseUserDto updateNameAndEmailOfUser(@NotNull UpdateUserDto userDto, @NotNull Long userId, String errorMessage) {
-		log.info("Начато обновление пользователя. Получен объект: " + userDto);
-		userException.checkEmailAllreadyExistsException(userDto.getEmail(), errorMessage);
-		ResponseUserDto updatedUser = userRepository.updateUser(userDto, userId);
-		log.info("Обновлен пользователь: " + updatedUser);
-		return updatedUser;
 	}
 }

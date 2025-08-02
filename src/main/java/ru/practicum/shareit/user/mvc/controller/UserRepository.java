@@ -44,50 +44,32 @@ public class UserRepository {
 		Long lastAddedUserIdId = jdbcTemplate.queryForObject(lastAddedUserIdSql, Long.class);
 		return getUser(lastAddedUserIdId);
 	}
-	
-	public ResponseUserDto updateEmailOfUser(UpdateUserDto user, Long userId) {
-		String updateUSerSql = ""
-				+ "UPDATE users "
-				+ "SET "
-				+ "email = :email "
-				+ "WHERE id = :id";
-		Map<String, Object> updateUserParams = new HashMap<>();
-		
-		updateUserParams.put("id", userId);
-		updateUserParams.put("email", user.getEmail());
-		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
-		
-		return getUser(userId);
-	}
-	
-	public ResponseUserDto updateNameOfUser(UpdateUserDto user, Long userId) {
-		String updateUSerSql = ""
-				+ "UPDATE users "
-				+ "SET "
-				+ "name = :name "
-				+ "WHERE id = :id";
-		Map<String, Object> updateUserParams = new HashMap<>();
 
-		updateUserParams.put("id", userId);
-		updateUserParams.put("name", user.getName());
-		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
-	
-		return getUser(userId);
-	}
-
-	public ResponseUserDto updateUser(UpdateUserDto user, Long userId) {
+	public ResponseUserDto updateUser(UpdateUserDto userDto, Long userId) {
 		String updateUSerSql = ""
 				+ "UPDATE users "
 				+ "SET "
-				+ "name = :name, "
+					+ "name = :name, "
 					+ "email = :email "
 				+ "WHERE id = :id";
 	
+		ResponseUserDto user = getUser(userId);
+		
+		String nameCurrentValue = user.getName();
+		String nameValueToUpdate = userDto.getName();
+		
+		String emailCurrentValue = user.getEmail();
+		String emailValueToUpdate = userDto.getEmail();
+		
+		
+		String name = nameValueToUpdate == null ? nameCurrentValue : nameValueToUpdate;
+		String email = emailValueToUpdate == null ? emailCurrentValue : emailValueToUpdate;
+		
 		Map<String, Object> updateUserParams = new HashMap<>();
-
 		updateUserParams.put("id", userId);
-		updateUserParams.put("name", user.getName());
-		updateUserParams.put("email", user.getEmail());
+		updateUserParams.put("name", name);
+		updateUserParams.put("email", email);
+
 		namedParameterJdbcTemplate.update(updateUSerSql, updateUserParams);
 	
 		return getUser(userId);
@@ -128,7 +110,6 @@ public class UserRepository {
 		getAllUsersParams.put("activity", true);
 		return namedParameterJdbcTemplate.query(getAllUsersSql, getAllUsersParams, new ResponseUserDtoMapper());
 	}
-	
 
 	public boolean isUserExists (Long id) {
 		String isUserExistsSql = ""
@@ -143,15 +124,17 @@ public class UserRepository {
 		return namedParameterJdbcTemplate.queryForObject(isUserExistsSql, getUserParams, Boolean.class);
 	}
 	
-	public boolean isEmailAllreadyExists(String email) {
+	public boolean isEmailExists(String email) {
 		String isEmailAllreadyExistsSql  = ""
 				+ "SELECT EXISTS (SELECT 1 "
 								+ "FROM users "
 								+ "WHERE email = :email AND activity = :activity)";
-		Map<String, Object> isEmailAllreadyExistsParams = new HashMap<>();
-		isEmailAllreadyExistsParams.put("email", email);
-		isEmailAllreadyExistsParams.put("activity", true);
-		return namedParameterJdbcTemplate.queryForObject(isEmailAllreadyExistsSql, isEmailAllreadyExistsParams, Boolean.class);
+
+		Map<String, Object> isEmailAlreadyExistsParams = new HashMap<>();
+		isEmailAlreadyExistsParams.put("email", email);
+		isEmailAlreadyExistsParams.put("activity", true);
+
+		return namedParameterJdbcTemplate.queryForObject(isEmailAllreadyExistsSql, isEmailAlreadyExistsParams, Boolean.class);
 	}
 
 	public List<ResponseUserDto> deleteAllUsers() {

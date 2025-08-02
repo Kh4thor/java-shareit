@@ -41,7 +41,6 @@ public class ItemController {
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@RequestBody UpdateItemDto itemDto,
 			@PathVariable("id") Long itemId) {
-	    log.warn("HERE UPDATE");
 	    return itemService.updateItem(itemDto, ownerId, itemId);
 	}
 	@GetMapping("/{id}")
@@ -52,6 +51,11 @@ public class ItemController {
 	@DeleteMapping
 	public List<ResponseItemDto> deleteAllItems() {
 		return itemService.deleteAllItems();
+	}
+
+	@GetMapping
+	public List<ResponseItemDto> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+		return itemService.getItemsOfOwner(ownerId);
 	}
 
 //	@GetMapping("/search?text={text}")
