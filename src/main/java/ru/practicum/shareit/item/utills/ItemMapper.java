@@ -20,7 +20,7 @@ public class ItemMapper implements RowMapper<Item> {
 				.itemRequestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
 				.build();
 		}
-	
+
 	@Override
 	public Item mapRow(ResultSet rs, int rowNum) throws SQLException, IllegalArgumentException {
 		// to-do

@@ -29,7 +29,7 @@ public class ItemRepository {
 		String createItemSql = ""
 				+ "INSERT INTO items (name, description, available, owner_id) "
 				+ "VALUES (:name, :description, :available, :owner_id)";
-		
+
 		String name = createItemDto.getName();
 		String description = createItemDto.getDescription() != null ? createItemDto.getDescription() : null;
 		Boolean available = createItemDto.getAvailable();
@@ -42,10 +42,10 @@ public class ItemRepository {
 		createItemParams.put("owner_id", ownerId);
 
 		namedParameterJdbcTemplate.update(createItemSql, createItemParams);
-		
+
 		return getItemByMaxId();
 	}
-	
+
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 		String updateItemNameSql = ""
 				+ "UPDATE items "
@@ -108,20 +108,20 @@ public class ItemRepository {
 		String setOwnerToItemSql = ""
 				+ "INSERT INTO items_owners (item_id, owner_id) "
 				+ "VALUES (:item_id, :owner_id)";
-		
+
 		Map<String, Object> setOwnerToItemParams = new HashMap<>();
 		setOwnerToItemParams.put("item_id", itemId);
 		setOwnerToItemParams.put("owner_id", ownerId);
-		
+
 		return namedParameterJdbcTemplate.update(setOwnerToItemSql, setOwnerToItemParams) == 1;
 	}
-	
+
 	public boolean isOwnerExists(Long ownerId) {
 		String isOwnerExistsSql = ""
 				+ "SELECT EXISTS (SELECT 1 "
 								+ "FROM items_owners "
 								+ "WHERE owner_id = :owner_id AND activity = :activity)";
-		
+
 		Map<String, Object> setOwnerToItemParams = new HashMap<>();
 		setOwnerToItemParams.put("owner_id", ownerId);
 		setOwnerToItemParams.put("activity", true);
@@ -141,25 +141,25 @@ public class ItemRepository {
 
 		return namedParameterJdbcTemplate.update(removeOwnerSql, setOwnerToItemParams) > 0;
 	}
-	
+
 	public ResponseItemDto deleteItem(Long itemId) {
-		
+
 		ResponseItemDto item = getItem(itemId);
-		
+
 		String deleteItemSql = ""
 				+ "UPDATE items "
 				+ "SET activity = :activity "
 				+ "WHERE item_id = :id";
-		
+
 		Map<String, Object> deleteItemParams = new HashMap<>();
 		deleteItemParams.put("activity", false);
 		deleteItemParams.put("owner_id", itemId);
-		
+
 		namedParameterJdbcTemplate.update(deleteItemSql, deleteItemParams);
-		
+
 		return item;
 	}
-	
+
 	public boolean isItemBelongsOwner(Long itemId, Long ownerId) {
 		String isItemBelongsOwnerSql = ""
 				+ "SELECT EXISTS (SELECT 1 "
@@ -181,13 +181,13 @@ public class ItemRepository {
 
 		return jdbcTemplate.query(getAllItemsSql, new ResponseItemDtoMapper(), true);
 	}
-	
+
 	public List<ResponseItemDto> deleteAllItems() {
 		String deleteAllItemsSql = ""
 				+ "UPDATE items "
 				+ "SET activity = :newActivity "
 				+ "WHERE activity = :currentActivity";
-		
+
 		Map<String, Object> deleteAllItemsParams = new HashMap<>();
 		deleteAllItemsParams.put("newActivity", false);
 		deleteAllItemsParams.put("currentActivity", true);
@@ -198,8 +198,8 @@ public class ItemRepository {
 
 		return itemsListToDelete;
 	}
-	
-	public List<ResponseItemDto> getItemsOfOwner (Long ownerId) {
+
+	public List<ResponseItemDto> getItemsOfOwner(Long ownerId) {
 		String getItemsOfOwnerSql = ""
 				+ "SELECT * "
 				+ "FROM items "

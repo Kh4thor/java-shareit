@@ -26,17 +26,16 @@ public class UserService {
 		this.itemRepository = itemRepository;
 	}
 
-	public ResponseUserDto createUser(@NotNull CreateUserDto сreateUserDto) {
+	public ResponseUserDto createUser(@NotNull CreateUserDto createUserDto) {
 		String errorMessage = "Невозможно создать пользователя.";
-		userException.checkEmailAlreadyExistsException(сreateUserDto.getEmail(), errorMessage);
+		userException.checkEmailAlreadyExistsException(createUserDto.getEmail(), errorMessage);
 
-		log.info("Начато создание пользователя. Получен объект: " + сreateUserDto);
-		ResponseUserDto createdUser = userRepository.createUser(сreateUserDto);
+		log.info("Начато создание пользователя. Получен объект: " + createUserDto);
+		ResponseUserDto createdUser = userRepository.createUser(createUserDto);
 		log.info("Создан пользователь: " + createdUser);
-
 		return createdUser;
 	}
-	
+
 	public ResponseUserDto updateUser(UpdateUserDto updateUserDto) {
 		Long userId = updateUserDto.getUserId();
 		String email = updateUserDto.getEmail();
@@ -44,7 +43,6 @@ public class UserService {
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 		userException.checkEmailAlreadyExistsException(email, errorMessage);
-
 		return userRepository.updateUser(updateUserDto);
 	}
 
@@ -68,7 +66,6 @@ public class UserService {
 
 		Long ownerId = deletedUser.getId();
 		deleteOwner(ownerId);
-		
 		return deletedUser;
 	}
 
