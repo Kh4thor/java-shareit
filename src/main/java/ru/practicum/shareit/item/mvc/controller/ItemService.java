@@ -18,11 +18,11 @@ import ru.practicum.shareit.user.exception.UserException;
 @Service
 public class ItemService {
 
-	private final ItemRepository itemRepository;
+	private final ItemRepositoryApp itemRepository;
 	private final UserException userException;
 	private final ItemException itemException;
 
-	public ItemService(ItemRepository itemRepositry, UserException userException, ItemException itemException) {
+	public ItemService(ItemRepositoryApp itemRepositry, UserException userException, ItemException itemException) {
 		this.itemException = itemException;
 		this.userException = userException;
 		this.itemRepository = itemRepositry;

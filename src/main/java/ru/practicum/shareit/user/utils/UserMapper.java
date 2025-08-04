@@ -1,21 +1,33 @@
 package ru.practicum.shareit.user.utils;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
-
+import ru.practicum.shareit.user.dto.CreateUserDto;
+import ru.practicum.shareit.user.dto.ResponseUserDto;
+import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.mvc.model.User;
 
-public class UserMapper implements RowMapper<User> {
+public class UserMapper {
 
-	@Override
-	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-
+	public static User createUserDtoToUser(CreateUserDto createUserDto) {
 		return	User.builder()
-				.id(rs.getLong("id"))
-				.name(rs.getString("name"))
-				.email(rs.getString("email"))
+				.id(null)
+				.name(createUserDto.getName())
+				.email(createUserDto.getEmail())
+				.build();
+	}
+	
+	public static User updateUserDtoUser (UpdateUserDto udateUserDto) {
+		return	User.builder()
+				.id(udateUserDto.getUserId())
+				.name(udateUserDto.getName())
+				.email(udateUserDto.getEmail())
+				.build();
+	}
+	
+	public static ResponseUserDto userToResponseUserDto(User user) {
+		return	ResponseUserDto.builder()
+				.id(user.getId())
+				.name(user.getName())
+				.email(user.getEmail())
 				.build();
 	}
 }
