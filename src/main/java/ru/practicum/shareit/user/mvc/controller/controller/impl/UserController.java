@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.mvc.controller;
+package ru.practicum.shareit.user.mvc.controller.controller.impl;
 
 import java.util.List;
 
@@ -16,15 +16,17 @@ import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
+import ru.practicum.shareit.user.mvc.controller.controller.UserControllerApp;
+import ru.practicum.shareit.user.mvc.controller.service.UserServiceApp;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController implements UserControllerApp {
 
-	private final UserService userService;
+	private final UserServiceApp userService;
 
-	public UserController(UserService userService) {
+	public UserController(UserServiceApp userService) {
 		this.userService = userService;
 	}
 

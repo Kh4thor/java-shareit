@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.mvc.controller;
+package ru.practicum.shareit.item.mvc.controller.controller.impl;
 
 import java.util.List;
 
@@ -19,18 +19,21 @@ import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
+import ru.practicum.shareit.item.mvc.controller.controller.ItemControllerApp;
+import ru.practicum.shareit.item.mvc.controller.service.ItemServiceApp;
 
 @Slf4j
 @RestController
 @RequestMapping("/items")
-public class ItemController {
+public class ItemController implements ItemControllerApp {
 
-	private final ItemService itemService;
+	private final ItemServiceApp itemService;
 
-	public ItemController(ItemService itemService) {
+	public ItemController(ItemServiceApp itemService) {
 		this.itemService = itemService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseItemDto createItem(
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
@@ -39,6 +42,7 @@ public class ItemController {
 		return itemService.createItem(itemDto);
 	}
 
+	@Override
 	@PatchMapping("/{id}")
 	public ResponseItemDto updateItem(
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
@@ -49,21 +53,25 @@ public class ItemController {
 		return itemService.updateItem(itemDto);
 	}
 
+	@Override
 	@GetMapping("/{id}")
 	public ResponseItemDto getItem(@PathVariable("id") Long itemId) {
 		return itemService.getItem(itemId);
 	}
 
+	@Override
 	@DeleteMapping
 	public List<ResponseItemDto> deleteAllItems() {
 		return itemService.deleteAllItems();
 	}
 
+	@Override
 	@GetMapping
 	public List<ResponseItemDto> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		return itemService.getItemsOfOwner(ownerId);
 	}
 
+	@Override
 	@GetMapping("/search")
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		return itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());

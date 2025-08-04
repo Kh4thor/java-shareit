@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.mvc.controller;
+package ru.practicum.shareit.item.mvc.controller.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,13 @@ import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.exception.ItemException;
+import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
+import ru.practicum.shareit.item.mvc.controller.service.ItemServiceApp;
 import ru.practicum.shareit.user.exception.UserException;
 
 @Slf4j
 @Service
-public class ItemService {
+public class ItemService implements ItemServiceApp {
 
 	private final ItemRepositoryApp itemRepository;
 	private final UserException userException;
@@ -28,6 +30,7 @@ public class ItemService {
 		this.itemRepository = itemRepositry;
 	}
 
+	@Override
 	public ResponseItemDto createItem(@NotNull CreateItemDto createItemDto) {
 		Long ownerId = createItemDto.getOwnerId();
 
@@ -44,6 +47,7 @@ public class ItemService {
 		return createdItem;
 	}
 
+	@Override
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 		Long ownerId = updateItemDto.getOwnerId();
 		Long itemId = updateItemDto.getItemId();
@@ -58,6 +62,7 @@ public class ItemService {
 		return updatedItem;
 	}
 
+	@Override
 	public ResponseItemDto getItem(Long itemId) {
 		String errorMessage = "Невозможно вызвать объект";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
@@ -68,6 +73,7 @@ public class ItemService {
 		return gotItem;
 	}
 
+	@Override
 	public ResponseItemDto deleteItem(Long itemId) {
 		String errorMessage = "Невозможно удалить объект";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
@@ -78,6 +84,7 @@ public class ItemService {
 		return deletedItem;
 	}
 
+	@Override
 	public List<ResponseItemDto> deleteAllItems() {
 		log.info("Начато удаление всех предметов.");
 		List<ResponseItemDto> deletedItemsList = itemRepository.deleteAllItems();
@@ -95,6 +102,7 @@ public class ItemService {
 		}
 	}
 
+	@Override
 	public List<ResponseItemDto> getItemsOfOwner(Long userId) {
 		String errorMessage = "Невозможно получить список предметов пользователя";
 		userException.checkUserNotFoundException(userId, errorMessage);
@@ -105,6 +113,7 @@ public class ItemService {
 		return itemsOfUserList;
 	}
 
+	@Override
 	public List<ResponseItemDto> searchItemByText(FindItemDto findItemDto) {
 		Long ownerId = findItemDto.getOwnerId();
 		String text = findItemDto.getText();
