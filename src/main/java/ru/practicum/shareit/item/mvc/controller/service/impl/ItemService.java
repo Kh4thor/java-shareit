@@ -39,7 +39,7 @@ public class ItemService implements ItemServiceApp {
 
 		String errorMessage = "Невозможно создать предмет.";
 		userException.checkUserNotFoundException(ownerId, errorMessage);
-		
+
 		log.info("Начато преобразование (CreateItemDto)createItemDto в объект класса Item. Получен объект: " + createItemDto);
 		Item createItem = itemMaper.createItemDtoToItem(createItemDto);
 		log.info("(CreateItemDto)createItemDto преобразован в объект класса User: " + createItem);

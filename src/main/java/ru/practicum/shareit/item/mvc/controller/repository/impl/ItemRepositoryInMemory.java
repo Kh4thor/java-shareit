@@ -14,7 +14,7 @@ import ru.practicum.shareit.item.mvc.model.Item;
 @Repository
 public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	Map<Long, Item> items = new HashMap<>();
-	Map<Long, List<Long>> owner_items = new HashMap<>();
+	Map<Long, List<Long>> itemsOfOwnersMap = new HashMap<>();
 
 	private Long itemIdCounter = 0L;
 
@@ -29,8 +29,8 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 		List<Long> itemsIdList = new ArrayList<>();
 		itemsIdList.add(itemId);
-		owner_items.put(ownerId, itemsIdList);
-		List<Long> listOfItemsIdOfOwner = owner_items.get(ownerId);
+		itemsOfOwnersMap.put(ownerId, itemsIdList);
+		List<Long> listOfItemsIdOfOwner = itemsOfOwnersMap.get(ownerId);
 		listOfItemsIdOfOwner.add(itemId);
 
 		return listOfItemsIdOfOwner.contains(item.getId());
@@ -86,19 +86,19 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public Boolean isOwnerExists(Long ownerId) {
-		return owner_items.containsKey(ownerId);
+		return itemsOfOwnersMap.containsKey(ownerId);
 	}
 
 	@Override
 	public Boolean deleteOwner(Long ownerId) {
-		owner_items.remove(ownerId);
+		itemsOfOwnersMap.remove(ownerId);
 		return !isOwnerExists(ownerId);
 	}
 
 	@Override
 	public Boolean deleteAllOwners() {
-		owner_items.clear();
-		return owner_items.isEmpty();
+		itemsOfOwnersMap.clear();
+		return itemsOfOwnersMap.isEmpty();
 	}
 
 	@Override
@@ -110,10 +110,10 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public Boolean isItemBelongsOwner(Long itemId, Long ownerId) {
-		if (owner_items.get(ownerId) == null) {
+		if (itemsOfOwnersMap.get(ownerId) == null) {
 			return false;
 		}
-		return owner_items.get(ownerId).contains(itemId);
+		return itemsOfOwnersMap.get(ownerId).contains(itemId);
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public List<Item> getItemsOfOwner(Long ownerId) {
-		List<Long> itemsOfOwnerIdList = owner_items.get(ownerId);
+		List<Long> itemsOfOwnerIdList = itemsOfOwnersMap.get(ownerId);
 		return	itemsOfOwnerIdList
 				.stream()
 				.map(itemId -> items.get(itemId))
@@ -141,11 +141,11 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	public List<Item> searchItemByText(FindItemDto findItemDto) {
 		Long ownerId = findItemDto.getOwnerId();
 		String text = findItemDto.getText();
-		
+
 		return getItemsOfOwner(ownerId).stream()
 				.filter(e -> (e.getName().toLowerCase().contains(text.toLowerCase())
 						|| e.getDescription().toLowerCase().contains(text.toLowerCase()))
-						& e.getAvailable() == true)
+						&& e.getAvailable())
 				.distinct()
 				.toList();
 	}

@@ -83,7 +83,7 @@ public class ItemController implements ItemControllerApp {
 	@DeleteMapping
 	public List<ResponseItemDto> deleteAllItems() {
 		List<Item> responseItemsList = itemService.deleteAllItems();
-		
+
 		return	responseItemsList
 				.stream()
 				.map(itemMapper::itemToResponseItemDto)
@@ -95,7 +95,7 @@ public class ItemController implements ItemControllerApp {
 	@GetMapping
 	public List<ResponseItemDto> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		List<Item> responseItemsList = itemService.getItemsOfOwner(ownerId);
-		
+
 		return	responseItemsList
 				.stream()
 				.map(itemMapper::itemToResponseItemDto)
@@ -106,8 +106,6 @@ public class ItemController implements ItemControllerApp {
 	@GetMapping("/search")
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		List<Item> responseItemsList =  itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
-		
-		responseItemsList.forEach(e -> System.out.println(e));
 
 		return	responseItemsList
 				.stream()

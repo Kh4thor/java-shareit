@@ -66,9 +66,9 @@ public class UserController implements UserControllerApp {
 
 	@DeleteMapping("/{id}")
 	public ResponseUserDto deleteUser(@PathVariable("id") Long userId) {
-		
+
 		User responseUser = userService.deleteUser(userId);
-		
+
 		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
 		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
 		log.info("(User)responseUser преобразован в объект класса ResponseUserDto: " + responseUser);
@@ -78,8 +78,7 @@ public class UserController implements UserControllerApp {
 
 	@GetMapping
 	public List<ResponseUserDto> getAllUsers() {
-		
-		
+
 		List<User> responseUsersList = userService.getAllUsers();
 		log.info("Начато преобразование списка (User)responseUser в объекты класса ResponseUserDto. Получен список объектов: " + responseUsersList);
 		List<ResponseUserDto> responseUserDtoList = responseUsersList
@@ -93,7 +92,7 @@ public class UserController implements UserControllerApp {
 
 	@DeleteMapping
 	public List<ResponseUserDto> deleteAllUsers() {
-		
+
 		List<User> responseUsersList = userService.deleteAllUsers();
 		log.info("Начато преобразование списка (User)responseUser в объекты класса ResponseUserDto. Получен список объектов: " + responseUsersList);
 		List<ResponseUserDto> responseUserDtoList = responseUsersList

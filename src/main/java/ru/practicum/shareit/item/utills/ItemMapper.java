@@ -33,7 +33,7 @@ public class ItemMapper {
 
 		public Item createItemDtoToItem(CreateItemDto createItemDto) {
 			User owner = userService.getUser(createItemDto.getOwnerId());
-			
+
 			return	Item.builder()
 					.id(0L)
 					.name(createItemDto.getName())
@@ -42,10 +42,10 @@ public class ItemMapper {
 					.owner(owner)
 					.build();
 		}
-		
+
 		public Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
 			User owner = userService.getUser(updateItemDto.getOwnerId());
-			
+
 			return	Item.builder()
 					.id(updateItemDto.getItemId())
 					.name(updateItemDto.getName())
