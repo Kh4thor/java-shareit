@@ -7,13 +7,12 @@ import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
-import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.exception.ItemException;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
 import ru.practicum.shareit.item.mvc.controller.service.ItemServiceApp;
+import ru.practicum.shareit.item.mvc.model.Item;
 import ru.practicum.shareit.user.exception.UserException;
 
 @Slf4j
@@ -31,7 +30,7 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
-	public ResponseItemDto createItem(@NotNull CreateItemDto createItemDto) {
+	public Item createItem(@NotNull Item createItemDto) {
 		Long ownerId = createItemDto.getOwnerId();
 
 		String errorMessage = "Невозможно создать предмет.";
@@ -48,18 +47,18 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
-	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
-		Long ownerId = updateItemDto.getOwnerId();
-		Long itemId = updateItemDto.getItemId();
+	public Item updateItem(Item updateItem) {
+		Long ownerId = updateItem.getOwner().getId();
+		Long itemId = updateItem.getId();
 
 		String errorMessage = "Невозможно обновить предмет";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
 		userException.checkUserNotFoundException(ownerId, errorMessage);
 
-		log.info("Начато обновление предмета. Получен объект:" + updateItemDto);
-		ResponseItemDto updatedItem = itemRepository.updateItem(updateItemDto);
-		log.info("Обновлен предмет " + updatedItem);
-		return updatedItem;
+		log.info("Начато обновление предмета. Получен объект:" + updateItem);
+		Item responseItem = itemRepository.updateItem(updateItem);
+		log.info("Обновлен предмет " + responseItem);
+		return responseItem;
 	}
 
 	@Override

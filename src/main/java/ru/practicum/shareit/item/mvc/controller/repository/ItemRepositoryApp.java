@@ -2,18 +2,16 @@ package ru.practicum.shareit.item.mvc.controller.repository;
 
 import java.util.List;
 
-import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
-import ru.practicum.shareit.item.dto.ResponseItemDto;
-import ru.practicum.shareit.item.dto.UpdateItemDto;
+import ru.practicum.shareit.item.mvc.model.Item;
 
 public interface ItemRepositoryApp {
 
-	ResponseItemDto createItem(CreateItemDto createItemDto);
+	Item createItem(Item item);
 
-	ResponseItemDto updateItem(UpdateItemDto updateItemDto);
+	Item updateItem(Item item);
 
-	ResponseItemDto getItem(Long itemId);
+	Item getItem(Long itemId);
 
 	Boolean isItemExists(Long itemId);
 
@@ -23,15 +21,15 @@ public interface ItemRepositoryApp {
 
 	Boolean deleteOwner(Long ownerId);
 
-	ResponseItemDto deleteItem(Long itemId);
+	Item deleteItem(Long itemId);
 
 	Boolean isItemBelongsOwner(Long itemId, Long ownerId);
 
-	List<ResponseItemDto> getAllItems();
+	List<Item> getAllItems();
 
-	List<ResponseItemDto> deleteAllItems();
+	List<Item> deleteAllItems();
 
-	List<ResponseItemDto> getItemsOfOwner(Long ownerId);
+	List<Item> getItemsOfOwner(Long ownerId);
 
-	List<ResponseItemDto> searchItemByText(FindItemDto findItemDto);
+	List<Item> searchItemByText(FindItemDto findItemDto);
 }
