@@ -35,7 +35,7 @@ public class UserService implements UserServiceApp {
 		String errorMessage = "Невозможно создать пользователя.";
 		userException.checkEmailAlreadyExistsException(createUserDto.getEmail(), errorMessage);
 
-		log.info("Начато преобразование createUserDto в объект класса User. Получен объект: " + createUserDto);
+		log.info("Начато преобразование (CreateUserDto)createUserDto в объект класса User. Получен объект: " + createUserDto);
 		User createuser = UserMapper.createUserDtoToUser(createUserDto);
 		log.info("createUserDto преобразован в объект класса User: " + createuser);
 		
@@ -62,7 +62,7 @@ public class UserService implements UserServiceApp {
 			userException.checkEmailAlreadyExistsException(email, errorMessage);
 		}
 
-		log.info("Начато преобразование updateUserDto в объект класса User. Получен объект: " + updateUserDto);
+		log.info("Начато преобразование (UpdateUserDto)updateUserDto в объект класса User. Получен объект: " + updateUserDto);
 		User updateUser = UserMapper.updateUserDtoUser(updateUserDto);
 		log.info("updateUserDto преобразован в объект класса User: " + updateUser);
 
