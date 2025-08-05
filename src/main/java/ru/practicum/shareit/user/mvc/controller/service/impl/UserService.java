@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
 import ru.practicum.shareit.user.dto.CreateUserDto;
-import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
@@ -31,7 +30,7 @@ public class UserService implements UserServiceApp {
 	}
 
 	@Override
-	public ResponseUserDto createUser(@NotNull CreateUserDto createUserDto) {
+	public User createUser(@NotNull CreateUserDto createUserDto) {
 		String errorMessage = "Невозможно создать пользователя.";
 		userException.checkEmailAlreadyExistsException(createUserDto.getEmail(), errorMessage);
 
@@ -43,16 +42,11 @@ public class UserService implements UserServiceApp {
 		User responseUser = userRepository.createUser(createuser);
 		log.info("Создан пользователь: " + responseUser);
 		
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: "
-				+ responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("createUserDto преобразован в объект класса User: " + createuser);
-		
-		return responseUserDto;
+		return responseUser;
 	}
 
 	@Override
-	public ResponseUserDto updateUser(UpdateUserDto updateUserDto) {
+	public User updateUser(UpdateUserDto updateUserDto) {
 		Long userId = updateUserDto.getUserId();
 		String email = updateUserDto.getEmail();
 		
@@ -63,23 +57,18 @@ public class UserService implements UserServiceApp {
 		}
 
 		log.info("Начато преобразование (UpdateUserDto)updateUserDto в объект класса User. Получен объект: " + updateUserDto);
-		User updateUser = UserMapper.updateUserDtoUser(updateUserDto);
+		User updateUser = UserMapper.updateUserDtoToUser(updateUserDto);
 		log.info("updateUserDto преобразован в объект класса User: " + updateUser);
 
 		log.info("Начато обновление пользователя. Получен объект: " + updateUser);
 		User responseUser = userRepository.updateUser(updateUser);
 		log.info("Обновлен пользователь: " + responseUser);
 
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: "
-				+ responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("(User)responseUser преобразован в объект класса User: " + responseUser);
-
-		return responseUserDto;
+		return responseUser;
 	}
 
 	@Override
-	public ResponseUserDto getUser(Long userId) {
+	public User getUser(Long userId) {
 		String errorMessage = "Невозможно получить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
@@ -87,16 +76,11 @@ public class UserService implements UserServiceApp {
 		User responseUser = userRepository.getUser(userId);
 		log.info("Получен пользователь: " + responseUser);
 
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: "
-				+ responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("(User)responseUser преобразован в объект класса User: " + responseUser);
-
-		return responseUserDto;
+		return responseUser;
 	}
 
 	@Override
-	public ResponseUserDto deleteUser(@NotNull Long userId) {
+	public User deleteUser(@NotNull Long userId) {
 		String errorMessage = "Невозможно удалить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
 
@@ -109,40 +93,27 @@ public class UserService implements UserServiceApp {
 		deleteOwner(ownerId);
 		log.info("Удален владелец id: " + userId);
 
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: "
-				+ responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("(User)responseUser преобразован в объект класса User: " + responseUser);
-
-		return responseUserDto;
+		return responseUser;
 	}
 
 	@Override
-	public List<ResponseUserDto> getAllUsers() {
+	public List<User> getAllUsers() {
 		log.info("Начато получение всех пользователей.");
 		List<User> responseUsersList = userRepository.getAllUsers();
 		log.info("Получен список всех пользователей: " + responseUsersList);
 		
-		log.info("Начато преобразование списка (User)responseUser в объекты класса ResponseUserDto. Получен список объектов: " + responseUsersList);
-		List<ResponseUserDto> responseUserDtoList =	responseUsersList.stream()
-												    .map(UserMapper::userToResponseUserDto)
-												    .toList();
-		log.info("Список объектов (User)responseUser преобразован в объекты класса ResponseUserDto: " + responseUserDtoList);
-		return responseUserDtoList;
+		return responseUsersList;
 	}
 
 	@Override
-	public List<ResponseUserDto> deleteAllUsers() {
+	public List<User> deleteAllUsers() {
 		log.info("Начато удаление всех пользователей.");
 		List<User> responseUsersList = userRepository.deleteAllUsers();
 		log.info("Получен список удаленных пользователей: " + responseUsersList);
 		
-		log.info("Начато преобразование responseUser в объект класса ResponseUserDto. Получен список объектов: " + responseUsersList);
-		List<ResponseUserDto> responseUserDtoList =	responseUsersList.stream()
-												    .map(UserMapper::userToResponseUserDto)
-												    .toList();
-		log.info("Список объектов (User)responseUser преобразован в объекты класса ResponseUserDto: " + responseUserDtoList);
-		return responseUserDtoList;
+		deleteAllOwners();
+
+		return responseUsersList;
 	}
 
 	private void deleteOwner(Long ownerId) {
@@ -153,6 +124,15 @@ public class UserService implements UserServiceApp {
 			} else {
 				log.warn("Неудачная попытка удалить владельца id= " + ownerId);
 			}
+		}
+	}
+
+	private void deleteAllOwners() {
+		log.info("Начато удаление всех владельцев.");
+		if (itemRepository.deleteAllOwners()) {
+			log.info("Все пользователи удалены.");
+		} else {
+			log.info("Неудачная попытка удаления всех пользователей.");
 		}
 	}
 }

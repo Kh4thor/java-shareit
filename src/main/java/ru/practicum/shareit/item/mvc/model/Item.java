@@ -19,7 +19,7 @@ public class Item {
 	private Long id;
 	private String name;
 	private String description;
-	private Boolean avaliable;
+	private Boolean available;
 	private User owner;
 	private ItemRequest itemRequest;
 }

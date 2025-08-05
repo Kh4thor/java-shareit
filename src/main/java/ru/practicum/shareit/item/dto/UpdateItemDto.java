@@ -14,13 +14,13 @@ import lombok.ToString;
 @AllArgsConstructor
 public class UpdateItemDto {
 
+	@Positive
+	private Long itemId;
 	private String name;
 	private String description;
 	private Boolean available;
 	@Positive
 	private Long ownerId;
-	@Positive
-	private Long itemId;
 	@Positive
 	private Long itemRequestId;
 }

@@ -4,23 +4,23 @@ import java.util.List;
 
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
-import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
+import ru.practicum.shareit.item.mvc.model.Item;
 
 public interface ItemServiceApp {
 
-	ResponseItemDto createItem(CreateItemDto createItemDto);
+	Item createItem(CreateItemDto createItemDto);
 
-	ResponseItemDto updateItem(UpdateItemDto updateItemDto);
+	Item updateItem(UpdateItemDto updateItemDto);
 
-	ResponseItemDto getItem(Long itemId);
+	Item getItem(Long itemId);
 
-	ResponseItemDto deleteItem(Long itemId);
+	Item deleteItem(Long itemId);
 
-	List<ResponseItemDto> deleteAllItems();
+	List<Item> deleteAllItems();
 
-	List<ResponseItemDto> getItemsOfOwner(Long userId);
+	List<Item> getItemsOfOwner(Long userId);
 
-	List<ResponseItemDto> searchItemByText(FindItemDto findItemDto);
+	List<Item> searchItemByText(FindItemDto findItemDto);
 
 }
