@@ -14,16 +14,16 @@ public class UserRepositoryInMemory implements UserRepositoryApp {
 
 	private Map<Long, User> users = new HashMap<>();
 
-	private Long id = 0L;
+	private Long userIdCounter = 0L;
 
 	private Long generateId() {
-		return ++id;
+		return ++userIdCounter;
 	}
 
 	public User createUser(User createUser) {
 		Long userId = generateId();
-		createUser.setId(id);
-		users.put(id, createUser);
+		createUser.setId(userId);
+		users.put(userId, createUser);
 		return getUser(userId);
 	}
 

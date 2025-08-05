@@ -48,8 +48,7 @@ public class ItemService implements ItemServiceApp {
 		Item createdItem = itemRepository.createItem(createItem);
 		log.info("Создан предмет: " + createdItem);
 
-		Long itemId = createdItem.getId();
-		setOwnerToItem(itemId, ownerId);
+		setOwnerToItem(createdItem);
 
 		return createdItem;
 	}
@@ -104,13 +103,19 @@ public class ItemService implements ItemServiceApp {
 		return deletedItemsList;
 	}
 
-	private void setOwnerToItem(@NotNull Long itemId, @NotNull Long ownerId) {
+	private void setOwnerToItem(Item item) {
+
+		Long itemId = item.getId();
+		Long ownerId = item.getOwner().getId();
+
 		String errorMessage = "Невозможно добавить предмет пользователю";
 		itemException.checkItemAlreadyBelongsToTheOwnerException(itemId, ownerId, errorMessage);
 
 		log.info("Начато добавление предмета id=" + itemId + " пользователю id=" + ownerId);
-		if (itemRepository.setOwnerToItem(itemId, ownerId)) {
+		if (itemRepository.setOwnerToItem(item)) {
 			log.info("Предмет id=" + itemId + " добавлен пользователю id=" + ownerId);
+		} else {
+			log.info("Не удалось добавить предмет" + item + " пользователю id=" + ownerId);
 		}
 	}
 

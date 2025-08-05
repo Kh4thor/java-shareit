@@ -16,7 +16,7 @@ public class ItemException {
 	}
 
 	public void checkItemNotFoundException(Long itemId, String errorMessage) {
-		if (!itemRepository.isItemExists(itemId)) {
+		if (itemRepository.isItemExists(itemId) == false) {
 			RuntimeException exception = new ItemNotFoundException(itemId, errorMessage);
 			log.warn(errorMessage + " " + exception.getMessage());
 			throw exception;

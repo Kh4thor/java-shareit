@@ -23,10 +23,25 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	}
 
 	@Override
+	public Boolean setOwnerToItem(Item item) {
+		Long itemId = item.getId();
+		Long ownerId = item.getOwner().getId();
+
+		List<Long> itemsIdList = new ArrayList<>();
+		itemsIdList.add(itemId);
+		owner_items.put(ownerId, itemsIdList);
+		List<Long> listOfItemsIdOfOwner = owner_items.get(ownerId);
+		listOfItemsIdOfOwner.add(itemId);
+
+		return listOfItemsIdOfOwner.contains(item.getId());
+	}
+
+	@Override
 	public Item createItem(Item createItem) {
 		Long itemId = generateItemId();
+		createItem.setId(itemId);
 		items.put(itemId, createItem);
-		return items.get(itemId);
+		return getItem(itemId);
 	}
 
 	@Override
@@ -43,14 +58,13 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 		Boolean availableCurrentValue = currentItem.getAvailable();
 		Boolean availableToUpdateValue = updateItem.getAvailable();
 
-		String name = (nameToUpdateValue == null || nameToUpdateValue.isBlank()) ?
-				nameCurrentValue : nameToUpdateValue;
-		
-		String description = (descriptionToUpdateValue == null || descriptionToUpdateValue.isBlank())  ?
+		String name = (nameToUpdateValue == null || nameToUpdateValue.isBlank()) ? nameCurrentValue : nameToUpdateValue;
+
+		String description = (descriptionToUpdateValue == null || descriptionToUpdateValue.isBlank()) ?
 				descriptionCurrentValue : descriptionToUpdateValue;
-		
+
 		Boolean available = availableToUpdateValue == null ? availableCurrentValue : availableToUpdateValue;
-		
+
 		updateItem.setName(name);
 		updateItem.setDescription(description);
 		updateItem.setAvailable(available);
@@ -68,11 +82,6 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	@Override
 	public Boolean isItemExists(Long itemId) {
 		return items.containsKey(itemId);
-	}
-
-	@Override
-	public Boolean setOwnerToItem(Long itemId, Long ownerId) {
-		return null;
 	}
 
 	@Override
@@ -101,11 +110,10 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public Boolean isItemBelongsOwner(Long itemId, Long ownerId) {
-		if (owner_items.get(ownerId).contains(itemId)) {
-			return true;
-		} else {
+		if (owner_items.get(ownerId) == null) {
 			return false;
 		}
+		return owner_items.get(ownerId).contains(itemId);
 	}
 
 	@Override
@@ -134,9 +142,11 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 		Long ownerId = findItemDto.getOwnerId();
 		String text = findItemDto.getText();
 		
-		return	getItemsOfOwner(ownerId)
-				.stream()
-				.filter(e-> e.getName().equals(text) || e.getDescription().equals(text))
+		return getItemsOfOwner(ownerId).stream()
+				.filter(e -> (e.getName().toLowerCase().contains(text.toLowerCase())
+						|| e.getDescription().toLowerCase().contains(text.toLowerCase()))
+						& e.getAvailable() == true)
+				.distinct()
 				.toList();
 	}
 }
