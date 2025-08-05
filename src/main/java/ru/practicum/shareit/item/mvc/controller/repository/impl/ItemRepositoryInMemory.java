@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.mvc.controller.repository.impl;
+package ru.practicum.shareit.item.mvc.controller.repository.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,27 +23,41 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	}
 
 	@Override
-	public Item createItem(Item item) {
+	public Item createItem(Item createItem) {
 		Long itemId = generateItemId();
-		items.put(itemId, item);
+		items.put(itemId, createItem);
 		return items.get(itemId);
 	}
 
 	@Override
-	public Item updateItem(Item item) {
-		Long itemId = item.getId();
-		String updateItemName = item.getName();
-		String updateDescription = item.getDescription();
-		Boolean updateAvailable = item.getAvaliable();
- 		
-		Item updatedItem = items.get(itemId);
-		String name = 
-		String description = 
-		String ...
-		
-		updatedItem = updatedItem.setId(itemId);
+	public Item updateItem(Item updateItem) {
+		Long itemId = updateItem.getId();
+		Item currentItem = getItem(itemId);
 
-		return null;
+		String nameCurrentValue = currentItem.getName();
+		String nameToUpdateValue = updateItem.getName();
+
+		String descriptionCurrentValue = currentItem.getDescription();
+		String descriptionToUpdateValue = updateItem.getDescription();
+
+		Boolean availableCurrentValue = currentItem.getAvailable();
+		Boolean availableToUpdateValue = updateItem.getAvailable();
+
+		String name = (nameToUpdateValue == null || nameToUpdateValue.isBlank()) ?
+				nameCurrentValue : nameToUpdateValue;
+		
+		String description = (descriptionToUpdateValue == null || descriptionToUpdateValue.isBlank())  ?
+				descriptionCurrentValue : descriptionToUpdateValue;
+		
+		Boolean available = availableToUpdateValue == null ? availableCurrentValue : availableToUpdateValue;
+		
+		updateItem.setName(name);
+		updateItem.setDescription(description);
+		updateItem.setAvailable(available);
+
+		items.put(itemId, updateItem);
+
+		return getItem(itemId);
 	}
 
 	@Override
@@ -61,7 +75,6 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 		return null;
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public Boolean isOwnerExists(Long ownerId) {
 		return owner_items.containsKey(ownerId);
@@ -71,6 +84,12 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	public Boolean deleteOwner(Long ownerId) {
 		owner_items.remove(ownerId);
 		return !isOwnerExists(ownerId);
+	}
+
+	@Override
+	public Boolean deleteAllOwners() {
+		owner_items.clear();
+		return owner_items.isEmpty();
 	}
 
 	@Override

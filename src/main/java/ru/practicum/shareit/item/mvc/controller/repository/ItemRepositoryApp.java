@@ -7,9 +7,9 @@ import ru.practicum.shareit.item.mvc.model.Item;
 
 public interface ItemRepositoryApp {
 
-	Item createItem(Item item);
+	Item createItem(Item createItemDto);
 
-	Item updateItem(Item item);
+	Item updateItem(Item createItemDto);
 
 	Item getItem(Long itemId);
 
@@ -32,4 +32,6 @@ public interface ItemRepositoryApp {
 	List<Item> getItemsOfOwner(Long ownerId);
 
 	List<Item> searchItemByText(FindItemDto findItemDto);
+
+	Boolean deleteAllOwners();
 }

@@ -1,29 +1,57 @@
 package ru.practicum.shareit.item.utills;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.ResponseItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.user.mvc.controller.service.impl.UserService;
+import ru.practicum.shareit.user.mvc.model.User;
 
 @Slf4j
-public class ItemMapper implements RowMapper<Item> {
+@Component
+public class ItemMapper {
 
-	public static ItemDto toItemDto(Item item) {
-		return ItemDto.builder()
+	private final UserService userService;
+
+	public ItemMapper(UserService userService) {
+		this.userService = userService;
+	}
+
+	public ResponseItemDto itemToResponseItemDto(Item item) {
+		return	ResponseItemDto.builder()
 				.name(item.getName())
 				.description(item.getDescription())
-				.available(item.getAvaliable())
+				.available(item.getAvailable())
 				.itemRequestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
 				.build();
 		}
 
-	@Override
-	public Item mapRow(ResultSet rs, int rowNum) throws SQLException, IllegalArgumentException {
-		// to-do
-		return null;
-	}
+		public Item createItemDtoToItem(CreateItemDto createItemDto) {
+			User owner = userService.getUser(createItemDto.getOwnerId());
+			
+			return	Item.builder()
+					.id(0L)
+					.name(createItemDto.getName())
+					.description(createItemDto.getDescription())
+					.available(createItemDto.getAvailable())
+					.owner(owner)
+					.itemRequest(null)
+					.build();
+		}
+		
+		public Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
+			User owner = userService.getUser(updateItemDto.getOwnerId());
+			
+			return	Item.builder()
+					.id(0L)
+					.name(updateItemDto.getName())
+					.description(updateItemDto.getDescription())
+					.available(updateItemDto.getAvailable())
+					.owner(owner)
+					.itemRequest(null)
+					.build();
+		}
 }

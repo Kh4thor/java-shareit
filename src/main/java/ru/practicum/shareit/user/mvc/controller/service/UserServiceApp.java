@@ -3,21 +3,21 @@ package ru.practicum.shareit.user.mvc.controller.service;
 import java.util.List;
 
 import ru.practicum.shareit.user.dto.CreateUserDto;
-import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
+import ru.practicum.shareit.user.mvc.model.User;
 
 public interface UserServiceApp {
 
-	ResponseUserDto createUser(CreateUserDto createUserDto);
+	User createUser(CreateUserDto createUserDto);
 
-	ResponseUserDto updateUser(UpdateUserDto updateUserDto);
+	User updateUser(UpdateUserDto updateUserDto);
 
-	ResponseUserDto getUser(Long userId);
+	User getUser(Long userId);
 
-	ResponseUserDto deleteUser(Long userId);
+	User deleteUser(Long userId);
 
-	List<ResponseUserDto> getAllUsers();
+	List<User> getAllUsers();
 
-	List<ResponseUserDto> deleteAllUsers();
+	List<User> deleteAllUsers();
 
 }
