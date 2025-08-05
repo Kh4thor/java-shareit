@@ -22,9 +22,11 @@ public class ItemMapper {
 
 	public ResponseItemDto itemToResponseItemDto(Item item) {
 		return	ResponseItemDto.builder()
+				.id(item.getId())
 				.name(item.getName())
 				.description(item.getDescription())
 				.available(item.getAvailable())
+				.ownerId(item.getOwner().getId())
 				.itemRequestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
 				.build();
 		}
@@ -38,7 +40,6 @@ public class ItemMapper {
 					.description(createItemDto.getDescription())
 					.available(createItemDto.getAvailable())
 					.owner(owner)
-					.itemRequest(null)
 					.build();
 		}
 		
@@ -46,12 +47,11 @@ public class ItemMapper {
 			User owner = userService.getUser(updateItemDto.getOwnerId());
 			
 			return	Item.builder()
-					.id(0L)
+					.id(updateItemDto.getItemId())
 					.name(updateItemDto.getName())
 					.description(updateItemDto.getDescription())
 					.available(updateItemDto.getAvailable())
 					.owner(owner)
-					.itemRequest(null)
 					.build();
 		}
 }

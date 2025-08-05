@@ -15,7 +15,7 @@ public interface ItemRepositoryApp {
 
 	Boolean isItemExists(Long itemId);
 
-	Boolean setOwnerToItem(Long itemId, Long ownerId);
+	Boolean setOwnerToItem(Item item);
 
 	Boolean isOwnerExists(Long ownerId);
 

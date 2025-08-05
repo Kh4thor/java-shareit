@@ -42,8 +42,8 @@ public class ItemController implements ItemControllerApp {
 	public ResponseItemDto createItem(
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@Validated @RequestBody CreateItemDto itemDto) {
-		itemDto.setOwnerId(ownerId);
 
+		itemDto.setOwnerId(ownerId);
 		Item responseItem = itemService.createItem(itemDto);
 
 		ResponseItemDto responseItemDto = itemMapper.itemToResponseItemDto(responseItem);
@@ -57,6 +57,7 @@ public class ItemController implements ItemControllerApp {
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@Validated @RequestBody UpdateItemDto itemDto,
 			@PathVariable("id") Long itemId) {
+
 		itemDto.setOwnerId(ownerId);
 		itemDto.setItemId(itemId);
 
@@ -106,6 +107,8 @@ public class ItemController implements ItemControllerApp {
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		List<Item> responseItemsList =  itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
 		
+		responseItemsList.forEach(e -> System.out.println(e));
+
 		return	responseItemsList
 				.stream()
 				.map(itemMapper::itemToResponseItemDto)
