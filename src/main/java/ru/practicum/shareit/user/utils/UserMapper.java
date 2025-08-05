@@ -14,7 +14,7 @@ public class UserMapper {
 				.email(createUserDto.getEmail())
 				.build();
 	}
-	
+
 	public static User updateUserDtoToUser(UpdateUserDto udateUserDto) {
 		return	User.builder()
 				.id(udateUserDto.getUserId())
@@ -22,7 +22,7 @@ public class UserMapper {
 				.email(udateUserDto.getEmail())
 				.build();
 	}
-	
+
 	public static ResponseUserDto userToResponseUserDto(User user) {
 		return	ResponseUserDto.builder()
 				.id(user.getId())

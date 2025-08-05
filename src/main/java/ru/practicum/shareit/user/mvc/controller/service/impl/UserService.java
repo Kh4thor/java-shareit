@@ -37,11 +37,11 @@ public class UserService implements UserServiceApp {
 		log.info("Начато преобразование (CreateUserDto)createUserDto в объект класса User. Получен объект: " + createUserDto);
 		User createuser = UserMapper.createUserDtoToUser(createUserDto);
 		log.info("createUserDto преобразован в объект класса User: " + createuser);
-		
+
 		log.info("Начато создание пользователя. Получен объект: " + createuser);
 		User responseUser = userRepository.createUser(createuser);
 		log.info("Создан пользователь: " + responseUser);
-		
+
 		return responseUser;
 	}
 
@@ -49,10 +49,10 @@ public class UserService implements UserServiceApp {
 	public User updateUser(UpdateUserDto updateUserDto) {
 		Long userId = updateUserDto.getUserId();
 		String email = updateUserDto.getEmail();
-		
+
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
-		if (userRepository.isUserOwnerOfEmail(userId, email) == false ) {
+		if (userRepository.isUserOwnerOfEmail(userId, email) == false) {
 			userException.checkEmailAlreadyExistsException(email, errorMessage);
 		}
 
@@ -101,7 +101,7 @@ public class UserService implements UserServiceApp {
 		log.info("Начато получение всех пользователей.");
 		List<User> responseUsersList = userRepository.getAllUsers();
 		log.info("Получен список всех пользователей: " + responseUsersList);
-		
+
 		return responseUsersList;
 	}
 
@@ -110,7 +110,7 @@ public class UserService implements UserServiceApp {
 		log.info("Начато удаление всех пользователей.");
 		List<User> responseUsersList = userRepository.deleteAllUsers();
 		log.info("Получен список удаленных пользователей: " + responseUsersList);
-		
+
 		deleteAllOwners();
 
 		return responseUsersList;
