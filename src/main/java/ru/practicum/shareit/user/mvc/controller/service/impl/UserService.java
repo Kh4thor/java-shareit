@@ -25,7 +25,8 @@ public class UserService implements UserServiceApp {
 	private final UserRepositoryApp userRepository;
 	private final ItemRepositoryApp itemRepository;
 
-	public UserService(UserException userValidator, UserRepositoryApp userRepository, ItemRepositoryApp itemRepository) {
+	public UserService(UserException userValidator, UserRepositoryApp userRepository,
+			ItemRepositoryApp itemRepository) {
 		this.userException = userValidator;
 		this.userRepository = userRepository;
 		this.itemRepository = itemRepository;
@@ -58,7 +59,7 @@ public class UserService implements UserServiceApp {
 
 		String errorMessage = "Невозможно обновить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);
-		if (userRepository.isUserOwnerOfEmail(userId, email) == false) {
+		if (!userRepository.isUserOwnerOfEmail(userId, email)) {
 			userException.checkEmailAlreadyExistsException(email, errorMessage);
 		}
 
@@ -113,7 +114,6 @@ public class UserService implements UserServiceApp {
 			}
 		}
 
-//		itemException.checkOwnerNotFoundException(ownerId, errorMessage);
 		log.info("Начато удаление предемтов вадельца. Получен id-владельца: " + ownerId);
 		itemRepository.deleteItemsOfOwner(ownerId);
 		log.info("Предметы владельца удалены");

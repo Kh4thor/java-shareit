@@ -19,5 +19,4 @@ public class OwnerNotFoundException extends RuntimeException {
 		super("Не найден владелец id:" + ownerId);
 		this.ownerId = ownerId;
 	}
-
 }
