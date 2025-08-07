@@ -32,7 +32,7 @@ public class ItemException {
 	}
 
 	public void checkItemAlreadyBelongsToTheOwnerException(Long itemId, Long ownerId, String errorMessage) {
-		if (itemRepository.isItemBelongsOwner(itemId, ownerId) == true) {
+		if (itemRepository.isItemBelongsOwner(itemId, ownerId)) {
 			RuntimeException exception = new ItemAlreadyBelongsToTheOwnerException(itemId, ownerId, errorMessage);
 			log.warn(errorMessage + " " + exception.getMessage());
 			throw exception;
@@ -40,8 +40,24 @@ public class ItemException {
 	}
 
 	public void checkItemDoesNotBelongToTheOwnerException(Long itemId, Long ownerId, String errorMessage) {
-		if (itemRepository.isItemBelongsOwner(itemId, ownerId) == false) {
+		if (!itemRepository.isItemBelongsOwner(itemId, ownerId)) {
 			RuntimeException exception = new ItemDoesNotBelongToTheOwnerException(itemId, ownerId, errorMessage);
+			log.warn(errorMessage + " " + exception.getMessage());
+			throw exception;
+		}
+	}
+
+	public void checkOwnerNotFoundException(Long ownerId, String errorMessage) {
+		if (!itemRepository.isOwnerExists(ownerId)) {
+			RuntimeException exception = new OwnerNotFoundException(ownerId, errorMessage);
+			log.warn(errorMessage + " " + exception.getMessage());
+			throw exception;
+		}
+	}
+
+	public void checkOwnerOfItemNotFoundException(Long itemId, String errorMessage) {
+		if (!itemRepository.isItemHasOwner(itemId)) {
+			RuntimeException exception = new OwnerNotFoundException(itemId, errorMessage);
 			log.warn(errorMessage + " " + exception.getMessage());
 			throw exception;
 		}

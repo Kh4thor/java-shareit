@@ -14,4 +14,10 @@ public class ItemNotFoundException extends RuntimeException {
 		this.itemId = itemId;
 		this.errorMessage = errorMessage;
 	}
+
+	public ItemNotFoundException(Long itemId) {
+		super("Предмет id=" + itemId + " не найден");
+		this.itemId = itemId;
+	}
+
 }

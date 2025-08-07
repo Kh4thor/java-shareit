@@ -21,8 +21,6 @@ import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.mvc.controller.controller.ItemControllerApp;
 import ru.practicum.shareit.item.mvc.controller.service.ItemServiceApp;
-import ru.practicum.shareit.item.mvc.model.Item;
-import ru.practicum.shareit.item.utills.ItemMapper;
 
 @Slf4j
 @RestController
@@ -30,11 +28,9 @@ import ru.practicum.shareit.item.utills.ItemMapper;
 public class ItemController implements ItemControllerApp {
 
 	private final ItemServiceApp itemService;
-	private final ItemMapper itemMapper;
 
-	public ItemController(ItemServiceApp itemService, ItemMapper itemMapper) {
+	public ItemController(ItemServiceApp itemService) {
 		this.itemService = itemService;
-		this.itemMapper = itemMapper;
 	}
 
 	@Override
@@ -42,13 +38,8 @@ public class ItemController implements ItemControllerApp {
 	public ResponseItemDto createItem(
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@Validated @RequestBody CreateItemDto itemDto) {
-
 		itemDto.setOwnerId(ownerId);
-		Item responseItem = itemService.createItem(itemDto);
-
-		ResponseItemDto responseItemDto = itemMapper.itemToResponseItemDto(responseItem);
-
-		return responseItemDto;
+		return itemService.createItem(itemDto);
 	}
 
 	@Override
@@ -61,55 +52,30 @@ public class ItemController implements ItemControllerApp {
 		itemDto.setOwnerId(ownerId);
 		itemDto.setItemId(itemId);
 
-		Item responseItem = itemService.updateItem(itemDto);
-
-		ResponseItemDto responseItemDto = itemMapper.itemToResponseItemDto(responseItem);
-
-		return responseItemDto;
+		return itemService.updateItem(itemDto);
 	}
 
 	@Override
 	@GetMapping("/{id}")
 	public ResponseItemDto getItem(@PathVariable("id") Long itemId) {
-		Item responseItem = itemService.getItem(itemId);
-
-		ResponseItemDto responseItemDto = itemMapper.itemToResponseItemDto(responseItem);
-
-		return responseItemDto;
-
+		return itemService.getItem(itemId);
 	}
 
 	@Override
 	@DeleteMapping
 	public List<ResponseItemDto> deleteAllItems() {
-		List<Item> responseItemsList = itemService.deleteAllItems();
-
-		return	responseItemsList
-				.stream()
-				.map(itemMapper::itemToResponseItemDto)
-				.toList();
-
+		return itemService.deleteAllItems();
 	}
 
 	@Override
 	@GetMapping
 	public List<ResponseItemDto> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
-		List<Item> responseItemsList = itemService.getItemsOfOwner(ownerId);
-
-		return	responseItemsList
-				.stream()
-				.map(itemMapper::itemToResponseItemDto)
-				.toList();
+		return itemService.getItemsOfOwner(ownerId);
 	}
 
 	@Override
 	@GetMapping("/search")
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
-		List<Item> responseItemsList =  itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
-
-		return	responseItemsList
-				.stream()
-				.map(itemMapper::itemToResponseItemDto)
-				.toList();
+		return itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
 	}
 }

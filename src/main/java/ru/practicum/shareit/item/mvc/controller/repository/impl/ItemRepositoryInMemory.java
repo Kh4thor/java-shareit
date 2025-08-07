@@ -1,13 +1,17 @@
 package ru.practicum.shareit.item.mvc.controller.repository.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import ru.practicum.shareit.item.dto.FindItemDto;
+import ru.practicum.shareit.item.exception.ItemNotFoundException;
+import ru.practicum.shareit.item.exception.OwnerOfItemNotFoundException;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
 import ru.practicum.shareit.item.mvc.model.Item;
 
@@ -47,6 +51,7 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	@Override
 	public Item updateItem(Item updateItem) {
 		Long itemId = updateItem.getId();
+		
 		Item currentItem = getItem(itemId);
 
 		String nameCurrentValue = currentItem.getName();
@@ -76,7 +81,8 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public Item getItem(Long itemId) {
-		return items.get(itemId);
+		Optional<Item> itemOtp = Optional.ofNullable(items.get(itemId));
+		return itemOtp.orElseThrow(() -> new ItemNotFoundException(itemId));
 	}
 
 	@Override
@@ -91,6 +97,12 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public Boolean deleteOwner(Long ownerId) {
+		List<Long> itemsIdList = itemsOfOwnersMap.get(ownerId);
+		for (int i = 0; i < itemsIdList.size(); i++) {
+			Long itemId = itemsIdList.get(i);
+			items.remove(itemId);
+		}
+
 		itemsOfOwnersMap.remove(ownerId);
 		return !isOwnerExists(ownerId);
 	}
@@ -107,6 +119,24 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 		items.remove(itemId);
 		return itemToDelete;
 	}
+
+	private Long getOwnerIdByItemId(Long itemId) {
+		for (Long ownerId : itemsOfOwnersMap.keySet()) {
+			List<Long> itemsIdList = itemsOfOwnersMap.get(ownerId);
+			if (itemsIdList.contains(itemId)) {
+				return ownerId;
+			}
+		}
+		throw new OwnerOfItemNotFoundException(itemId);
+	}
+
+	@Override
+	public Long deleteItemFromOwner(Long itemId) {
+		itemsOfOwnersMap.values().forEach(itemsList -> itemsList.removeIf(id -> id == itemId));
+		itemsOfOwnersMap.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+
+		return getOwnerIdByItemId(itemId);
+		}
 
 	@Override
 	public Boolean isItemBelongsOwner(Long itemId, Long ownerId) {
@@ -131,6 +161,9 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	@Override
 	public List<Item> getItemsOfOwner(Long ownerId) {
 		List<Long> itemsOfOwnerIdList = itemsOfOwnersMap.get(ownerId);
+		if (itemsOfOwnerIdList == null) {
+			return new ArrayList<Item>();
+		}
 		return	itemsOfOwnerIdList
 				.stream()
 				.map(itemId -> items.get(itemId))
@@ -148,5 +181,24 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 						&& e.getAvailable())
 				.distinct()
 				.toList();
+	}
+
+	@Override
+	public List<Item> deleteItemsOfOwner(Long ownerId) {
+		if (!isOwnerExists(ownerId)) {
+			return new ArrayList<Item>();
+		}
+
+		List<Item> itemsOfOwnerList = getItemsOfOwner(ownerId);
+		itemsOfOwnersMap.get(ownerId).clear();
+
+		return itemsOfOwnerList;
+	}
+
+	@Override
+	public Boolean isItemHasOwner(Long itemId) {
+		 return itemsOfOwnersMap.values().stream()
+					.flatMap(Collection::stream)
+					.anyMatch(id -> id == itemId);
 	}
 }

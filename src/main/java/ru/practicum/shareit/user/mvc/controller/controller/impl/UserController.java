@@ -18,8 +18,6 @@ import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.mvc.controller.controller.UserControllerApp;
 import ru.practicum.shareit.user.mvc.controller.service.UserServiceApp;
-import ru.practicum.shareit.user.mvc.model.User;
-import ru.practicum.shareit.user.utils.UserMapper;
 
 @Slf4j
 @RestController
@@ -34,73 +32,32 @@ public class UserController implements UserControllerApp {
 
 	@PostMapping
 	public ResponseUserDto createUser(@Valid @RequestBody CreateUserDto createUserDto) {
-		User responseUser = userService.createUser(createUserDto);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		return responseUserDto;
+		return userService.createUser(createUserDto);
 	}
 
 	@PatchMapping("/{id}")
 	public ResponseUserDto updateUser(@Valid @RequestBody UpdateUserDto updateUserDto, @PathVariable("id") Long userId) {
 		updateUserDto.setUserId(userId);
-
-		User responseUser = userService.updateUser(updateUserDto);
-
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("(User)responseUser преобразован в объект класса ResponseUserDto: " + responseUser);
-
-		return responseUserDto;
+		return userService.updateUser(updateUserDto);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseUserDto getUser(@PathVariable("id") Long userId) {
-
-		User responseUser = userService.getUser(userId);
-
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("(User)responseUser преобразован в объект класса ResponseUserDto: " + responseUser);
-
-		return responseUserDto;
+		return userService.getUser(userId);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseUserDto deleteUser(@PathVariable("id") Long userId) {
-
-		User responseUser = userService.deleteUser(userId);
-
-		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
-		ResponseUserDto responseUserDto = UserMapper.userToResponseUserDto(responseUser);
-		log.info("(User)responseUser преобразован в объект класса ResponseUserDto: " + responseUser);
-
-		return responseUserDto;
+		return userService.deleteUser(userId);
 	}
 
 	@GetMapping
 	public List<ResponseUserDto> getAllUsers() {
-
-		List<User> responseUsersList = userService.getAllUsers();
-		log.info("Начато преобразование списка (User)responseUser в объекты класса ResponseUserDto. Получен список объектов: " + responseUsersList);
-		List<ResponseUserDto> responseUserDtoList = responseUsersList
-													.stream()
-													.map(UserMapper::userToResponseUserDto)
-													.toList();
-		log.info("Список объектов (User)responseUser преобразован в объекты класса ResponseUserDto: " + responseUserDtoList);
-
-		return responseUserDtoList;
+		return userService.getAllUsers();
 	}
 
 	@DeleteMapping
 	public List<ResponseUserDto> deleteAllUsers() {
-
-		List<User> responseUsersList = userService.deleteAllUsers();
-		log.info("Начато преобразование списка (User)responseUser в объекты класса ResponseUserDto. Получен список объектов: " + responseUsersList);
-		List<ResponseUserDto> responseUserDtoList = responseUsersList
-													.stream()
-													.map(UserMapper::userToResponseUserDto)
-													.toList();
-		log.info("Список объектов (User)responseUser преобразован в объекты класса ResponseUserDto: " + responseUserDtoList);
-
-		return responseUserDtoList;
+		return userService.deleteAllUsers();
 	}
 }
