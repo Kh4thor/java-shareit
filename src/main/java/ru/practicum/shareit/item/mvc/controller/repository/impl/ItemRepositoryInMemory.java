@@ -51,7 +51,6 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	@Override
 	public Item updateItem(Item updateItem) {
 		Long itemId = updateItem.getId();
-		
 		Item currentItem = getItem(itemId);
 
 		String nameCurrentValue = currentItem.getName();
@@ -132,7 +131,7 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 
 	@Override
 	public Long deleteItemFromOwner(Long itemId) {
-		itemsOfOwnersMap.values().forEach(itemsList -> itemsList.removeIf(id -> id == itemId));
+		itemsOfOwnersMap.values().forEach(itemsList -> itemsList.removeIf(id -> id.equals(itemId)));
 		itemsOfOwnersMap.entrySet().removeIf(entry -> entry.getValue().isEmpty());
 
 		return getOwnerIdByItemId(itemId);
@@ -199,6 +198,6 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	public Boolean isItemHasOwner(Long itemId) {
 		 return itemsOfOwnersMap.values().stream()
 					.flatMap(Collection::stream)
-					.anyMatch(id -> id == itemId);
+					.anyMatch(id -> id.equals(itemId));
 	}
 }

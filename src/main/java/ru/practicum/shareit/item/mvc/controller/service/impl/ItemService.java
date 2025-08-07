@@ -136,8 +136,7 @@ public class ItemService implements ItemServiceApp {
 		log.info("Начато удаление всех предметов.");
 		List<Item> responseItemsList = itemRepository.deleteAllItems();
 		log.info("Все предметы удалены.");
-		
-		
+
 		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
 		List<ResponseItemDto> responseItemsListDto = 	responseItemsList
 											.stream()
@@ -156,7 +155,7 @@ public class ItemService implements ItemServiceApp {
 		log.info("Начат процесс получения списка предметов пользователя. Получен id-пользователя=" + userId);
 		List<Item> responseItemsList = itemRepository.getItemsOfOwner(userId);
 		log.info("Получен список предметов пользователя" + responseItemsList);
-		
+
 		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
 		List<ResponseItemDto> responseItemsListDto = 	responseItemsList
 														.stream()
@@ -181,7 +180,7 @@ public class ItemService implements ItemServiceApp {
 
 		log.info("Начат поиск предмета. Получен id-владельца: " + ownerId + " и строка поиска:" + text);
 		List<Item> responseItemsList = itemRepository.searchItemByText(findItemDto);
-		
+
 		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
 		List<ResponseItemDto> responseItemsListDto = 	responseItemsList
 														.stream()
