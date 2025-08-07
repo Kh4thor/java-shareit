@@ -34,4 +34,10 @@ public interface ItemRepositoryApp {
 	List<Item> searchItemByText(FindItemDto findItemDto);
 
 	Boolean deleteAllOwners();
+
+	List<Item> deleteItemsOfOwner(Long ownerId);
+
+	Long deleteItemFromOwner(Long itemId);
+
+	Boolean isItemHasOwner(Long itemId);
 }

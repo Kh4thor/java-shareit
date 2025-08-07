@@ -7,20 +7,12 @@ import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.mvc.model.Item;
-import ru.practicum.shareit.user.mvc.controller.service.impl.UserService;
-import ru.practicum.shareit.user.mvc.model.User;
 
 @Slf4j
 @Component
 public class ItemMapper {
 
-	private final UserService userService;
-
-	public ItemMapper(UserService userService) {
-		this.userService = userService;
-	}
-
-	public ResponseItemDto itemToResponseItemDto(Item item) {
+	public static ResponseItemDto itemToResponseItemDto(Item item) {
 		return	ResponseItemDto.builder()
 				.id(item.getId())
 				.name(item.getName())
@@ -31,27 +23,23 @@ public class ItemMapper {
 				.build();
 		}
 
-		public Item createItemDtoToItem(CreateItemDto createItemDto) {
-			User owner = userService.getUser(createItemDto.getOwnerId());
+		public static Item createItemDtoToItem(CreateItemDto createItemDto) {
 
 			return	Item.builder()
 					.id(0L)
 					.name(createItemDto.getName())
 					.description(createItemDto.getDescription())
 					.available(createItemDto.getAvailable())
-					.owner(owner)
 					.build();
 		}
 
-		public Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
-			User owner = userService.getUser(updateItemDto.getOwnerId());
+		public static Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
 
 			return	Item.builder()
 					.id(updateItemDto.getItemId())
 					.name(updateItemDto.getName())
 					.description(updateItemDto.getDescription())
 					.available(updateItemDto.getAvailable())
-					.owner(owner)
 					.build();
 		}
 }

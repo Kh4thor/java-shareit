@@ -34,4 +34,16 @@ public class ItemExceptionHandler {
 	public ItemErrorResponse itemDoesNotBelongToTheOwnerExceptionHandler(final ItemDoesNotBelongToTheOwnerException exception) {
 		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ItemErrorResponse ownerNotFoundException(final OwnerNotFoundException exception) {
+		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ItemErrorResponse ownerOfItemNotFoundException(final OwnerOfItemNotFoundException exception) {
+		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
 }
