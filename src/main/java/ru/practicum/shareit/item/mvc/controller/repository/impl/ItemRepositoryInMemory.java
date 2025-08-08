@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import ru.practicum.shareit.item.dto.FindItemDto;
-import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.OwnerOfItemNotFoundException;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
 import ru.practicum.shareit.item.mvc.model.Item;
@@ -41,7 +40,7 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	}
 
 	@Override
-	public Item createItem(Item createItem) {
+	public Optional<Item> createItem(Item createItem) {
 		Long itemId = generateItemId();
 		createItem.setId(itemId);
 		items.put(itemId, createItem);
@@ -49,9 +48,9 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	}
 
 	@Override
-	public Item updateItem(Item updateItem) {
+	public Optional<Item> updateItem(Item updateItem) {
 		Long itemId = updateItem.getId();
-		Item currentItem = getItem(itemId);
+		Item currentItem = getItem(itemId).orElse(updateItem);
 
 		String nameCurrentValue = currentItem.getName();
 		String nameToUpdateValue = updateItem.getName();
@@ -79,9 +78,8 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	}
 
 	@Override
-	public Item getItem(Long itemId) {
-		Optional<Item> itemOtp = Optional.ofNullable(items.get(itemId));
-		return itemOtp.orElseThrow(() -> new ItemNotFoundException(itemId));
+	public Optional<Item> getItem(Long itemId) {
+		return Optional.ofNullable(items.get(itemId));
 	}
 
 	@Override
@@ -111,12 +109,13 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 		itemsOfOwnersMap.clear();
 		return itemsOfOwnersMap.isEmpty();
 	}
+	
 
 	@Override
-	public Item deleteItem(Long itemId) {
+	public Optional<Item> deleteItem(Long itemId) {
 		Item itemToDelete = items.get(itemId);
 		items.remove(itemId);
-		return itemToDelete;
+		return Optional.ofNullable(itemToDelete);
 	}
 
 	private Long getOwnerIdByItemId(Long itemId) {
