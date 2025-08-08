@@ -109,7 +109,6 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 		itemsOfOwnersMap.clear();
 		return itemsOfOwnersMap.isEmpty();
 	}
-	
 
 	@Override
 	public Optional<Item> deleteItem(Long itemId) {
