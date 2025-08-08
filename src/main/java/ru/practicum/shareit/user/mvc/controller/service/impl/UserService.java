@@ -44,7 +44,7 @@ public class UserService implements UserServiceApp {
 		log.info("createUserDto преобразован в объект класса User: " + createuser);
 
 		log.info("Начато создание пользователя. Получен объект: " + createuser);
-		User responseUser = userRepository.createUser(createuser).orElseThrow(()-> new UserNotFoundException(createUserDto, errorMessage));
+		User responseUser = userRepository.createUser(createuser).orElseThrow(() -> new UserNotFoundException(createUserDto, errorMessage));
 		log.info("Создан пользователь: " + responseUser);
 
 		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
@@ -157,7 +157,7 @@ public class UserService implements UserServiceApp {
 		} else {
 			log.info("Неудачная попытка удаления всех пользователей.");
 		}
-		
+
 		log.info("Начато удаление всех предметов.");
 		List<Item> deletedItemsList = itemRepository.deleteAllItems();
 		log.info("Список удаленных предметов:" + deletedItemsList);
