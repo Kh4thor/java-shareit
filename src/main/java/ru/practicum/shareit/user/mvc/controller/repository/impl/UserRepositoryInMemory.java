@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
 import ru.practicum.shareit.user.mvc.model.User;
 
@@ -22,7 +21,7 @@ public class UserRepositoryInMemory implements UserRepositoryApp {
 		return ++userIdCounter;
 	}
 
-	public User createUser(User createUser) {
+	public Optional<User> createUser(User createUser) {
 		Long userId = generateId();
 		createUser.setId(userId);
 		users.put(userId, createUser);
@@ -30,9 +29,9 @@ public class UserRepositoryInMemory implements UserRepositoryApp {
 	}
 
 	@Override
-	public User updateUser(User updateUser) {
+	public Optional<User> updateUser(User updateUser) {
 		Long userId = updateUser.getId();
-		User user = getUser(userId);
+		User user = getUser(userId).get();
 
 		String nameCurrentValue = user.getName();
 		String nameValueToUpdate = updateUser.getName();
@@ -41,8 +40,7 @@ public class UserRepositoryInMemory implements UserRepositoryApp {
 		String emailValueToUpdate = updateUser.getEmail();
 
 		String name = nameValueToUpdate == null || nameValueToUpdate.isBlank() ? nameCurrentValue : nameValueToUpdate;
-		String email = emailValueToUpdate == null || emailValueToUpdate.isBlank() ? emailCurrentValue
-				: emailValueToUpdate;
+		String email = emailValueToUpdate == null || emailValueToUpdate.isBlank() ? emailCurrentValue : emailValueToUpdate;
 
 		updateUser.setName(name);
 		updateUser.setEmail(email);
@@ -52,14 +50,13 @@ public class UserRepositoryInMemory implements UserRepositoryApp {
 	}
 
 	@Override
-	public User getUser(Long userId) {
-		Optional<User> userOpt = Optional.ofNullable(users.get(userId));
-		return userOpt.orElseThrow(() -> new ItemNotFoundException(userId));
+	public Optional<User> getUser(Long userId) {
+		return Optional.ofNullable(users.get(userId));
 	}
 
 	@Override
-	public User deleteUser(Long userId) {
-		return users.remove(userId);
+	public Optional<User> deleteUser(Long userId) {
+		return Optional.ofNullable(users.remove(userId));
 	}
 
 	@Override

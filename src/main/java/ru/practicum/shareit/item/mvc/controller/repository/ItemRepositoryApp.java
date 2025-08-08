@@ -1,17 +1,18 @@
 package ru.practicum.shareit.item.mvc.controller.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.mvc.model.Item;
 
 public interface ItemRepositoryApp {
 
-	Item createItem(Item createItemDto);
+	Optional<Item> createItem(Item createItemDto);
 
-	Item updateItem(Item createItemDto);
+	Optional<Item> updateItem(Item createItemDto);
 
-	Item getItem(Long itemId);
+	Optional<Item> getItem(Long itemId);
 
 	Boolean isItemExists(Long itemId);
 
@@ -21,7 +22,7 @@ public interface ItemRepositoryApp {
 
 	Boolean deleteOwner(Long ownerId);
 
-	Item deleteItem(Long itemId);
+	Optional<Item> deleteItem(Long itemId);
 
 	Boolean isItemBelongsOwner(Long itemId, Long ownerId);
 

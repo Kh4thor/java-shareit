@@ -12,11 +12,13 @@ import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.exception.ItemException;
+import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
 import ru.practicum.shareit.item.mvc.controller.service.ItemServiceApp;
 import ru.practicum.shareit.item.mvc.model.Item;
 import ru.practicum.shareit.item.utills.ItemMapper;
 import ru.practicum.shareit.user.exception.UserException;
+import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
 import ru.practicum.shareit.user.mvc.model.User;
 
@@ -44,11 +46,11 @@ public class ItemService implements ItemServiceApp {
 		userException.checkUserNotFoundException(ownerId, errorMessage);
 
 		log.info("Начато преобразование (CreateItemDto)createItemDto в объект класса Item. Получен объект: " + createItemDto);
-		Item createItem = createItemDtoToItem(createItemDto);
+		Item createItem = createItemDtoToItem(createItemDto, errorMessage);
 		log.info("(CreateItemDto)createItemDto преобразован в объект класса User: " + createItem);
 
 		log.info("Начато создание предмета. Получен объект:" + createItem);
-		Item responseItem = itemRepository.createItem(createItem);
+		Item responseItem = itemRepository.createItem(createItem).orElseThrow(() -> new ItemNotFoundException("errorMessage"));
 		log.info("Создан предмет: " + responseItem);
 
 		Long itemId = responseItem.getId();
@@ -81,14 +83,14 @@ public class ItemService implements ItemServiceApp {
 		itemException.checkItemDoesNotBelongToTheOwnerException(itemId, ownerId, errorMessage);
 
 		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: " + updateItemDto);
-		Item updateItem = updateItemDtoToItem(updateItemDto);
+		Item updateItem = updateItemDtoToItem(updateItemDto, errorMessage);
 		log.info("updateUserDto преобразован в объект класса User: " + updateItem);
 
 		log.info("Начато обновление предмета. Получен объект:" + updateItem);
-		Item responseItem = itemRepository.updateItem(updateItem);
+		Item responseItem = itemRepository.updateItem(updateItem).get();
 		log.info("Обновлен предмет " + responseItem);
 
-		log.info("Начато преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItem);
+		log.info("Начато преобразование ItemCreateDto в объект ResponseItemDto. Получен объект:" + responseItem);
 		ResponseItemDto responseItemDto = ItemMapper.itemToResponseItemDto(responseItem);
 		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemDto);
 
@@ -98,10 +100,9 @@ public class ItemService implements ItemServiceApp {
 	@Override
 	public ResponseItemDto getItem(Long itemId) {
 		String errorMessage = "Невозможно вызвать объект";
-		itemException.checkItemNotFoundException(itemId, errorMessage);
 
 		log.info("Начат вызов предмета. Получен id:" + itemId);
-		Item responseItem = itemRepository.getItem(itemId);
+		Item responseItem = itemRepository.getItem(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
 		log.info("Вызван предмет:" + itemId);
 
 		log.info("Начато преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItem);
@@ -117,7 +118,7 @@ public class ItemService implements ItemServiceApp {
 		itemException.checkItemNotFoundException(itemId, errorMessage);
 
 		log.info("Начато удаление предмета. Получен id=" + itemId);
-		Item responseItem = itemRepository.deleteItem(itemId);
+		Item responseItem = itemRepository.deleteItem(itemId).get();
 		log.info("Удален предмет:" + responseItem);
 
 		log.info("Начато удаление предмета у владельца. Получен id=" + itemId);
@@ -190,15 +191,17 @@ public class ItemService implements ItemServiceApp {
 		return responseItemsListDto;
 	}
 
-	private Item createItemDtoToItem(CreateItemDto createItemDto) {
-		User owner = userRepository.getUser(createItemDto.getOwnerId());
+	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {
+		Long ownerId = createItemDto.getOwnerId();
+		User owner = userRepository.getUser(ownerId).orElseThrow(()->new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.createItemDtoToItem(createItemDto);
 		item.setOwner(owner);
 		return item;
 	}
 
-	private Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
-		User owner = userRepository.getUser(updateItemDto.getOwnerId());
+	private Item updateItemDtoToItem(UpdateItemDto updateItemDto, String errorMessage) {
+		Long ownerId = updateItemDto.getOwnerId();
+		User owner = userRepository.getUser(ownerId).orElseThrow(()->new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.updateItemDtoToItem(updateItemDto);
 		item.setOwner(owner);
 		return item;

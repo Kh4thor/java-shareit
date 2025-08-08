@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
+import ru.practicum.shareit.item.mvc.model.Item;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.exception.UserException;
+import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
 import ru.practicum.shareit.user.mvc.controller.service.UserServiceApp;
 import ru.practicum.shareit.user.mvc.model.User;
@@ -34,7 +36,7 @@ public class UserService implements UserServiceApp {
 
 	@Override
 	public ResponseUserDto createUser(@NotNull CreateUserDto createUserDto) {
-		String errorMessage = "Невозможно создать пользователя.";
+		String errorMessage = "Неудачная попытка создать пользователя.";
 		userException.checkEmailAlreadyExistsException(createUserDto.getEmail(), errorMessage);
 
 		log.info("Начато преобразование (CreateUserDto)createUserDto в объект класса User. Получен объект: " + createUserDto);
@@ -42,7 +44,7 @@ public class UserService implements UserServiceApp {
 		log.info("createUserDto преобразован в объект класса User: " + createuser);
 
 		log.info("Начато создание пользователя. Получен объект: " + createuser);
-		User responseUser = userRepository.createUser(createuser);
+		User responseUser = userRepository.createUser(createuser).orElseThrow(()-> new UserNotFoundException(createUserDto, errorMessage));
 		log.info("Создан пользователь: " + responseUser);
 
 		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
@@ -68,7 +70,7 @@ public class UserService implements UserServiceApp {
 		log.info("updateUserDto преобразован в объект класса User: " + updateUser);
 
 		log.info("Начато обновление пользователя. Получен объект: " + updateUser);
-		User responseUser = userRepository.updateUser(updateUser);
+		User responseUser = userRepository.updateUser(updateUser).get();
 		log.info("Обновлен пользователь: " + responseUser);
 
 		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
@@ -81,10 +83,9 @@ public class UserService implements UserServiceApp {
 	@Override
 	public ResponseUserDto getUser(Long userId) {
 		String errorMessage = "Невозможно получить пользователя.";
-		userException.checkUserNotFoundException(userId, errorMessage);
 
 		log.info("Начато получение пользователя. Получен id: " + userId);
-		User responseUser = userRepository.getUser(userId);
+		User responseUser = userRepository.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
 		log.info("Получен пользователь: " + responseUser);
 
 		log.info("Начато преобразование (User)responseUser в объект класса ResponseUserDto. Получен объект: " + responseUser);
@@ -100,7 +101,10 @@ public class UserService implements UserServiceApp {
 		userException.checkUserNotFoundException(userId, errorMessage);
 
 		log.info("Начато удаление пользователя. Получен id: " + userId);
-		User responseUser = userRepository.deleteUser(userId);
+		User responseUser = userRepository.deleteUser(userId).get();
+		if (responseUser == null) {
+			return null;
+		}
 		log.info("Удален пользователь: " + responseUser);
 
 		Long ownerId = responseUser.getId();
@@ -153,6 +157,10 @@ public class UserService implements UserServiceApp {
 		} else {
 			log.info("Неудачная попытка удаления всех пользователей.");
 		}
+		
+		log.info("Начато удаление всех предметов.");
+		List<Item> deletedItemsList = itemRepository.deleteAllItems();
+		log.info("Список удаленных предметов:" + deletedItemsList);
 
 		log.info("Начато преобразование списка (User)responseUser в объекты класса ResponseUserDto. Получен список объектов: " + responseUsersList);
 		List<ResponseUserDto> responseUserDtoList = responseUsersList
