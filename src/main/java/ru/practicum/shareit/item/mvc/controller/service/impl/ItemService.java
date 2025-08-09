@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
+	@Transactional
 	public ResponseItemDto createItem(@NotNull CreateItemDto createItemDto) {
 		Long ownerId = createItemDto.getOwnerId();
 
@@ -73,6 +75,7 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
+	@Transactional
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 		Long ownerId = updateItemDto.getOwnerId();
 		Long itemId = updateItemDto.getItemId();
@@ -113,6 +116,7 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
+	@Transactional
 	public ResponseItemDto deleteItem(Long itemId) {
 		String errorMessage = "Невозможно удалить объект";
 		itemException.checkItemNotFoundException(itemId, errorMessage);
@@ -139,10 +143,10 @@ public class ItemService implements ItemServiceApp {
 		log.info("Все предметы удалены.");
 
 		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
-		List<ResponseItemDto> responseItemsListDto = 	responseItemsList
-											.stream()
-											.map(ItemMapper::itemToResponseItemDto)
-											.toList();
+		List<ResponseItemDto> responseItemsListDto =	responseItemsList
+														.stream()
+														.map(ItemMapper::itemToResponseItemDto)
+														.toList();
 		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
 
 		return responseItemsListDto;

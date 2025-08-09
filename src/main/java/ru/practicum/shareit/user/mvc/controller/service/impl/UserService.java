@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.mvc.controller.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,7 @@ public class UserService implements UserServiceApp {
 	}
 
 	@Override
+	@Transactional
 	public ResponseUserDto updateUser(UpdateUserDto updateUserDto) {
 		Long userId = updateUserDto.getUserId();
 		String email = updateUserDto.getEmail();
@@ -96,6 +98,7 @@ public class UserService implements UserServiceApp {
 	}
 
 	@Override
+	@Transactional
 	public ResponseUserDto deleteUser(@NotNull Long userId) {
 		String errorMessage = "Невозможно удалить пользователя.";
 		userException.checkUserNotFoundException(userId, errorMessage);

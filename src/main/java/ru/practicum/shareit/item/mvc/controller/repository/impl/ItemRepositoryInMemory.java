@@ -152,6 +152,7 @@ public class ItemRepositoryInMemory implements ItemRepositoryApp {
 	public List<Item> deleteAllItems() {
 		List<Item> deleteItemsList = new ArrayList<>(items.values());
 		items.clear();
+		itemsOfOwnersMap.clear();
 		return deleteItemsList;
 	}
 
