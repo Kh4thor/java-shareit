@@ -1,0 +1,88 @@
+package ru.practicum.shareit.user.mvc.controller.repository.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
+
+import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
+import ru.practicum.shareit.user.mvc.model.User;
+
+@Repository
+public class UserRepositoryInMemory implements UserRepositoryApp {
+
+	private Map<Long, User> users = new HashMap<>();
+
+	private Long userIdCounter = 0L;
+
+	private Long generateId() {
+		return ++userIdCounter;
+	}
+
+	public Optional<User> createUser(User createUser) {
+		Long userId = generateId();
+		createUser.setId(userId);
+		users.put(userId, createUser);
+		return getUser(userId);
+	}
+
+	@Override
+	public Optional<User> updateUser(User updateUser) {
+		Long userId = updateUser.getId();
+		User user = getUser(userId).get();
+
+		String nameCurrentValue = user.getName();
+		String nameValueToUpdate = updateUser.getName();
+
+		String emailCurrentValue = user.getEmail();
+		String emailValueToUpdate = updateUser.getEmail();
+
+		String name = nameValueToUpdate == null || nameValueToUpdate.isBlank() ? nameCurrentValue : nameValueToUpdate;
+		String email = emailValueToUpdate == null || emailValueToUpdate.isBlank() ? emailCurrentValue : emailValueToUpdate;
+
+		updateUser.setName(name);
+		updateUser.setEmail(email);
+
+		users.put(userId, updateUser);
+		return getUser(userId);
+	}
+
+	@Override
+	public Optional<User> getUser(Long userId) {
+		return Optional.ofNullable(users.get(userId));
+	}
+
+	@Override
+	public Optional<User> deleteUser(Long userId) {
+		return Optional.ofNullable(users.remove(userId));
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		return users.values().stream().toList();
+	}
+
+	@Override
+	public Boolean isUserExists(Long userId) {
+		return users.containsKey(userId);
+	}
+
+	@Override
+	public Boolean isEmailExists(String email) {
+		return users.values().stream().anyMatch(e -> e.getEmail().equals(email));
+	}
+
+	@Override
+	public Boolean isUserOwnerOfEmail(Long userId, String email) {
+		return users.get(userId).getEmail().equals(email);
+	}
+
+	@Override
+	public List<User> deleteAllUsers() {
+		List<User> deletedUsers = getAllUsers();
+		users.clear();
+		return deletedUsers;
+	}
+}
