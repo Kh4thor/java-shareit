@@ -197,7 +197,7 @@ public class ItemService implements ItemServiceApp {
 
 	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {
 		Long ownerId = createItemDto.getOwnerId();
-		User owner = userRepository.getUser(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.createItemDtoToItem(createItemDto);
 		item.setOwner(owner);
 		return item;
@@ -205,7 +205,7 @@ public class ItemService implements ItemServiceApp {
 
 	private Item updateItemDtoToItem(UpdateItemDto updateItemDto, String errorMessage) {
 		Long ownerId = updateItemDto.getOwnerId();
-		User owner = userRepository.getUser(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.updateItemDtoToItem(updateItemDto);
 		item.setOwner(owner);
 		return item;
