@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.mvc.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,5 +39,7 @@ public class Comment {
 	@JoinColumn(name = "item_id")
 	private Item item;
 
-	private String comment;
+	private String text;
+
+	private LocalDateTime created;
 }
