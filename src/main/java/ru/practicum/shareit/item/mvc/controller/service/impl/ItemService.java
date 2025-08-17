@@ -8,15 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
+import ru.practicum.shareit.item.dto.ResponseCommentDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
-import ru.practicum.shareit.item.exception.ItemException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
+import ru.practicum.shareit.item.mvc.controller.repository.CommentRepositoryApp;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
 import ru.practicum.shareit.item.mvc.controller.service.ItemServiceApp;
+import ru.practicum.shareit.item.mvc.model.Comment;
 import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.item.utills.CommentMapper;
 import ru.practicum.shareit.item.utills.ItemMapper;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
@@ -29,14 +33,14 @@ public class ItemService implements ItemServiceApp {
 
 	private final ItemRepositoryApp itemRepository;
 	private final UserRepositoryApp userRepository;
+	private final CommentRepositoryApp commentRepository;
 	private final UserException userException;
-	private final ItemException itemException;
 
-	public ItemService(ItemRepositoryApp itemRepositry, UserException userException, ItemException itemException, UserRepositoryApp userRepository) {
-		this.userRepository = userRepository;
-		this.itemException = itemException;
-		this.userException = userException;
+	public ItemService(ItemRepositoryApp itemRepositry, UserException userException, UserRepositoryApp userRepository, CommentRepositoryApp commentRepository) {
+		this.commentRepository = commentRepository;
 		this.itemRepository = itemRepositry;
+		this.userRepository = userRepository;
+		this.userException = userException;
 	}
 
 	@Override
@@ -106,8 +110,6 @@ public class ItemService implements ItemServiceApp {
 	@Override
 	@Transactional
 	public void deleteItem(Long itemId) {
-		String errorMessage = "Невозможно удалить объект";
-		itemException.checkItemNotFoundException(itemId, errorMessage);
 
 		log.info("Начато удаление предмета. Получен id=" + itemId);
 		itemRepository.deleteById(itemId);
@@ -162,6 +164,36 @@ public class ItemService implements ItemServiceApp {
 														.toList();
 		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
 		return responseItemsListDto;
+	}
+
+	@Override
+	public ResponseCommentDto createComment(CreateCommentDto createCommentDto) {
+		String errorMessage = "Невозможно создать комментарий";
+
+		Comment comment = createCommentDtoToComment(createCommentDto, errorMessage);
+
+		Comment createdComment = commentRepository.save(comment);
+
+		ResponseCommentDto responseComment = CommentMapper.commentToResponseCommentDto(createdComment);
+
+		return responseComment;
+	}
+
+	private Comment createCommentDtoToComment(CreateCommentDto createCommentDto, String errorMessage) {
+
+		Long commenatorId = createCommentDto.getCommentatorId();
+		User commentator = userRepository.findById(commenatorId).orElseThrow(() -> new UserNotFoundException(commenatorId, errorMessage));
+		
+		Long itemId = createCommentDto.getItemId();
+		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+		
+		Comment comment = CommentMapper.createCommentDtoToComment(createCommentDto);
+		
+		comment.setCommentator(commentator);
+		comment.setItem(item);
+
+		return comment;
+	
 	}
 
 	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {

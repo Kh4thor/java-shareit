@@ -52,7 +52,7 @@ public class Item {
 	private ItemRequest itemRequest;
 
 	@OneToMany(mappedBy = "item")
-	private List<Comment> coments;
+	private List<Comment> comments;
 
 	@Override
 	public String toString() {
@@ -65,5 +65,4 @@ public class Item {
 				+ ", itemRequest=" + itemRequest 
 				+ "]";
 	}
-
 }
