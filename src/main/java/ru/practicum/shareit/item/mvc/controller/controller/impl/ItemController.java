@@ -63,8 +63,8 @@ public class ItemController implements ItemControllerApp {
 
 	@Override
 	@DeleteMapping
-	public List<ResponseItemDto> deleteAllItems() {
-		return itemService.deleteAllItems();
+	public void deleteAllItems() {
+		itemService.deleteAllItems();
 	}
 
 	@Override

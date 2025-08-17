@@ -136,7 +136,7 @@ public class UserService implements UserServiceApp {
 		log.info("Все пользователи удалены.");
 
 		log.info("Начато удаление всех предметов.");
-		itemRepository.deleteAllItems();
+		itemRepository.deleteAll();
 		log.info("Все предметы удалены.");
 	}
 }

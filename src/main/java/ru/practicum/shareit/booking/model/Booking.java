@@ -2,6 +2,7 @@ package ru.practicum.shareit.booking.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,11 @@ public class Booking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "booking_start")
 	private LocalDateTime start;
+
+	@Column(name = "booking_end")
 	private LocalDateTime end;
 
 	@ManyToOne

@@ -1,44 +1,30 @@
 package ru.practicum.shareit.item.mvc.controller.repository;
 
 import java.util.List;
-import java.util.Optional;
 
-import ru.practicum.shareit.item.dto.FindItemDto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import ru.practicum.shareit.item.mvc.model.Item;
 
-public interface ItemRepositoryApp {
+public interface ItemRepositoryApp extends JpaRepository<Item, Long> {
 
-	Optional<Item> createItem(Item createItemDto);
+    String searchItemByTextSql = ""
+			+ "SELECT i.* "
+			+ "FROM items i "
+			+ "WHERE (LOWER(i.item_name) LIKE LOWER(:text) OR LOWER(i.item_description) LIKE LOWER(:text)) "
+			+ "AND i.owner_id = :ownerId "
+			+ "AND i.available = true";
 
-	Optional<Item> updateItem(Item createItemDto);
+    String isItemExistsSql = ""
+            + "SELECT EXISTS (SELECT 1 "
+				            + "FROM items "
+				            + "WHERE id = :itemId)";
 
-	Optional<Item> getItem(Long itemId);
+    @Query(value = searchItemByTextSql, nativeQuery = true)
+    List<Item> searchItemByText(@Param("ownerId") Long ownerId, @Param("text") String text);
 
-	Boolean isItemExists(Long itemId);
-
-	Boolean setOwnerToItem(Item item);
-
-	Boolean isOwnerExists(Long ownerId);
-
-	Boolean deleteOwner(Long ownerId);
-
-	Optional<Item> deleteItem(Long itemId);
-
-	Boolean isItemBelongsOwner(Long itemId, Long ownerId);
-
-	List<Item> getAllItems();
-
-	List<Item> deleteAllItems();
-
-	List<Item> getItemsOfOwner(Long ownerId);
-
-	List<Item> searchItemByText(FindItemDto findItemDto);
-
-	Boolean deleteAllOwners();
-
-	List<Item> deleteItemsOfOwner(Long ownerId);
-
-	Long deleteItemFromOwner(Long itemId);
-
-	Boolean isItemHasOwner(Long itemId);
+    @Query(value = isItemExistsSql, nativeQuery = true)
+    Boolean isItemExists(@Param("itemId") Long itemId);
 }
