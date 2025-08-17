@@ -15,9 +15,9 @@ public interface ItemServiceApp {
 
 	ResponseItemDto getItem(Long itemId);
 
-	ResponseItemDto deleteItem(Long itemId);
+	void deleteItem(Long itemId);
 
-	List<ResponseItemDto> deleteAllItems();
+	void deleteAllItems();
 
 	List<ResponseItemDto> getItemsOfOwner(Long userId);
 

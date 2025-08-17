@@ -14,7 +14,7 @@ public interface ItemControllerApp {
 
 	ResponseItemDto getItem(Long itemId);
 
-	List<ResponseItemDto> deleteAllItems();
+	void deleteAllItems();
 
 	List<ResponseItemDto> getItemsOfOwner(Long ownerId);
 

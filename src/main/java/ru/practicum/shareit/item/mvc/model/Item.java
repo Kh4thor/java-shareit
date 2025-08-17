@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.mvc.model.User;
 
@@ -22,7 +21,6 @@ import ru.practicum.shareit.user.mvc.model.User;
 @Getter
 @Setter
 @Builder
-@ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "items")
@@ -49,4 +47,17 @@ public class Item {
 	@OneToOne
 	@JoinColumn(name = "request_id")
 	private ItemRequest itemRequest;
+
+	@Override
+	public String toString() {
+		return "Item ["
+				+ "id=" + id 
+				+ ", name=" + name 
+				+ ", description=" + description 
+				+ ", available=" + available
+				+ ", ownerId=" + owner.getId() 
+				+ ", itemRequest=" + itemRequest 
+				+ "]";
+	}
+
 }
