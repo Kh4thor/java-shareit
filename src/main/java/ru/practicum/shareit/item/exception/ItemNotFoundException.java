@@ -14,9 +14,4 @@ public class ItemNotFoundException extends RuntimeException {
 		this.itemId = itemId;
 		this.errorMessage = errorMessage;
 	}
-
-	public ItemNotFoundException(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-
 }
