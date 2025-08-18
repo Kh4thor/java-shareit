@@ -69,19 +69,37 @@ public class ItemService implements ItemServiceApp {
 	@Override
 	@Transactional
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
-//		Long ownerId = updateItemDto.getOwnerId();
-//		Long itemId = updateItemDto.getItemId();
 
 		String errorMessage = "Невозможно обновить предмет";
-//		itemException.checkItemNotFoundException(itemId, errorMessage);
-//		userException.checkUserNotFoundException(ownerId, errorMessage);
-//		itemException.checkItemDoesNotBelongToTheOwnerException(itemId, ownerId, errorMessage);
 
 		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: " + updateItemDto);
 		Item updateItem = updateItemDtoToItem(updateItemDto, errorMessage);
 		log.info("updateUserDto преобразован в объект класса User: " + updateItem);
 
 		log.info("Начато обновление предмета. Получен объект:" + updateItem);
+		
+		Long itemId = updateItemDto.getItemId();
+		
+		log.info("Начат вызов предмета. Получен id:" + itemId);
+		Item itemFromDb = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+		log.info("Вызван предмет:" + itemId);
+		
+		String itemNameFromDb = itemFromDb.getName();
+		String itemDescriptionFromDb = itemFromDb.getDescription();
+		Boolean itemAvailableFromDb = itemFromDb.getAvailable();
+
+		String itemNameToUpdate = updateItem.getName();
+		String itemDescriptionToUpdate = updateItem.getDescription();
+		Boolean itemAvailableToUpdate = updateItem.getAvailable();
+
+		String name = itemNameToUpdate == null ? itemNameFromDb : itemNameToUpdate;
+		String description = itemDescriptionToUpdate == null ? itemDescriptionFromDb : itemDescriptionToUpdate;
+		Boolean available = itemAvailableToUpdate == null ? itemAvailableFromDb : itemAvailableToUpdate;
+
+		updateItem.setName(name);
+		updateItem.setDescription(description);
+		updateItem.setAvailable(available);
+		
 		Item responseItem = itemRepository.save(updateItem);
 		log.info("Обновлен предмет " + responseItem);
 

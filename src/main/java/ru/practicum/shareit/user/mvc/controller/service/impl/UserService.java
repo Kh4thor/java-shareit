@@ -27,8 +27,7 @@ public class UserService implements UserServiceApp {
 	private final UserRepositoryApp userRepository;
 	private final ItemRepositoryApp itemRepository;
 
-	public UserService(UserException userValidator, UserRepositoryApp userRepository,
-			ItemRepositoryApp itemRepository) {
+	public UserService(UserException userValidator, UserRepositoryApp userRepository, ItemRepositoryApp itemRepository) {
 		this.userException = userValidator;
 		this.userRepository = userRepository;
 		this.itemRepository = itemRepository;
