@@ -62,17 +62,32 @@ public class UserService implements UserServiceApp {
 	@Transactional
 	public ResponseUserDto updateUser(UpdateUserDto updateUserDto) {
 		Long userId = updateUserDto.getUserId();
-		String email = updateUserDto.getEmail();
+		String emailToUpdate = updateUserDto.getEmail();
 
 		String errorMessage = "Невозможно обновить пользователя.";
-		userException.checkUserNotFoundException(userId, errorMessage);
-		if (!isUserOwnerOfEmail(userId, email)) {
-			userException.checkEmailAlreadyExistsException(email, errorMessage);
+		if (!isUserOwnerOfEmail(userId, emailToUpdate)) {
+			userException.checkEmailAlreadyExistsException(emailToUpdate, errorMessage);
 		}
 
 		log.info("Начато преобразование (UpdateUserDto)updateUserDto в объект класса User. Получен объект: " + updateUserDto);
 		User updateUser = UserMapper.updateUserDtoToUser(updateUserDto);
 		log.info("updateUserDto преобразован в объект класса User: " + updateUser);
+
+		log.info("Начато получение пользователя. Получен id: " + userId);
+		User userFromDb =  userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
+		log.info("Получен пользователь: " + userFromDb);
+		
+		String userNameToUpdate = updateUser.getName();
+		String userEmailToUpdate = updateUser.getEmail();
+
+		String userNameFromDb = userFromDb.getName();
+		String userEmailFromDb = userFromDb.getEmail();
+		
+		String name = userNameToUpdate == null ? userNameFromDb : userNameToUpdate;
+		String email = userEmailToUpdate == null ? userEmailFromDb : userEmailToUpdate;
+		
+		updateUser.setName(name);
+		updateUser.setEmail(email);
 
 		log.info("Начато обновление пользователя. Получен объект: " + updateUser);
 		User responseUser = userRepository.save(updateUser);
