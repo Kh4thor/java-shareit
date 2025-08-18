@@ -15,5 +15,4 @@ public interface BookingRepositoryApp extends JpaRepository<Booking, Long> {
 
 	@Query(value = isBookingExistsSql, nativeQuery = true)
 	boolean isBookingExists(@Param("bookingId") Long bookingId);
-
 }

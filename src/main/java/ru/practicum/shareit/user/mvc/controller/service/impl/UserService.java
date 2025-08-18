@@ -22,7 +22,6 @@ import ru.practicum.shareit.user.utils.UserMapper;
 @Service
 public class UserService implements UserServiceApp {
 
-
 	private final UserException userException;
 	private final UserRepositoryApp userRepository;
 	private final ItemRepositoryApp itemRepository;
@@ -124,7 +123,6 @@ public class UserService implements UserServiceApp {
 		log.info("Начато удаление пользователя. Получен id: " + userId);
 		userRepository.deleteById(userId);
 		log.info("Удален пользователь id=: " + userId);
-
 	}
 
 	@Override

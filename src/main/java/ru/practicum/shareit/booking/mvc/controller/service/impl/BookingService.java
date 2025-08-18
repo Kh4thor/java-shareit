@@ -85,17 +85,19 @@ public class BookingService implements BookingServiceApp {
 
 		Long itemId = createBookingDto.getItemId();
 		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
-		User owner = item.getOwner();
-		
+		booking.setItem(item);
 
 		Long requestOwnerId = createBookingDto.getOwnerId();
 
 		User requestOwner = userRepository.findById(requestOwnerId).orElseThrow(() -> new UserNotFoundException(requestOwnerId, errorMessage));
 
-		if (owner != requestOwner) {
+		if (requestOwner.getItems().contains(item)) {
 			throw new ItemDoesNotBelongToTheOwnerException(itemId, requestOwnerId, errorMessage);
 		}
 		
+		if (!booking.getItem().getAvailable()) {
+			throw new ItemIsUnavailableException(booking.getItem(), errorMessage);
+		}
 		return booking;
 	}
 
@@ -107,8 +109,7 @@ public class BookingService implements BookingServiceApp {
 		booking.setItem(item);
 
 		Long bookerId = updateBookingDto.getBookerId();
-		User user = userRepository.findById(bookerId)
-				.orElseThrow(() -> new UserNotFoundException(bookerId, errorMessage));
+		User user = userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId, errorMessage));
 		booking.setBooker(user);
 
 		return booking;
