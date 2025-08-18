@@ -45,5 +45,5 @@ public class Booking {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User booker;
-	private BookingStatus bookingStatus;
+	private BookingStatus status;
 }

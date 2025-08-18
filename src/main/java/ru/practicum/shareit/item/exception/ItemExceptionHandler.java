@@ -4,11 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.booking.mvc.controller.service.impl.ItemIsUnavailableException;
 
 @Slf4j
 @Component
+@RestControllerAdvice
 public class ItemExceptionHandler {
 
 	@ExceptionHandler
@@ -44,6 +47,12 @@ public class ItemExceptionHandler {
 	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public ItemErrorResponse ownerOfItemNotFoundException(final OwnerOfItemNotFoundException exception) {
+		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ItemErrorResponse itemIsUnavailableException(final ItemIsUnavailableException exception) {
 		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
 }

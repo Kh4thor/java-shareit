@@ -211,7 +211,6 @@ public class ItemService implements ItemServiceApp {
 		comment.setItem(item);
 
 		return comment;
-	
 	}
 
 	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {
