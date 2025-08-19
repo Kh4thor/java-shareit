@@ -83,12 +83,13 @@ public class ItemController implements ItemControllerApp {
 
 	@Override
 	@PostMapping("/{id}/comment")
-	public ResponseCommentDto createComment(@RequestHeader("X-Sharer-User-Id") Long ownerId, @PathVariable("id") Long itemId, @RequestParam String text) {
-		CreateCommentDto createCommentDto = CreateCommentDto.builder()
-				.commentatorId(ownerId)
-				.itemId(itemId)
-				.text(text)
-				.build();
+	public ResponseCommentDto createComment(
+			@RequestHeader("X-Sharer-User-Id") Long commentatorId,
+			@PathVariable("id") Long itemId, 
+			@RequestBody CreateCommentDto createCommentDto) {
+
+		createCommentDto.setCommentatorId(commentatorId);
+		createCommentDto.setItemId(itemId);
 				
 		return itemService.createComment(createCommentDto);
 	}

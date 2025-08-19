@@ -1,10 +1,13 @@
 package ru.practicum.shareit.item.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.shareit.item.mvc.model.Comment;
 
 @Getter
 @Setter
@@ -18,4 +21,8 @@ public class ResponseItemDto {
 	private Boolean available;
 	private Long itemRequestId;
 	private Long ownerId;
+	private List<Comment> comments;
+	private Long nextBooking;
+	private Long lastBooking;
+
 }

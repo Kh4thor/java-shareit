@@ -55,4 +55,10 @@ public class ItemExceptionHandler {
 	public ItemErrorResponse itemIsUnavailableException(final ItemIsUnavailableException exception) {
 		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ItemErrorResponse illegalDateOfComment(final IllegalDateOfComment exception) {
+		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
 }

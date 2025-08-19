@@ -15,6 +15,7 @@ public class CommentMapper {
 	public static ResponseCommentDto commentToResponseCommentDto(Comment comment) {
 		return ResponseCommentDto.builder()
 				.id(comment.getId())
+				.itemId(comment.getItem().getId())
 				.commentatorId(comment.getCommentator().getId())
 				.text(comment.getText())
 				.created(comment.getCreated())
