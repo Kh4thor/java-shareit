@@ -14,12 +14,14 @@ import ru.practicum.shareit.item.mvc.model.Item;
 public class ItemMapper {
 
 	public static ResponseItemDto itemToResponseItemDto(Item item) {
+		
 		return	ResponseItemDto.builder()
 				.id(item.getId())
 				.name(item.getName())
-				.description(item.getDescription())
+				.comments(item.getComments())
 				.available(item.getAvailable())
 				.ownerId(item.getOwner().getId())
+				.description(item.getDescription())
 				.itemRequestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
 				.build();
 		}

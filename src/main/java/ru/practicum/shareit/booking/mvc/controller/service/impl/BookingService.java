@@ -115,26 +115,6 @@ public class BookingService implements BookingServiceApp {
 		return BookingMapper.bookingToResponseBookingDto(createdBooking);
 	}
 
-	public List<ResponseBookingDto> approveAllBookings(ParamsDto paramsDto) {
-		Long ownerId = paramsDto.getOwnerId();
-		Boolean approve = paramsDto.getApprove();
-
-		BookingStatus status = approve ? BookingStatus.APPROVED : BookingStatus.REJECTED;
-
-		String errorMessage = "Невозможно подтвердить или отклонить все бронирования.";
-		User owner = getUser(ownerId, errorMessage);
-		
-		List<Item> itemsListOfOwner = owner.getItems();
-		List<Booking> bookingsListOfOwner = itemsListOfOwner.stream()
-											.map(item -> item.getBooking())
-											.toList();
-		
-		return	bookingsListOfOwner.stream()
-				.filter(booking-> booking.getStatus()==BookingStatus.WAITING)
-				.peek(booking -> booking.setStatus(status))
-				.map(BookingMapper::bookingToResponseBookingDto)
-				.toList();
-	}
 
 	public List<ResponseBookingDto> getAllBookingsOfUser(@Positive @NotNull Long ownerId) {
 		String errorMessage = "Невозможно получить список бронирований пользователя.";
@@ -159,15 +139,9 @@ public class BookingService implements BookingServiceApp {
 	public ResponseBookingDto getAllBookingsOfOwner(ParamsDto paramsDto) {
 		String errorMessage = "Невозможно получить список бронирований владельца.";
 
-//		Long ownerId = paramsDto.getBookingId();
 		Long bookingId = paramsDto.getBookingId();
-		
 		Booking booking = getBooking(bookingId, errorMessage);
-//		User booker = booking.getBooker();
-//		Long bookerId = booker.getId();
-		
-		return BookingMapper.bookingToResponseBookingDto(booking);
-		
 
+		return BookingMapper.bookingToResponseBookingDto(booking);
 	}
 }

@@ -59,8 +59,6 @@ public class BookingController {
 		return bookingService.getAllBookingsOfUser(ownerId);
 	}
 	
-//	URL: http://localhost:8080/bookings/4
-	
 	@GetMapping("/{id}")
 	public ResponseBookingDto getAllBookingsOfOwner(
 			@PathVariable("id") Long bookingId,
@@ -74,10 +72,4 @@ public class BookingController {
 		return bookingService.getAllBookingsOfOwner(paramsDto);
 
 	}
-	
-
-//	@DeleteMapping
-//	public void deleteAllBookings() {
-//		bookingService.deleteAllBookings();
-//	}
 }

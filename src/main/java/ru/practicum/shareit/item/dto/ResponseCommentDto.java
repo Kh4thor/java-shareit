@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.item.mvc.model.Item;
 
 @Getter
 @Setter
@@ -15,7 +14,7 @@ import ru.practicum.shareit.item.mvc.model.Item;
 public class ResponseCommentDto {
 	private Long id;
 	private Long commentatorId;
-	private Item itemId;
+	private Long itemId;
 	private String text;
 	private LocalDateTime created;
 }

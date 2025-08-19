@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.mvc.controller.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,15 +187,44 @@ public class ItemService implements ItemServiceApp {
 
 	@Override
 	public ResponseCommentDto createComment(CreateCommentDto createCommentDto) {
-		String errorMessage = "Невозможно создать комментарий";
-
+		String errorMessage = "Невозможно создать комментарий.";
 		Comment comment = createCommentDtoToComment(createCommentDto, errorMessage);
 
+		comment.setCreated(LocalDateTime.now());
 		Comment createdComment = commentRepository.save(comment);
 
-		ResponseCommentDto responseComment = CommentMapper.commentToResponseCommentDto(createdComment);
+		Long commentatorId = createCommentDto.getCommentatorId();
+		User commentator = getUser(commentatorId, errorMessage);
 
-		return responseComment;
+		Long itemId = createCommentDto.getItemId();
+		Item item = getItem(itemId, errorMessage);
+		return null;
+		
+
+//		Long itemId = createCommentDto.getItemId();
+//		Item item = getItem(itemId, errorMessage);
+//		Booking bookingOfItem = item.getBooking();
+//		LocalDateTime endOfBooking = bookingOfItem.getEnd();
+//
+//		comment.setCreated(LocalDateTime.now());
+//		Comment createdComment = commentRepository.save(comment);
+//
+//		ResponseCommentDto responseComment = CommentMapper.commentToResponseCommentDto(createdComment);
+//		LocalDateTime commentCreated = responseComment.getCreated();
+//
+//		if (commentCreated.isBefore(endOfBooking)) {
+//			throw new IllegalDateOfComment(commentCreated, endOfBooking, errorMessage);
+//		}
+//
+//		return responseComment;
+	}
+
+	private Item getItem(Long itemId, String errorMessage) {
+		return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+	}
+
+	private User getUser(Long userId, String errorMessage) {
+		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
 	}
 
 	private Comment createCommentDtoToComment(CreateCommentDto createCommentDto, String errorMessage) {

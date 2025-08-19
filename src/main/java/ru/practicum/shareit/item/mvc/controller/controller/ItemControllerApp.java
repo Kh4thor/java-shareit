@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.mvc.controller.controller;
 
 import java.util.List;
 
+import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ResponseCommentDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
@@ -21,6 +22,6 @@ public interface ItemControllerApp {
 
 	List<ResponseItemDto> searchItemByText(String text, Long ownerId);
 
-	ResponseCommentDto createComment(Long ownerId, Long itemId, String text);
+	ResponseCommentDto createComment(Long setCommentatorId, Long itemId, CreateCommentDto createCommentDto);
 
 }

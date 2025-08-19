@@ -55,9 +55,8 @@ public class Item {
 	@OneToMany(mappedBy = "item")
 	private List<Comment> comments;
 
-	@ManyToOne
-	@JoinColumn(name = "booking_id")
-	private Booking booking;
+	@OneToMany(mappedBy = "item")
+	private List<Booking> bookings;
 
 	@Override
 	public String toString() {
