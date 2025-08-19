@@ -190,16 +190,19 @@ public class ItemService implements ItemServiceApp {
 		String errorMessage = "Невозможно создать комментарий.";
 		Comment comment = createCommentDtoToComment(createCommentDto, errorMessage);
 
-		comment.setCreated(LocalDateTime.now());
-		Comment createdComment = commentRepository.save(comment);
-
 		Long commentatorId = createCommentDto.getCommentatorId();
 		User commentator = getUser(commentatorId, errorMessage);
+		comment.setCommentator(commentator);
 
 		Long itemId = createCommentDto.getItemId();
 		Item item = getItem(itemId, errorMessage);
-		return null;
+		comment.setItem(item);
+
+		comment.setCreated(LocalDateTime.now());
+
+		Comment createdComment = commentRepository.save(comment);
 		
+		return CommentMapper.commentToResponseCommentDto(createdComment);
 
 //		Long itemId = createCommentDto.getItemId();
 //		Item item = getItem(itemId, errorMessage);
