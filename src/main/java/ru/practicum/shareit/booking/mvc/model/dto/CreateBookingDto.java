@@ -19,8 +19,6 @@ import ru.practicum.shareit.booking.utills.BookingStatus;
 @ToString
 public class CreateBookingDto {
 
-	private Long ownerId;
-
 	private Long bookerId;
 
 	@NotNull
@@ -37,7 +35,7 @@ public class CreateBookingDto {
 
 	private BookingStatus bookingStatus;
 
-	@AssertTrue(message = "Дата окончания не может быть раньше начала")
+	@AssertTrue(message = "Дата окончания бронирования не может быть раньше начала бронирования")
 	public boolean isEndAfterStart() {
 		return end.isAfter(start);
 	}

@@ -1,16 +1,19 @@
 package ru.practicum.shareit.booking.mvc.controller.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import ru.practicum.shareit.booking.exception.BookingException;
+import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
+import ru.practicum.shareit.booking.mvc.controller.controller.ApproveDto;
 import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
 import ru.practicum.shareit.booking.mvc.controller.service.BookingServiceApp;
 import ru.practicum.shareit.booking.mvc.model.Booking;
 import ru.practicum.shareit.booking.mvc.model.dto.CreateBookingDto;
 import ru.practicum.shareit.booking.mvc.model.dto.ResponseBookingDto;
-import ru.practicum.shareit.booking.mvc.model.dto.UpdateBookingDto;
 import ru.practicum.shareit.booking.utills.BookingMapper;
+import ru.practicum.shareit.booking.utills.BookingStatus;
 import ru.practicum.shareit.item.exception.ItemDoesNotBelongToTheOwnerException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
@@ -19,53 +22,42 @@ import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
 import ru.practicum.shareit.user.mvc.model.User;
 
+@Slf4j
 @Service
 public class BookingService implements BookingServiceApp {
 
 	private final BookingRepositoryApp bookingRepository;
 	private final ItemRepositoryApp itemRepository;
 	private final UserRepositoryApp userRepository;
-	private final BookingException bookingException;
 
 	public BookingService(BookingRepositoryApp bookingRepository, ItemRepositoryApp itemRepository,
-			UserRepositoryApp userRepository, BookingException bookingException) {
+			UserRepositoryApp userRepository) {
 		this.bookingRepository = bookingRepository;
 		this.itemRepository = itemRepository;
 		this.userRepository = userRepository;
-		this.bookingException = bookingException;
 	}
 
 	@Override
 	public ResponseBookingDto createBooking(CreateBookingDto createBookingDto) {
 		String errorMessage = "Невозможно создать бронирование";
 		Booking booking = createBookingDtoToBooking(createBookingDto, errorMessage);
+		booking.setStatus(BookingStatus.WAITING);
 
+		log.info("Начато сохранение объекта " + booking);
 		Booking createdBooking = bookingRepository.save(booking);
+		log.info("Сохранен объект " + createdBooking);
 
+		log.info("Начато преобразование объекта " + createdBooking + " в объект (ResponseBookingDto)responseBookingDto");
 		ResponseBookingDto responseBooking = BookingMapper.bookingToResponseBookingDto(createdBooking);
-
-		return responseBooking;
-	}
-
-	@Override
-	public ResponseBookingDto updateBooking(UpdateBookingDto updateBookingDto) {
-		Long bookingId = updateBookingDto.getId();
-
-		String errorMessage = "Невозможно обновить бронирование";
-		bookingException.checkBookingNotFoundException(bookingId, errorMessage);
-
-		Booking booking = updateBookingDtoToBooking(updateBookingDto, errorMessage);
-
-		Booking updatedBooking = bookingRepository.save(booking);
-
-		ResponseBookingDto responseBooking = BookingMapper.bookingToResponseBookingDto(updatedBooking);
+		log.info("Закончено преобразование. Получен объект " + responseBooking);
 
 		return responseBooking;
 	}
 
 	public ResponseBookingDto getBooking(Long bookingId) {
-		String errorMessge = "Невозможно получить бронирование.";
-		Booking responseBooking = bookingRepository.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessge));
+		String errorMessage = "Невозможно получить бронирование.";
+		Booking responseBooking = bookingRepository.findById(bookingId)
+				.orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
 		ResponseBookingDto responseBookingDto = BookingMapper.bookingToResponseBookingDto(responseBooking);
 		return responseBookingDto;
 	}
@@ -87,32 +79,56 @@ public class BookingService implements BookingServiceApp {
 		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
 		booking.setItem(item);
 
-		Long requestOwnerId = createBookingDto.getOwnerId();
+		Long bookerId = createBookingDto.getBookerId();
+		User booker = userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId, errorMessage));
+		booking.setBooker(booker);
 
-		User requestOwner = userRepository.findById(requestOwnerId).orElseThrow(() -> new UserNotFoundException(requestOwnerId, errorMessage));
+		if (!item.getAvailable()) {
+			throw new ItemIsUnavailableException(item, errorMessage);
+		}
+		return booking;
+	}
 
-		if (requestOwner.getItems().contains(item)) {
-			throw new ItemDoesNotBelongToTheOwnerException(itemId, requestOwnerId, errorMessage);
+	public ResponseBookingDto setApprove(ApproveDto approveDto) {
+		Long bookingId = approveDto.getBookingId();
+		Long ownerId = approveDto.getOwnerId();
+		Boolean approve = approveDto.getApprove();
+
+		String errorMessage = "Невозможно подтвердить или отклонить бронирование.";
+		Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
+
+		if (booking.getItem().getOwner().getId() != ownerId) {
+			throw new ItemDoesNotBelongToTheOwnerException(booking.getItem().getId(), approveDto.getOwnerId(), errorMessage);
 		}
 		
-		if (!booking.getItem().getAvailable()) {
-			throw new ItemIsUnavailableException(booking.getItem(), errorMessage);
-		}
-		return booking;
+//		if (booking.getStatus().equals(BookingStatus.APPROVED)) {
+//			throw new BookingAllReadyApproved(bookingId, errorMessage);
+//		}
+
+		BookingStatus status = approve ? BookingStatus.APPROVED : BookingStatus.REJECTED;
+		booking.setStatus(status);
+		
+		Booking createdBooking = bookingRepository.save(booking);
+
+		return BookingMapper.bookingToResponseBookingDto(createdBooking);
 	}
 
-	private Booking updateBookingDtoToBooking(UpdateBookingDto updateBookingDto, String errorMessage) {
-		Booking booking = BookingMapper.updateBookingDtoToBooking(updateBookingDto);
+	public List<ResponseBookingDto> approveAllBookings(ApproveDto approveDto) {
+		Long ownerId = approveDto.getOwnerId();
+		Boolean approve = approveDto.getApprove();
 
-		Long itemId = updateBookingDto.getItemId();
-		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
-		booking.setItem(item);
+		BookingStatus status = approve ? BookingStatus.APPROVED : BookingStatus.REJECTED;
 
-		Long bookerId = updateBookingDto.getBookerId();
-		User user = userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId, errorMessage));
-		booking.setBooker(user);
-
-		return booking;
+		String errorMessage = "Невозможно подтвердить или отклонить все бронирования.";
+		User owner = userRepository.findById(ownerId).orElseThrow(()-> new UserNotFoundException(ownerId, errorMessage));
+		
+		List<Item> itemsListOfOwner = owner.getItems();
+		List<Booking> bookingsListOfOwner = itemsListOfOwner.stream().map(item -> item.getBooking()).toList();
+		
+		return	bookingsListOfOwner.stream()
+				.filter(booking-> booking.getStatus()==BookingStatus.WAITING)
+				.peek(booking -> booking.setStatus(status))
+				.map(BookingMapper::bookingToResponseBookingDto)
+				.toList();
 	}
-
 }

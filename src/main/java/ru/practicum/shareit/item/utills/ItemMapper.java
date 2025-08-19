@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.mvc.model.Item;
@@ -40,6 +41,14 @@ public class ItemMapper {
 					.name(updateItemDto.getName())
 					.description(updateItemDto.getDescription())
 					.available(updateItemDto.getAvailable())
+					.build();
+		}
+		
+		public static ItemDto itemToItemDto(Item item) {
+			
+			return	ItemDto.builder()
+					.id(item.getId())
+					.name(item.getName())
 					.build();
 		}
 }

@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.utils;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mvc.model.User;
 
 public class UserMapper {
@@ -16,10 +17,7 @@ public class UserMapper {
 	}
 
 	public static User updateUserDtoToUser(UpdateUserDto udateUserDto) {
-		return	User.builder()
-				.id(udateUserDto.getUserId())
-				.name(udateUserDto.getName())
-				.email(udateUserDto.getEmail())
+		return User.builder().id(udateUserDto.getUserId()).name(udateUserDto.getName()).email(udateUserDto.getEmail())
 				.build();
 	}
 
@@ -28,6 +26,12 @@ public class UserMapper {
 				.id(user.getId())
 				.name(user.getName())
 				.email(user.getEmail())
+				.build();
+	}
+	
+	public static UserDto userToUserDto(User user) {
+		return	UserDto.builder()
+				.id(user.getId())
 				.build();
 	}
 }
