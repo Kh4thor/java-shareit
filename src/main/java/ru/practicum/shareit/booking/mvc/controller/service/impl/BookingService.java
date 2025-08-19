@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.booking.exception.BookingAlreadyApproved;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.booking.mvc.controller.controller.ParamsDto;
 import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
@@ -103,9 +104,9 @@ public class BookingService implements BookingServiceApp {
 					errorMessage);
 		}
 		
-//		if (booking.getStatus().equals(BookingStatus.APPROVED)) {
-//			throw new BookingAllReadyApproved(bookingId, errorMessage);
-//		}
+		if (booking.getStatus().equals(BookingStatus.APPROVED)) {
+			throw new BookingAlreadyApproved(bookingId, errorMessage);
+		}
 
 		BookingStatus status = approve ? BookingStatus.APPROVED : BookingStatus.REJECTED;
 		booking.setStatus(status);
@@ -119,7 +120,7 @@ public class BookingService implements BookingServiceApp {
 	public List<ResponseBookingDto> getAllBookingsOfUser(@Positive @NotNull Long ownerId) {
 		String errorMessage = "Невозможно получить список бронирований пользователя.";
 		User user = getUser(ownerId, errorMessage);
-		return user.getBookings().stream()
+		return	user.getBookings().stream()
 				.map(BookingMapper::bookingToResponseBookingDto)
 				.toList();
 	}

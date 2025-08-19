@@ -13,7 +13,8 @@ import lombok.ToString;
 @ToString
 public class ResponseCommentDto {
 	private Long id;
-	private Long commentatorId;
+	private Long authorId;
+	private String authorName;
 	private Long itemId;
 	private String text;
 	private LocalDateTime created;
