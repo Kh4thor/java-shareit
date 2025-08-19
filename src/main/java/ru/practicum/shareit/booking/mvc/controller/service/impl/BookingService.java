@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.booking.mvc.controller.controller.ApproveDto;
@@ -56,8 +58,7 @@ public class BookingService implements BookingServiceApp {
 
 	public ResponseBookingDto getBooking(Long bookingId) {
 		String errorMessage = "Невозможно получить бронирование.";
-		Booking responseBooking = bookingRepository.findById(bookingId)
-				.orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
+		Booking responseBooking = getBooking(bookingId, errorMessage);
 		ResponseBookingDto responseBookingDto = BookingMapper.bookingToResponseBookingDto(responseBooking);
 		return responseBookingDto;
 	}
@@ -76,11 +77,11 @@ public class BookingService implements BookingServiceApp {
 		Booking booking = BookingMapper.createBookingDtoToBooking(createBookingDto);
 
 		Long itemId = createBookingDto.getItemId();
-		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+		Item item = getItem(itemId, errorMessage);
 		booking.setItem(item);
 
 		Long bookerId = createBookingDto.getBookerId();
-		User booker = userRepository.findById(bookerId).orElseThrow(() -> new UserNotFoundException(bookerId, errorMessage));
+		User booker = getUser(bookerId, errorMessage);
 		booking.setBooker(booker);
 
 		if (!item.getAvailable()) {
@@ -120,15 +121,37 @@ public class BookingService implements BookingServiceApp {
 		BookingStatus status = approve ? BookingStatus.APPROVED : BookingStatus.REJECTED;
 
 		String errorMessage = "Невозможно подтвердить или отклонить все бронирования.";
-		User owner = userRepository.findById(ownerId).orElseThrow(()-> new UserNotFoundException(ownerId, errorMessage));
+		User owner = getUser(ownerId, errorMessage);
 		
 		List<Item> itemsListOfOwner = owner.getItems();
-		List<Booking> bookingsListOfOwner = itemsListOfOwner.stream().map(item -> item.getBooking()).toList();
+		List<Booking> bookingsListOfOwner = itemsListOfOwner.stream()
+											.map(item -> item.getBooking())
+											.toList();
 		
 		return	bookingsListOfOwner.stream()
 				.filter(booking-> booking.getStatus()==BookingStatus.WAITING)
 				.peek(booking -> booking.setStatus(status))
 				.map(BookingMapper::bookingToResponseBookingDto)
 				.toList();
+	}
+
+	public List<ResponseBookingDto> getAllBookingsOfUser(@Positive @NotNull Long ownerId) {
+		String errorMessage = "Невозможно получить список бронирований пользователя.";
+		User user = getUser(ownerId, errorMessage);
+		return user.getBookings().stream()
+				.map(BookingMapper::bookingToResponseBookingDto)
+				.toList();
+	}
+
+	private User getUser(Long userId, String errorMessage) {
+		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
+	}
+
+	private Item getItem(Long itemId, String errorMessage) {
+		return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+	}
+	
+	private Booking getBooking(Long bookingId, String errorMessage) {
+		return bookingRepository.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
 	}
 }
