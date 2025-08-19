@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.shareit.booking.utills.BookingStatus;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 @Getter
 @Setter
@@ -15,12 +16,10 @@ import ru.practicum.shareit.user.mvc.model.User;
 @ToString
 public class ResponseBookingDto {
 
-//	private Long bookerId;
-	private User booker;
-	private Long itemId;
-	private String itemName;
+	private Long id;
+	private ItemDto item;
+	private UserDto booker;
 	private LocalDateTime start;
 	private LocalDateTime end;
-	private Boolean itemAvailable;
 	private BookingStatus status;
 }

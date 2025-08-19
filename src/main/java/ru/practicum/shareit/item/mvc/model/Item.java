@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import ru.practicum.shareit.booking.mvc.model.Booking;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.mvc.model.User;
 
@@ -53,6 +54,10 @@ public class Item {
 
 	@OneToMany(mappedBy = "item")
 	private List<Comment> comments;
+
+	@ManyToOne
+	@JoinColumn(name = "booking_id")
+	private Booking booking;
 
 	@Override
 	public String toString() {

@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.shareit.booking.mvc.model.Booking;
 import ru.practicum.shareit.item.mvc.model.Item;
 
 @Entity
@@ -40,4 +41,7 @@ public class User {
 
 	@OneToMany(mappedBy = "owner")
 	private List<Item> items;
+
+	@OneToMany(mappedBy = "booker")
+	private List<Booking> bookings;
 }

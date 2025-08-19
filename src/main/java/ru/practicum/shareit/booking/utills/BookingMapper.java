@@ -5,6 +5,9 @@ import ru.practicum.shareit.booking.mvc.model.Booking;
 import ru.practicum.shareit.booking.mvc.model.dto.CreateBookingDto;
 import ru.practicum.shareit.booking.mvc.model.dto.ResponseBookingDto;
 import ru.practicum.shareit.booking.mvc.model.dto.UpdateBookingDto;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mvc.model.User;
 
 public class BookingMapper {
@@ -13,7 +16,7 @@ public class BookingMapper {
 		 return Booking.builder()
 				 .start(createBookingDto.getStart())
 				 .end(createBookingDto.getEnd())
-				 .status(BookingStatus.WAITING)
+				 .status(createBookingDto.getBookingStatus())
 				 .build();
 	}
 	
@@ -28,17 +31,21 @@ public class BookingMapper {
 	public static ResponseBookingDto bookingToResponseBookingDto(Booking booking) {
 
 		User booker = booking.getBooker();
-//		Long bookerId = booker == null ? null : booker.getId();
-
+		UserDto bookerDto =	UserDto.builder()
+							.id(booker.getId())
+							.build();
+		
+		Item item = booking.getItem();
+		ItemDto itemDto =	ItemDto.builder()
+				.id(item.getId()).name(item.getName())
+							.build();
+		
 		return	ResponseBookingDto.builder()
-//				.bookerId(bookerId)
-				.booker(booker)
-				.itemId(booking.getItem().getId())
-				.itemName(booking.getItem().getName())
+				.id(booking.getId())
+				.booker(bookerDto).item(itemDto)
 				.start(booking.getStart())
 				.end(booking.getEnd())
 				.status(booking.getStatus())
-				.itemAvailable(booking.getItem().getAvailable())
 				.build();
 	}
 }
