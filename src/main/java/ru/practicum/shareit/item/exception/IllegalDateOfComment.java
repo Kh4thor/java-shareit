@@ -13,7 +13,7 @@ public class IllegalDateOfComment extends RuntimeException {
 	private String errorMessage;
 
 	public IllegalDateOfComment(LocalDateTime commentCreated, LocalDateTime endOfBooking, String errorMessage) {
-		super("Дата создания комментария:" + commentCreated + " не может быть раньше окончания бронирования:" + endOfBooking);
+		super("Дата создания комментария: " + commentCreated + " не может быть раньше окончания бронирования: " + endOfBooking);
 		this.endOfBooking = endOfBooking;
 		this.errorMessage = errorMessage;
 		this.commentCreated = commentCreated;

@@ -5,16 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.booking.exception.BookingNotFoundException;
+import ru.practicum.shareit.booking.mvc.model.Booking;
 import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
 import ru.practicum.shareit.item.dto.ResponseCommentDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
+import ru.practicum.shareit.item.exception.IllegalDateOfComment;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.mvc.controller.repository.CommentRepositoryApp;
 import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
@@ -45,7 +47,6 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
-	@Transactional
 	public ResponseItemDto createItem(@NotNull CreateItemDto createItemDto) {
 		Long ownerId = createItemDto.getOwnerId();
 
@@ -68,7 +69,6 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
-	@Transactional
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 
 		String errorMessage = "Невозможно обновить предмет";
@@ -127,7 +127,6 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
-	@Transactional
 	public void deleteItem(Long itemId) {
 
 		log.info("Начато удаление предмета. Получен id=" + itemId);
@@ -190,53 +189,34 @@ public class ItemService implements ItemServiceApp {
 		String errorMessage = "Невозможно создать комментарий.";
 		Comment comment = createCommentDtoToComment(createCommentDto, errorMessage);
 
-		Long commentatorId = createCommentDto.getCommentatorId();
-		User commentator = getUser(commentatorId, errorMessage);
-		comment.setCommentator(commentator);
-
-		Long itemId = createCommentDto.getItemId();
-		Item item = getItem(itemId, errorMessage);
-		comment.setItem(item);
-
 		comment.setCreated(LocalDateTime.now());
-
 		Comment createdComment = commentRepository.save(comment);
 		
+		Item item = getItem(createCommentDto.getItemId(), errorMessage);
+		
+		List<Booking> bookingList = item.getBookings();
+		Booking booking =	bookingList.stream()
+							.filter(b -> b.getItem().equals(item))
+							.findAny()
+							.orElseThrow(()-> new BookingNotFoundException(null, errorMessage));
+
+		LocalDateTime timeOfCommentCreation = createdComment.getCreated();
+		LocalDateTime timeOfBookingEnd = booking.getEnd();
+
+		if (timeOfCommentCreation.isBefore(timeOfBookingEnd)) {
+			throw new IllegalDateOfComment(timeOfCommentCreation, timeOfBookingEnd, errorMessage);
+		}
+
 		return CommentMapper.commentToResponseCommentDto(createdComment);
-
-//		Long itemId = createCommentDto.getItemId();
-//		Item item = getItem(itemId, errorMessage);
-//		Booking bookingOfItem = item.getBooking();
-//		LocalDateTime endOfBooking = bookingOfItem.getEnd();
-//
-//		comment.setCreated(LocalDateTime.now());
-//		Comment createdComment = commentRepository.save(comment);
-//
-//		ResponseCommentDto responseComment = CommentMapper.commentToResponseCommentDto(createdComment);
-//		LocalDateTime commentCreated = responseComment.getCreated();
-//
-//		if (commentCreated.isBefore(endOfBooking)) {
-//			throw new IllegalDateOfComment(commentCreated, endOfBooking, errorMessage);
-//		}
-//
-//		return responseComment;
-	}
-
-	private Item getItem(Long itemId, String errorMessage) {
-		return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
-	}
-
-	private User getUser(Long userId, String errorMessage) {
-		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
 	}
 
 	private Comment createCommentDtoToComment(CreateCommentDto createCommentDto, String errorMessage) {
 
 		Long commenatorId = createCommentDto.getCommentatorId();
-		User commentator = userRepository.findById(commenatorId).orElseThrow(() -> new UserNotFoundException(commenatorId, errorMessage));
+		User commentator = getUser(commenatorId, errorMessage);
 		
 		Long itemId = createCommentDto.getItemId();
-		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+		Item item = getItem(itemId, errorMessage);
 		
 		Comment comment = CommentMapper.createCommentDtoToComment(createCommentDto);
 		
@@ -260,5 +240,13 @@ public class ItemService implements ItemServiceApp {
 		Item item = ItemMapper.updateItemDtoToItem(updateItemDto);
 		item.setOwner(owner);
 		return item;
+	}
+
+	private Item getItem(Long itemId, String errorMessage) {
+		return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+	}
+
+	private User getUser(Long userId, String errorMessage) {
+		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
 	}
 }
