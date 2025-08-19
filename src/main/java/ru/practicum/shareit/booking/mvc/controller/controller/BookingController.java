@@ -44,13 +44,13 @@ public class BookingController {
 			@RequestParam Boolean approved,
 			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
 		
-		ApproveDto approveDto =	ApproveDto.builder()
+		ParamsDto paramsDto = 	ParamsDto.builder()
 								.bookingId(bookingId)
 								.approve(approved)
 								.ownerId(ownerId)
 								.build();
 
-		return bookingService.setApprove(approveDto);
+		return bookingService.setApprove(paramsDto);
 	}
 
 	@GetMapping
@@ -58,6 +58,23 @@ public class BookingController {
 			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
 		return bookingService.getAllBookingsOfUser(ownerId);
 	}
+	
+//	URL: http://localhost:8080/bookings/4
+	
+	@GetMapping("/{id}")
+	public ResponseBookingDto getAllBookingsOfOwner(
+			@PathVariable("id") Long bookingId,
+			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId){
+		
+		ParamsDto paramsDto = ParamsDto.builder()
+				.bookingId(bookingId)
+				.ownerId(ownerId)
+				.build();
+		
+		return bookingService.getAllBookingsOfOwner(paramsDto);
+
+	}
+	
 
 //	@DeleteMapping
 //	public void deleteAllBookings() {

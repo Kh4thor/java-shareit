@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class ApproveDto {
+public class ParamsDto {
 
 	private Long ownerId;
 	private Long bookingId;
