@@ -1,6 +1,9 @@
 package ru.practicum.shareit.booking.mvc.controller.controller;
 
+import java.util.List;
+
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +51,12 @@ public class BookingController {
 								.build();
 
 		return bookingService.setApprove(approveDto);
+	}
+
+	@GetMapping
+	public List<ResponseBookingDto> getAllBookingsOfUser(
+			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
+		return bookingService.getAllBookingsOfUser(ownerId);
 	}
 
 //	@DeleteMapping
