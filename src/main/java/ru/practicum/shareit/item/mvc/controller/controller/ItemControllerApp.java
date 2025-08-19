@@ -23,5 +23,4 @@ public interface ItemControllerApp {
 	List<ResponseItemDto> searchItemByText(String text, Long ownerId);
 
 	ResponseCommentDto createComment(Long setCommentatorId, Long itemId, CreateCommentDto createCommentDto);
-
 }
