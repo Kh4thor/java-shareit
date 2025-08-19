@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
-import ru.practicum.shareit.booking.mvc.controller.controller.ApproveDto;
+import ru.practicum.shareit.booking.mvc.controller.controller.ParamsDto;
 import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
 import ru.practicum.shareit.booking.mvc.controller.service.BookingServiceApp;
 import ru.practicum.shareit.booking.mvc.model.Booking;
@@ -90,16 +90,17 @@ public class BookingService implements BookingServiceApp {
 		return booking;
 	}
 
-	public ResponseBookingDto setApprove(ApproveDto approveDto) {
-		Long bookingId = approveDto.getBookingId();
-		Long ownerId = approveDto.getOwnerId();
-		Boolean approve = approveDto.getApprove();
+	public ResponseBookingDto setApprove(ParamsDto paramsDto) {
+		Long bookingId = paramsDto.getBookingId();
+		Long ownerId = paramsDto.getOwnerId();
+		Boolean approve = paramsDto.getApprove();
 
 		String errorMessage = "Невозможно подтвердить или отклонить бронирование.";
 		Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
 
 		if (booking.getItem().getOwner().getId() != ownerId) {
-			throw new ItemDoesNotBelongToTheOwnerException(booking.getItem().getId(), approveDto.getOwnerId(), errorMessage);
+			throw new ItemDoesNotBelongToTheOwnerException(booking.getItem().getId(), paramsDto.getOwnerId(),
+					errorMessage);
 		}
 		
 //		if (booking.getStatus().equals(BookingStatus.APPROVED)) {
@@ -114,9 +115,9 @@ public class BookingService implements BookingServiceApp {
 		return BookingMapper.bookingToResponseBookingDto(createdBooking);
 	}
 
-	public List<ResponseBookingDto> approveAllBookings(ApproveDto approveDto) {
-		Long ownerId = approveDto.getOwnerId();
-		Boolean approve = approveDto.getApprove();
+	public List<ResponseBookingDto> approveAllBookings(ParamsDto paramsDto) {
+		Long ownerId = paramsDto.getOwnerId();
+		Boolean approve = paramsDto.getApprove();
 
 		BookingStatus status = approve ? BookingStatus.APPROVED : BookingStatus.REJECTED;
 
@@ -153,5 +154,20 @@ public class BookingService implements BookingServiceApp {
 	
 	private Booking getBooking(Long bookingId, String errorMessage) {
 		return bookingRepository.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
+	}
+
+	public ResponseBookingDto getAllBookingsOfOwner(ParamsDto paramsDto) {
+		String errorMessage = "Невозможно получить список бронирований владельца.";
+
+//		Long ownerId = paramsDto.getBookingId();
+		Long bookingId = paramsDto.getBookingId();
+		
+		Booking booking = getBooking(bookingId, errorMessage);
+//		User booker = booking.getBooker();
+//		Long bookerId = booker.getId();
+		
+		return BookingMapper.bookingToResponseBookingDto(booking);
+		
+
 	}
 }

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import ru.practicum.shareit.item.exception.ItemDoesNotBelongToTheOwnerException;
 
@@ -22,4 +23,12 @@ public class BookingExceptionHandler {
 			final ItemDoesNotBelongToTheOwnerException exception) {
 		return new BookingErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public BookingErrorResponse handleTypeMismatch(MethodArgumentTypeMismatchException exception) {
+		String message = "Параметр '" + exception.getPropertyName() + "' имеет неверный формат.";
+		return new BookingErrorResponse(message, exception.getMessage());
+	}
+
 }
