@@ -2,8 +2,10 @@ package ru.practicum.shareit.item.mvc.controller.service;
 
 import java.util.List;
 
+import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
+import ru.practicum.shareit.item.dto.ResponseCommentDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 
@@ -15,12 +17,13 @@ public interface ItemServiceApp {
 
 	ResponseItemDto getItem(Long itemId);
 
-	ResponseItemDto deleteItem(Long itemId);
+	void deleteItem(Long itemId);
 
-	List<ResponseItemDto> deleteAllItems();
+	void deleteAllItems();
 
 	List<ResponseItemDto> getItemsOfOwner(Long userId);
 
 	List<ResponseItemDto> searchItemByText(FindItemDto findItemDto);
 
+	ResponseCommentDto createComment(CreateCommentDto createCommentDto);
 }
