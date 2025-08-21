@@ -4,11 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RestControllerAdvice
 public class ItemExceptionHandler {
 
 	@ExceptionHandler
@@ -30,7 +32,7 @@ public class ItemExceptionHandler {
 	}
 
 	@ExceptionHandler
-	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
 	public ItemErrorResponse itemDoesNotBelongToTheOwnerExceptionHandler(final ItemDoesNotBelongToTheOwnerException exception) {
 		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
@@ -44,6 +46,18 @@ public class ItemExceptionHandler {
 	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public ItemErrorResponse ownerOfItemNotFoundException(final OwnerOfItemNotFoundException exception) {
+		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ItemErrorResponse itemIsUnavailableException(final ItemIsUnavailableException exception) {
+		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ItemErrorResponse illegalDateOfComment(final IllegalDateOfComment exception) {
 		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
 }

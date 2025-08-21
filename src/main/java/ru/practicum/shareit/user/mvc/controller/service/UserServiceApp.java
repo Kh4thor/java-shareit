@@ -14,10 +14,10 @@ public interface UserServiceApp {
 
 	ResponseUserDto getUser(Long userId);
 
-	ResponseUserDto deleteUser(Long userId);
+	void deleteUser(Long userId);
 
 	List<ResponseUserDto> getAllUsers();
 
-	List<ResponseUserDto> deleteAllUsers();
+	void deleteAllUsers();
 
 }
