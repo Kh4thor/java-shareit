@@ -19,7 +19,7 @@ public class CreateItemDto {
 	@NotBlank
 	private String name;
 
-	@NotBlank
+	@NotNull
 	private String description;
 
 	private Long ownerId;

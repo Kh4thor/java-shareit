@@ -1,27 +1,20 @@
 package ru.practicum.shareit.user.mvc.controller.repository;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import ru.practicum.shareit.user.mvc.model.User;
 
-public interface UserRepositoryApp {
+public interface UserRepositoryApp extends JpaRepository<User, Long> {
 
-	Optional<User> createUser(User createUserDto);
+	final String isEmailExistsSql = "" + "SELECT EXISTS (SELECT 1 " + "FROM users " + "WHERE user_email = :email)";
 
-	Optional<User> updateUser(User updateUser);
+	final String isUserExistsSql = "" + "SELECT EXISTS (SELECT 1 " + "FROM users " + "WHERE user_id = :userId)";
 
-	Optional<User> getUser(Long id);
+	@Query(value = isEmailExistsSql, nativeQuery = true)
+	public Boolean isEmailExists(@Param("email") String email);
 
-	Optional<User> deleteUser(Long userId);
-
-	List<User> getAllUsers();
-
-	Boolean isUserExists(Long id);
-
-	Boolean isEmailExists(String email);
-
-	Boolean isUserOwnerOfEmail(Long user, String email);
-
-	List<User> deleteAllUsers();
+	@Query(value = isUserExistsSql, nativeQuery = true)
+	public Boolean isUserExists(@Param("userId") Long userId);
 }

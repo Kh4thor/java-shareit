@@ -30,34 +30,40 @@ public class UserController implements UserControllerApp {
 		this.userService = userService;
 	}
 
+	@Override
 	@PostMapping
 	public ResponseUserDto createUser(@Valid @RequestBody CreateUserDto createUserDto) {
 		return userService.createUser(createUserDto);
 	}
 
+	@Override
 	@PatchMapping("/{id}")
 	public ResponseUserDto updateUser(@Valid @RequestBody UpdateUserDto updateUserDto, @PathVariable("id") Long userId) {
 		updateUserDto.setUserId(userId);
 		return userService.updateUser(updateUserDto);
 	}
 
+	@Override
 	@GetMapping("/{id}")
 	public ResponseUserDto getUser(@PathVariable("id") Long userId) {
 		return userService.getUser(userId);
 	}
 
+	@Override
 	@DeleteMapping("/{id}")
-	public ResponseUserDto deleteUser(@PathVariable("id") Long userId) {
-		return userService.deleteUser(userId);
+	public void deleteUser(@PathVariable("id") Long userId) {
+		userService.deleteUser(userId);
 	}
 
+	@Override
 	@GetMapping
 	public List<ResponseUserDto> getAllUsers() {
 		return userService.getAllUsers();
 	}
 
+	@Override
 	@DeleteMapping
-	public List<ResponseUserDto> deleteAllUsers() {
-		return userService.deleteAllUsers();
+	public void deleteAllUsers() {
+		userService.deleteAllUsers();
 	}
 }

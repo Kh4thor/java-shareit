@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,4 +20,8 @@ public class ResponseItemDto {
 	private Boolean available;
 	private Long itemRequestId;
 	private Long ownerId;
+	private List<ResponseCommentDto> comments;
+	private Long nextBooking;
+	private Long lastBooking;
+
 }
