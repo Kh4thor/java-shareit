@@ -11,16 +11,16 @@ import ru.practicum.shareit.item.mvc.model.Item;
 public interface ItemRepositoryApp extends JpaRepository<Item, Long> {
 
 	@Query(value = ""
-			+ "SELECT i.* FROM items i " 
-			+ "WHERE i.user_id = :ownerId " 
+			+ "SELECT i.* FROM items i "
+			+ "WHERE i.user_id = :ownerId "
 			+ "AND i.item_available = true "
 			+ "AND (LOWER(i.item_name) LIKE LOWER(CONCAT('%', :text, '%')) "
 			+ "OR LOWER(i.item_description) LIKE LOWER(CONCAT('%', :text, '%')))", nativeQuery = true)
 	List<Item> findByOwnerIdAndText(@Param("ownerId") Long ownerId, @Param("text") String text);
 
     @Query(value = ""
-    		+ "SELECT i.* FROM items i " 
-    		+ "WHERE i.item_available = true " 
+			+ "SELECT i.* FROM items i "
+			+ "WHERE i.item_available = true "
     		+ "AND (LOWER(i.item_name) LIKE LOWER(CONCAT('%', :text, '%')) "
     		+ "OR LOWER(i.item_description) LIKE LOWER(CONCAT('%', :text, '%')))",
            nativeQuery = true)

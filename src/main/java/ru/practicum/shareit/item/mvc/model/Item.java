@@ -49,12 +49,6 @@ public class Item {
 	@JoinColumn(name = "request_id")
 	private ItemRequest itemRequest;
 
-//	@OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-//	private List<Comment> comments;
-//
-//	@OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-//	private List<Booking> bookings;
-
 	@Override
 	public String toString() {
 		return "Item ["
@@ -62,7 +56,6 @@ public class Item {
 				+ ", name=" + name + ", description=" + description
 				+ ", available=" + available
 				+ ", ownerId=" + owner.getId()
-//				+ ", itemRequest=" + itemRequest
 				+ "]";
 	}
 }

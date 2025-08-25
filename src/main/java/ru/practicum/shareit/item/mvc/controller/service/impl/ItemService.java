@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.mvc.controller.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ import ru.practicum.shareit.item.mvc.model.Item;
 import ru.practicum.shareit.item.utills.CommentMapper;
 import ru.practicum.shareit.item.utills.ItemMapper;
 import ru.practicum.shareit.user.exception.UserException;
-import ru.practicum.shareit.user.exception.UserNotBookerOfItenException;
+import ru.practicum.shareit.user.exception.UserNotBookerOfItemException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
 import ru.practicum.shareit.user.mvc.model.User;
@@ -42,13 +43,9 @@ public class ItemService implements ItemServiceApp {
 	private final BookingRepositoryApp bookingRepository;
 	private final CommentRepositoryApp commentRepository;
 
-	public ItemService(
-			UserException userException,
-			ItemRepositoryApp itemRepositry,
-			UserRepositoryApp userRepository,
-			CommentRepositoryApp commentRepository,
-			BookingRepositoryApp bookingRepository) {
-		
+	public ItemService(UserException userException, ItemRepositoryApp itemRepositry, UserRepositoryApp userRepository,
+			CommentRepositoryApp commentRepository, BookingRepositoryApp bookingRepository) {
+
 		this.bookingRepository = bookingRepository;
 		this.commentRepository = commentRepository;
 		this.itemRepository = itemRepositry;
@@ -63,7 +60,8 @@ public class ItemService implements ItemServiceApp {
 		String errorMessage = "Невозможно создать предмет.";
 		userException.checkUserNotFoundException(ownerId, errorMessage);
 
-		log.info("Начато преобразование (CreateItemDto)createItemDto в объект класса Item. Получен объект: " + createItemDto);
+		log.info("Начато преобразование (CreateItemDto)createItemDto в объект класса Item. Получен объект: "
+				+ createItemDto);
 		Item createItem = createItemDtoToItem(createItemDto, errorMessage);
 		log.info("(CreateItemDto)createItemDto преобразован в объект класса User: " + createItem);
 
@@ -83,7 +81,8 @@ public class ItemService implements ItemServiceApp {
 
 		String errorMessage = "Невозможно обновить предмет";
 
-		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: " + updateItemDto);
+		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: "
+				+ updateItemDto);
 		Item updateItem = updateItemDtoToItem(updateItemDto, errorMessage);
 		log.info("updateUserDto преобразован в объект класса User: " + updateItem);
 
@@ -92,7 +91,8 @@ public class ItemService implements ItemServiceApp {
 		Long itemId = updateItemDto.getItemId();
 
 		log.info("Начат вызов предмета. Получен id:" + itemId);
-		Item itemFromDb = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+		Item itemFromDb = itemRepository.findById(itemId)
+				.orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
 		log.info("Вызван предмет:" + itemId);
 
 		String itemNameFromDb = itemFromDb.getName();
@@ -122,16 +122,25 @@ public class ItemService implements ItemServiceApp {
 	}
 
 	@Override
-	public ResponseItemDto getItem(Long itemId) {
+	public ResponseItemDto getItemWithComments(Long itemId) {
 		String errorMessage = "Невозможно вызвать объект";
 
 		log.info("Начат вызов предмета. Получен id:" + itemId);
-		Item responseItem = getItem(itemId, errorMessage);
+		Item item = getItem(itemId, errorMessage);
 		log.info("Вызван предмет:" + itemId);
 
-		log.info("Начато преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItem);
-		ResponseItemDto responseItemDto = ItemMapper.itemToResponseItemDto(responseItem);
-		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemDto);
+		ResponseItemDto responseItemDto = ItemMapper.itemToResponseItemDto(item);
+		List<Comment> commentsList = findCommentsByItemId(itemId);
+		commentsList = commentsList == null ? Collections.emptyList() : commentsList;
+
+		log.info("Начато преобразование объектов Comment в объекты ResponseCommentDto. Получен объект:" + commentsList);
+		List<ResponseCommentDto> responseCommentsList = commentsList.stream()
+														.map(CommentMapper::commentToResponseCommentDto)
+														.toList();
+		log.info("Закончено преобразование объектов Comment в объекты ResponseCommentDto. Получен объект:" + responseCommentsList);
+
+		responseItemDto.setComments(responseCommentsList);
+		log.info("Закончено присваивание комментариев предмету: " + responseItemDto);
 
 		return responseItemDto;
 	}
@@ -158,12 +167,12 @@ public class ItemService implements ItemServiceApp {
 		List<Item> responseItemsList = itemRepository.findByOwnerId(ownerId);
 		log.info("Получен список предметов владельца" + responseItemsList);
 
-		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
-		List<ResponseItemDto> responseItemsListDto = 	responseItemsList
-														.stream()
-														.map(ItemMapper::itemToResponseItemDto)
-														.toList();
-		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
+		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:"
+				+ responseItemsList);
+		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream().map(ItemMapper::itemToResponseItemDto)
+				.toList();
+		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:"
+				+ responseItemsListDto);
 
 		return responseItemsListDto;
 	}
@@ -183,12 +192,12 @@ public class ItemService implements ItemServiceApp {
 		log.info("Начат поиск предмета. Получен id-владельца: " + ownerId + " и строка поиска:" + text);
 		List<Item> responseItemsList = itemRepository.findByOwnerIdAndText(ownerId, text);
 
-		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
-		List<ResponseItemDto> responseItemsListDto = 	responseItemsList
-														.stream()
-														.map(ItemMapper::itemToResponseItemDto)
-														.toList();
-		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
+		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:"
+				+ responseItemsList);
+		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream().map(ItemMapper::itemToResponseItemDto)
+				.toList();
+		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:"
+				+ responseItemsListDto);
 		return responseItemsListDto;
 	}
 
@@ -199,17 +208,15 @@ public class ItemService implements ItemServiceApp {
 
 		comment.setCreated(LocalDateTime.now());
 		Comment createdComment = commentRepository.save(comment);
-		
+
 		Long commentatorId = createCommentDto.getCommentatorId();
 		List<Booking> bookingList = bookingRepository.findByUserIdAndState(commentatorId, "ALL");
-		
+
 		Long itemId = createCommentDto.getItemId();
 		Item item = getItem(itemId, errorMessage);
-		
-		Booking booking =	bookingList.stream()
-							.filter(b -> b.getItem().equals(item))
-							.findAny()
-							.orElseThrow(() -> new BookingNotFoundException(null, errorMessage));
+
+		Booking booking = bookingList.stream().filter(b -> b.getItem().equals(item)).findAny()
+				.orElseThrow(() -> new BookingNotFoundException(null, errorMessage));
 
 		LocalDateTime timeOfCommentCreation = createdComment.getCreated();
 		LocalDateTime timeOfBookingEnd = booking.getEnd();
@@ -221,7 +228,7 @@ public class ItemService implements ItemServiceApp {
 		Long bookerId = booker.getId();
 
 		if (!bookerId.equals(commentatorId)) {
-			throw new UserNotBookerOfItenException(commentatorId, item.getId(), errorMessage);
+			throw new UserNotBookerOfItemException(commentatorId, item.getId(), errorMessage);
 		}
 		return CommentMapper.commentToResponseCommentDto(createdComment);
 	}
@@ -242,7 +249,8 @@ public class ItemService implements ItemServiceApp {
 
 	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {
 		Long ownerId = createItemDto.getOwnerId();
-		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = userRepository.findById(ownerId)
+				.orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.createItemDtoToItem(createItemDto);
 		item.setOwner(owner);
 		return item;
@@ -250,7 +258,8 @@ public class ItemService implements ItemServiceApp {
 
 	private Item updateItemDtoToItem(UpdateItemDto updateItemDto, String errorMessage) {
 		Long ownerId = updateItemDto.getOwnerId();
-		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = userRepository.findById(ownerId)
+				.orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.updateItemDtoToItem(updateItemDto);
 		item.setOwner(owner);
 		return item;
@@ -262,5 +271,11 @@ public class ItemService implements ItemServiceApp {
 
 	private User getUser(Long userId, String errorMessage) {
 		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
+	}
+
+	private List<Comment> findCommentsByItemId(Long itemId) {
+		List<Comment> commentsList = commentRepository.findCommentsByItemId(itemId);
+		commentsList = commentsList == null ? Collections.emptyList() : commentsList;
+		return commentsList;
 	}
 }

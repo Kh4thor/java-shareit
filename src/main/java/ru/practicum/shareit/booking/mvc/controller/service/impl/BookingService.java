@@ -77,11 +77,11 @@ public class BookingService implements BookingServiceApp {
 		Item item = booking.getItem();
 		Long itemId = item.getId();
 		Long ownerId = item.getOwner().getId();
-		
+
 		if (!paramsOwnerId.equals(ownerId)) {
 			throw new UserNotOwnerOfItemException(paramsOwnerId, itemId, errorMessage);
 		}
-		
+
 		bookingRepository.deleteById(paramsBookingId);
 	}
 

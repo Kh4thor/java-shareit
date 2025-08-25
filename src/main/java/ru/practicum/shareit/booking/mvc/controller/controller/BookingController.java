@@ -60,16 +60,15 @@ public class BookingController {
 	public void deleteBooking(
 			@PathVariable("id") Long bookingId,
 			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
-		
+
 		ParamsDto paramsDto = 	ParamsDto.builder()
 				.bookingId(bookingId)
 				.ownerId(ownerId)
 				.build();
-		
+
 		bookingService.deleteBooking(paramsDto);
 	}
 
-	
 	@GetMapping
     public List<ResponseBookingDto> getAllBookingsOfUser(
             @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long userId,

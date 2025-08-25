@@ -13,8 +13,7 @@ import ru.practicum.shareit.item.mvc.model.Item;
 @Component
 public class ItemMapper {
 
-	public static ResponseItemDto itemToResponseItemDto(Item item) {
-
+    public static ResponseItemDto itemToResponseItemDto(Item item) {
 		return	ResponseItemDto.builder()
 				.id(item.getId())
 				.name(item.getName())
@@ -23,33 +22,30 @@ public class ItemMapper {
 				.description(item.getDescription())
 				.itemRequestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
 				.build();
-		}
+    }
 
-		public static Item createItemDtoToItem(CreateItemDto createItemDto) {
+    public static Item createItemDtoToItem(CreateItemDto createItemDto) {
+        return	Item.builder()
+                .id(0L)
+                .name(createItemDto.getName())
+                .description(createItemDto.getDescription())
+                .available(createItemDto.getAvailable())
+                .build();
+    }
 
-			return	Item.builder()
-					.id(0L)
-					.name(createItemDto.getName())
-					.description(createItemDto.getDescription())
-					.available(createItemDto.getAvailable())
-					.build();
-		}
+    public static Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
+        return	Item.builder()
+                .id(updateItemDto.getItemId())
+                .name(updateItemDto.getName())
+                .description(updateItemDto.getDescription())
+                .available(updateItemDto.getAvailable())
+                .build();
+    }
 
-		public static Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
-
-			return	Item.builder()
-					.id(updateItemDto.getItemId())
-					.name(updateItemDto.getName())
-					.description(updateItemDto.getDescription())
-					.available(updateItemDto.getAvailable())
-					.build();
-		}
-
-		public static ItemDto itemToItemDto(Item item) {
-
-			return	ItemDto.builder()
-					.id(item.getId())
-					.name(item.getName())
-					.build();
-		}
+    public static ItemDto itemToItemDto(Item item) {
+        return	ItemDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .build();
+    }
 }

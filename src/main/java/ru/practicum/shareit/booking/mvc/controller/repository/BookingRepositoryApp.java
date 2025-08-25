@@ -14,15 +14,15 @@ public interface BookingRepositoryApp extends JpaRepository<Booking, Long> {
 	@Query("SELECT b FROM Booking b WHERE b.id = :bookingId")
 	Optional<Booking> findById(@Param("bookingId") Long bookingId);
 
-	@Query("SELECT b FROM Booking b WHERE b.booker.id = :userId " 
-			+ "AND (" 
+	@Query("SELECT b FROM Booking b WHERE b.booker.id = :userId "
+			+ "AND ("
 			+ "   :state = 'ALL' OR "
 			+ "   (:state = 'CURRENT' AND CURRENT_TIMESTAMP BETWEEN b.start AND b.end) OR "
 			+ "   (:state = 'PAST' AND b.end < CURRENT_TIMESTAMP) OR "
 			+ "   (:state = 'FUTURE' AND b.start > CURRENT_TIMESTAMP) OR "
 			+ "   (:state = 'WAITING' AND b.status = 'WAITING') OR "
-			+ "   (:state = 'REJECTED' AND b.status = 'REJECTED')" 
-			+ ") " 
+			+ "   (:state = 'REJECTED' AND b.status = 'REJECTED')"
+			+ ") "
 			+ "ORDER BY b.start DESC")
 	List<Booking> findByUserIdAndState(@Param("userId") Long userId, @Param("state") String state);
 
@@ -31,8 +31,8 @@ public interface BookingRepositoryApp extends JpaRepository<Booking, Long> {
 			+ "   (:state = 'PAST' AND b.end < CURRENT_TIMESTAMP) OR "
 			+ "   (:state = 'FUTURE' AND b.start > CURRENT_TIMESTAMP) OR "
 			+ "   (:state = 'WAITING' AND b.status = 'WAITING') OR "
-			+ "   (:state = 'REJECTED' AND b.status = 'REJECTED')" 
-			+ ") " 
+			+ "   (:state = 'REJECTED' AND b.status = 'REJECTED')"
+			+ ") "
 			+ "ORDER BY b.start DESC")
 	List<Booking> findByOwnerIdAndState(@Param("ownerId") Long ownerId, @Param("state") String state);
 }

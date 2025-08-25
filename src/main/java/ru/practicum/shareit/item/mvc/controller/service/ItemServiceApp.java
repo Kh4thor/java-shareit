@@ -15,8 +15,6 @@ public interface ItemServiceApp {
 
 	ResponseItemDto updateItem(UpdateItemDto updateItemDto);
 
-	ResponseItemDto getItem(Long itemId);
-
 	void deleteItem(Long itemId);
 
 	void deleteAllItems();
@@ -26,4 +24,6 @@ public interface ItemServiceApp {
 	List<ResponseItemDto> searchItemByText(FindItemDto findItemDto);
 
 	ResponseCommentDto createComment(CreateCommentDto createCommentDto);
+
+	ResponseItemDto getItemWithComments(Long itemId);
 }

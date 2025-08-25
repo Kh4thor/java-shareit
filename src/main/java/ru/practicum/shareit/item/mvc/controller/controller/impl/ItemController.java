@@ -60,7 +60,7 @@ public class ItemController implements ItemControllerApp {
 	@Override
 	@GetMapping("/{id}")
 	public ResponseItemDto getItem(@PathVariable("id") Long itemId) {
-		return itemService.getItem(itemId);
+		return itemService.getItemWithComments(itemId);
 	}
 
 	@Override
