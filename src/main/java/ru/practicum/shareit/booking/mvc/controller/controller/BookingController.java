@@ -50,7 +50,7 @@ public class BookingController {
 		ParamsDto paramsDto = 	ParamsDto.builder()
 								.bookingId(bookingId)
 								.approve(approved)
-								.ownerId(ownerId)
+				.userId(ownerId)
 								.build();
 
 		return bookingService.setApprove(paramsDto);
@@ -63,7 +63,7 @@ public class BookingController {
 
 		ParamsDto paramsDto = 	ParamsDto.builder()
 				.bookingId(bookingId)
-				.ownerId(ownerId)
+				.userId(ownerId)
 				.build();
 
 		bookingService.deleteBooking(paramsDto);
@@ -72,16 +72,28 @@ public class BookingController {
 	@GetMapping
     public List<ResponseBookingDto> getAllBookingsOfUser(
             @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long userId,
-            @RequestParam(defaultValue = "ALL") String state,
-			@RequestParam(defaultValue = "false") boolean owner) {
+			@RequestParam(defaultValue = "ALL") String state) {
 
         ParamsDto paramsDto = ParamsDto.builder()
-                .ownerId(userId)
+				.userId(userId)
                 .state(state)
                 .build();
 
 			return bookingService.getAllBookingsOfUser(paramsDto);
     }
+
+	@GetMapping("/bookings/owner?state={state}")
+	public List<ResponseBookingDto> getAllBookingsOfOwner(
+			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId,
+			@RequestParam(defaultValue = "ALL") String state) {
+
+		ParamsDto paramsDto = ParamsDto.builder()
+				.userId(ownerId)
+				.state(state)
+				.build();
+
+		return bookingService.getAllBookingsOfOwner(paramsDto);
+	}
 
     @GetMapping("/{id}")
     public ResponseBookingDto getBooking(
@@ -90,7 +102,7 @@ public class BookingController {
 
         ParamsDto paramsDto = ParamsDto.builder()
                 .bookingId(bookingId)
-                .ownerId(userId)
+				.userId(userId)
                 .build();
 
         return bookingService.getBookingOfOwner(paramsDto);

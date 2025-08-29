@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class ParamsDto {
 
-	private Long ownerId;
+	private Long userId;
 	private Long bookingId;
 	private Boolean approve;
 	private String state;

@@ -3,7 +3,10 @@ package ru.practicum.shareit.item.mvc.controller.service.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -174,6 +177,40 @@ public class ItemService implements ItemServiceApp {
 		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:"
 				+ responseItemsListDto);
 
+		Map<Long, List<Booking>> bookingMap = getBookingsByItems(responseItemsList);
+
+		LocalDateTime now = LocalDateTime.now();
+
+		for (int i = 0; i < responseItemsListDto.size(); i++) {
+			ResponseItemDto itemDto = responseItemsListDto.get(i);
+			Long itemDtoId = itemDto.getId();
+
+			List<Booking> bookingList = bookingMap.get(itemDtoId) == null ? Collections.emptyList() : bookingMap.get(itemDtoId);
+			List<Booking> bookingListSorted =	bookingList.stream()
+												.sorted(Comparator.comparing(Booking::getStart))
+												.toList();
+
+			Booking	nextBooking = bookingListSorted.stream()
+					.filter(booking -> booking.getStart().isAfter(now))
+					.min(Comparator.comparing(Booking::getStart))
+					.orElse(null);
+
+			Booking	lastBooking = bookingListSorted.stream()
+					.filter(booking -> booking.getEnd().isBefore(now))
+					.max(Comparator.comparing(Booking::getEnd))
+					.orElse(null);
+
+			itemDto.setNextBooking(nextBooking);
+			itemDto.setLastBooking(lastBooking);
+
+			List<Long> itemsIdList = bookingMap.keySet().stream().toList();
+			Map<Long, List<Comment>> commemtsMap = getCommentsByItems(itemsIdList);
+			List<Comment> commentsList = commemtsMap.get(itemDtoId) == null ? Collections.emptyList() : commemtsMap.get(itemDtoId);
+			List<ResponseCommentDto> commentsDtoList =	commentsList.stream()
+														.map(CommentMapper::commentToResponseCommentDto)
+														.toList();
+			itemDto.setComments(commentsDtoList);
+		}
 		return responseItemsListDto;
 	}
 
@@ -206,30 +243,32 @@ public class ItemService implements ItemServiceApp {
 		String errorMessage = "Невозможно создать комментарий.";
 		Comment comment = createCommentDtoToComment(createCommentDto, errorMessage);
 
-		comment.setCreated(LocalDateTime.now());
-		Comment createdComment = commentRepository.save(comment);
-
 		Long commentatorId = createCommentDto.getCommentatorId();
 		List<Booking> bookingList = bookingRepository.findByUserIdAndState(commentatorId, "ALL");
-
 		Long itemId = createCommentDto.getItemId();
 		Item item = getItem(itemId, errorMessage);
 
-		Booking booking = bookingList.stream().filter(b -> b.getItem().equals(item)).findAny()
-				.orElseThrow(() -> new BookingNotFoundException(null, errorMessage));
+		Booking booking =	bookingList.stream()
+							.filter(b -> b.getItem().equals(item))
+							.findAny()
+							.orElseThrow(() -> new BookingNotFoundException(null, errorMessage));
 
-		LocalDateTime timeOfCommentCreation = createdComment.getCreated();
-		LocalDateTime timeOfBookingEnd = booking.getEnd();
-
-		if (timeOfCommentCreation.isBefore(timeOfBookingEnd)) {
-			throw new IllegalDateOfComment(timeOfCommentCreation, timeOfBookingEnd, errorMessage);
-		}
 		User booker = booking.getBooker();
 		Long bookerId = booker.getId();
-
 		if (!bookerId.equals(commentatorId)) {
 			throw new UserNotBookerOfItemException(commentatorId, item.getId(), errorMessage);
 		}
+
+		comment.setCreated(LocalDateTime.now());
+		LocalDateTime timeOfCommentCreation = comment.getCreated();
+		LocalDateTime timeOfBookingEnd = booking.getEnd();
+		if (timeOfCommentCreation.isAfter(LocalDateTime.now())) {
+			throw new IllegalArgumentException("Время создания комментария не может быть в будущим. Получено: " + timeOfCommentCreation);
+		}
+		if (timeOfCommentCreation.isBefore(timeOfBookingEnd)) {
+			throw new IllegalDateOfComment(timeOfCommentCreation, timeOfBookingEnd, errorMessage);
+		}
+		Comment createdComment = commentRepository.save(comment);
 		return CommentMapper.commentToResponseCommentDto(createdComment);
 	}
 
@@ -247,10 +286,28 @@ public class ItemService implements ItemServiceApp {
 		return comment;
 	}
 
+	private Map<Long, List<Comment>> getCommentsByItems(List<Long> itemsIdList) {
+		List<Comment> commentsList = commentRepository.findByItemIn(itemsIdList);
+		return commentsList.stream()
+		        .collect(Collectors.groupingBy(
+		            comment -> comment.getItem().getId(),
+		            Collectors.toList()
+		        ));
+	}
+
+
+	private Map<Long, List<Booking>> getBookingsByItems(List<Item> itemList) {
+		List<Booking> bookingList = bookingRepository.findByItemIn(itemList);
+	    return bookingList.stream()
+	            .collect(Collectors.groupingBy(
+	                booking -> booking.getItem().getId(),
+	                Collectors.toList()
+	            ));
+	}
+
 	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {
 		Long ownerId = createItemDto.getOwnerId();
-		User owner = userRepository.findById(ownerId)
-				.orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.createItemDtoToItem(createItemDto);
 		item.setOwner(owner);
 		return item;
@@ -258,8 +315,7 @@ public class ItemService implements ItemServiceApp {
 
 	private Item updateItemDtoToItem(UpdateItemDto updateItemDto, String errorMessage) {
 		Long ownerId = updateItemDto.getOwnerId();
-		User owner = userRepository.findById(ownerId)
-				.orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
 		Item item = ItemMapper.updateItemDtoToItem(updateItemDto);
 		item.setOwner(owner);
 		return item;
@@ -278,4 +334,5 @@ public class ItemService implements ItemServiceApp {
 		commentsList = commentsList == null ? Collections.emptyList() : commentsList;
 		return commentsList;
 	}
+
 }

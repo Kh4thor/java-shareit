@@ -21,4 +21,10 @@ public interface CommentRepositoryApp extends JpaRepository<Comment, Long> {
 			+ "FROM comments c "
 			+ "WHERE c.item_id = :itemId", nativeQuery = true)
 	List<Comment> findCommentsByItemId(Long itemId);
+
+	@Query(value = ""
+			+ "SELECT c.* "
+			+ "FROM comments c "
+			+ "WHERE c.item_id IN :itemIdList", nativeQuery = true)
+	List<Comment> findByItemIn(@Param("itemIdList") List<Long> itemIdList);
 }

@@ -34,10 +34,6 @@ public interface ItemRepositoryApp extends JpaRepository<Item, Long> {
            nativeQuery = true)
 	List<Item> findByOwnerId(@Param("ownerId") Long ownerId);
 
-    List<Item> findByItemRequestId(Long requestId);
-
-    List<Item> findByItemRequestIdIn(List<Long> requestIds);
-
 	@Query(value = "SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END "
 			+ "FROM items i WHERE i.item_id = :itemId AND i.user_id = :userId", nativeQuery = true)
     boolean existsByIdAndOwnerId(@Param("itemId") Long itemId, @Param("userId") Long userId);

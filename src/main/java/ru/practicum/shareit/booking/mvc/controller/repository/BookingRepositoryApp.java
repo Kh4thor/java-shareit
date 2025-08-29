@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ru.practicum.shareit.booking.mvc.model.Booking;
+import ru.practicum.shareit.item.mvc.model.Item;
 
 public interface BookingRepositoryApp extends JpaRepository<Booking, Long> {
 
@@ -26,7 +27,9 @@ public interface BookingRepositoryApp extends JpaRepository<Booking, Long> {
 			+ "ORDER BY b.start DESC")
 	List<Booking> findByUserIdAndState(@Param("userId") Long userId, @Param("state") String state);
 
-	@Query("SELECT b FROM Booking b WHERE b.item.owner.id = :ownerId " + "AND (" + "   :state = 'ALL' OR "
+	@Query("SELECT b FROM Booking b WHERE b.item.owner.id = :ownerId "
+			+ "AND ("
+			+ "   :state = 'ALL' OR "
 			+ "   (:state = 'CURRENT' AND CURRENT_TIMESTAMP BETWEEN b.start AND b.end) OR "
 			+ "   (:state = 'PAST' AND b.end < CURRENT_TIMESTAMP) OR "
 			+ "   (:state = 'FUTURE' AND b.start > CURRENT_TIMESTAMP) OR "
@@ -35,4 +38,7 @@ public interface BookingRepositoryApp extends JpaRepository<Booking, Long> {
 			+ ") "
 			+ "ORDER BY b.start DESC")
 	List<Booking> findByOwnerIdAndState(@Param("ownerId") Long ownerId, @Param("state") String state);
+
+	@Query("SELECT b FROM Booking b WHERE b.item IN :items")
+	List<Booking> findByItemIn(@Param("items") List<Item> items);
 }

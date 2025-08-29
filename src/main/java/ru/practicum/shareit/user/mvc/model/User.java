@@ -33,10 +33,4 @@ public class User {
 
 	@Column(name = "user_email")
 	private String email;
-
-//	@OneToMany(mappedBy = "owner")
-//	private List<Item> items;
-//
-//	@OneToMany(mappedBy = "booker")
-//	private List<Booking> bookings;
 }

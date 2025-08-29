@@ -69,8 +69,8 @@ public class BookingService implements BookingServiceApp {
 	@Override
 	public void deleteBooking(ParamsDto paramsDto) {
 
-		Long paramsOwnerId = paramsDto.getOwnerId();
-		Long paramsBookingId = paramsDto.getOwnerId();
+		Long paramsOwnerId = paramsDto.getUserId();
+		Long paramsBookingId = paramsDto.getUserId();
 
 		String errorMessage = "Невозможно удалить бронирование";
 		Booking booking = getBooking(paramsBookingId, errorMessage);
@@ -81,7 +81,6 @@ public class BookingService implements BookingServiceApp {
 		if (!paramsOwnerId.equals(ownerId)) {
 			throw new UserNotOwnerOfItemException(paramsOwnerId, itemId, errorMessage);
 		}
-
 		bookingRepository.deleteById(paramsBookingId);
 	}
 
@@ -92,25 +91,27 @@ public class BookingService implements BookingServiceApp {
 		Long bookerId = createBookingDto.getBookerId();
 		User booker = getUser(bookerId, errorMessage);
 
-		Booking booking = BookingMapper.createBookingDtoToBooking(createBookingDto);
-		booking.setItem(item);
-		booking.setBooker(booker);
 		if (!item.getAvailable()) {
 			throw new ItemIsUnavailableException(item, errorMessage);
 		}
+
+		Booking booking = BookingMapper.createBookingDtoToBooking(createBookingDto);
+		booking.setItem(item);
+		booking.setBooker(booker);
 		return booking;
 	}
 
 	@Override
 	public ResponseBookingDto setApprove(ParamsDto paramsDto) {
 		Long bookingId = paramsDto.getBookingId();
-		Long ownerId = paramsDto.getOwnerId();
+		Long ownerId = paramsDto.getUserId();
 		Boolean approve = paramsDto.getApprove();
 		String errorMessage = "Невозможно подтвердить или отклонить бронирование.";
 		Booking booking = getBooking(bookingId, errorMessage);
 
 		if (!Objects.equals(booking.getItem().getOwner().getId(), ownerId)) {
-		    throw new ItemDoesNotBelongToTheOwnerException(booking.getItem().getId(), paramsDto.getOwnerId(), errorMessage);
+			throw new ItemDoesNotBelongToTheOwnerException(booking.getItem().getId(), paramsDto.getUserId(),
+					errorMessage);
 		}
 		if (!booking.getStatus().equals(BookingStatus.WAITING)) {
 			throw new WrongBookingStatusException(booking.getStatus(), BookingStatus.WAITING, errorMessage);
@@ -123,7 +124,7 @@ public class BookingService implements BookingServiceApp {
 
 	@Override
 	public List<ResponseBookingDto> getAllBookingsOfUser(ParamsDto paramsDto) {
-		Long userId = paramsDto.getOwnerId();
+		Long userId = paramsDto.getUserId();
 		String state = validateAndNormalizeState(paramsDto.getState());
 		List<Booking> bookings = bookingRepository.findByUserIdAndState(userId, state);
 		return bookings.stream().map(BookingMapper::bookingToResponseBookingDto).toList();
@@ -131,16 +132,18 @@ public class BookingService implements BookingServiceApp {
 
 	@Override
 	public List<ResponseBookingDto> getAllBookingsOfOwner(ParamsDto paramsDto) {
-		Long ownerId = paramsDto.getOwnerId();
+		Long ownerId = paramsDto.getUserId();
 		String state = validateAndNormalizeState(paramsDto.getState());
 		List<Booking> bookings = bookingRepository.findByOwnerIdAndState(ownerId, state);
-		return bookings.stream().map(BookingMapper::bookingToResponseBookingDto).toList();
+		return	bookings.stream()
+				.map(BookingMapper::bookingToResponseBookingDto)
+				.toList();
 	}
 
 	@Override
 	public ResponseBookingDto getBookingOfOwner(ParamsDto paramsDto) {
 		Long bookingId = paramsDto.getBookingId();
-		Long ownerId = paramsDto.getOwnerId();
+		Long ownerId = paramsDto.getUserId();
 		String errorMessage = "Бронирование не найдено или не принадлежит пользователю";
 		Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new BookingNotFoundException(bookingId, errorMessage));
 
@@ -164,8 +167,8 @@ public class BookingService implements BookingServiceApp {
 
 	private String validateAndNormalizeState(String state) {
 		List<String> validStates = List.of("ALL", "CURRENT", "PAST", "FUTURE", "WAITING", "REJECTED");
-		state = state.toUpperCase();
 		state = state == null ? "ALL" : state;
+		state = state.toUpperCase();
 		state = validStates.contains(state) ? state : "ALL";
 		return state;
 	}
