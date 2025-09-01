@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
+import ru.practicum.shareit.item.dto.ResponseCommentDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.mvc.controller.controller.ItemControllerApp;
@@ -58,13 +60,13 @@ public class ItemController implements ItemControllerApp {
 	@Override
 	@GetMapping("/{id}")
 	public ResponseItemDto getItem(@PathVariable("id") Long itemId) {
-		return itemService.getItem(itemId);
+		return itemService.getItemWithComments(itemId);
 	}
 
 	@Override
 	@DeleteMapping
-	public List<ResponseItemDto> deleteAllItems() {
-		return itemService.deleteAllItems();
+	public void deleteAllItems() {
+		itemService.deleteAllItems();
 	}
 
 	@Override
@@ -77,5 +79,18 @@ public class ItemController implements ItemControllerApp {
 	@GetMapping("/search")
 	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
 		return itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
+	}
+
+	@Override
+	@PostMapping("/{id}/comment")
+	public ResponseCommentDto createComment(
+			@RequestHeader("X-Sharer-User-Id") Long commentatorId,
+			@PathVariable("id") Long itemId,
+			@RequestBody CreateCommentDto createCommentDto) {
+
+		createCommentDto.setCommentatorId(commentatorId);
+		createCommentDto.setItemId(itemId);
+
+		return itemService.createComment(createCommentDto);
 	}
 }

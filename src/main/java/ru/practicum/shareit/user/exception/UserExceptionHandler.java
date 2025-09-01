@@ -25,4 +25,10 @@ public class UserExceptionHandler {
 	public UserErrorResponse userAlreadyExistsExceptionHandler(final UserAlreadyExistsException exception) {
 		return new UserErrorResponse(exception.getErrorMessage(), exception.getMessage());
 	}
+
+	@ExceptionHandler
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public UserErrorResponse userNotOwnerOfItemException(final UserNotOwnerOfItemException exception) {
+		return new UserErrorResponse(exception.getErrorMessage(), exception.getMessage());
+	}
 }
