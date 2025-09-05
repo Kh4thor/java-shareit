@@ -30,6 +30,10 @@ import ru.practicum.shareit.item.mvc.model.Comment;
 import ru.practicum.shareit.item.mvc.model.Item;
 import ru.practicum.shareit.item.utills.CommentMapper;
 import ru.practicum.shareit.item.utills.ItemMapper;
+import ru.practicum.shareit.request.ItemRequestRepositoryApp;
+import ru.practicum.shareit.request.exception.ItemRequestException;
+import ru.practicum.shareit.request.exception.ItemRequestNotFoundException;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.exception.UserNotBookerOfItemException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
@@ -45,24 +49,31 @@ public class ItemService implements ItemServiceApp {
 	private final UserRepositoryApp userRepository;
 	private final BookingRepositoryApp bookingRepository;
 	private final CommentRepositoryApp commentRepository;
+	private final ItemRequestRepositoryApp itemRequestRepository;
 
-	public ItemService(UserException userException, ItemRepositoryApp itemRepositry, UserRepositoryApp userRepository,
-			CommentRepositoryApp commentRepository, BookingRepositoryApp bookingRepository) {
-
-		this.bookingRepository = bookingRepository;
-		this.commentRepository = commentRepository;
+	public ItemService(
+			UserException userException,
+			ItemRepositoryApp itemRepositry,
+			UserRepositoryApp userRepository,
+			CommentRepositoryApp commentRepository,
+			ItemRequestRepositoryApp itemRequestRepository,
+			BookingRepositoryApp bookingRepository,
+			ItemRequestException itemRequestException) {
+		this.userException = userException;
 		this.itemRepository = itemRepositry;
 		this.userRepository = userRepository;
-		this.userException = userException;
+		this.commentRepository = commentRepository;
+		this.bookingRepository = bookingRepository;
+		this.itemRequestRepository = itemRequestRepository;
 	}
 
 	@Override
 	public ResponseItemDto createItem(@NotNull CreateItemDto createItemDto) {
-		Long ownerId = createItemDto.getOwnerId();
-
 		String errorMessage = "Невозможно создать предмет.";
-		userException.checkUserNotFoundException(ownerId, errorMessage);
 
+		Long ownerId = createItemDto.getOwnerId();
+		userException.checkUserNotFoundException(ownerId, errorMessage);
+		
 		log.info("Начато преобразование (CreateItemDto)createItemDto в объект класса Item. Получен объект: "
 				+ createItemDto);
 		Item createItem = createItemDtoToItem(createItemDto, errorMessage);
@@ -72,20 +83,25 @@ public class ItemService implements ItemServiceApp {
 		Item responseItem = itemRepository.save(createItem);
 		log.info("Создан предмет: " + responseItem);
 
+		if (createItemDto.getRequestId() != null) {
+		Long itemRequestId = createItemDto.getRequestId();
+		ItemRequest itemRequest = getItemRequest(itemRequestId, errorMessage);
+		responseItem.setItemRequest(itemRequest);
+	}
+
 		log.info("Начато преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItem);
 		ResponseItemDto responseItemDto = ItemMapper.itemToResponseItemDto(responseItem);
 		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemDto);
 
 		return responseItemDto;
 	}
-
+	
 	@Override
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 
 		String errorMessage = "Невозможно обновить предмет";
 
-		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: "
-				+ updateItemDto);
+		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: "+ updateItemDto);
 		Item updateItem = updateItemDtoToItem(updateItemDto, errorMessage);
 		log.info("updateUserDto преобразован в объект класса User: " + updateItem);
 
@@ -94,8 +110,7 @@ public class ItemService implements ItemServiceApp {
 		Long itemId = updateItemDto.getItemId();
 
 		log.info("Начат вызов предмета. Получен id:" + itemId);
-		Item itemFromDb = itemRepository.findById(itemId)
-				.orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
+		Item itemFromDb = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId, errorMessage));
 		log.info("Вызван предмет:" + itemId);
 
 		String itemNameFromDb = itemFromDb.getName();
@@ -150,7 +165,6 @@ public class ItemService implements ItemServiceApp {
 
 	@Override
 	public void deleteItem(Long itemId) {
-
 		log.info("Начато удаление предмета. Получен id=" + itemId);
 		itemRepository.deleteById(itemId);
 		log.info("Удален предмет id=" + itemId);
@@ -170,12 +184,11 @@ public class ItemService implements ItemServiceApp {
 		List<Item> responseItemsList = itemRepository.findByOwnerId(ownerId);
 		log.info("Получен список предметов владельца" + responseItemsList);
 
-		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:"
-				+ responseItemsList);
-		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream().map(ItemMapper::itemToResponseItemDto)
-				.toList();
-		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:"
-				+ responseItemsListDto);
+		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
+		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream()
+													.map(ItemMapper::itemToResponseItemDto)
+													.toList();
+		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
 
 		Map<Long, List<Booking>> bookingMap = getBookingsByItems(responseItemsList);
 
@@ -190,15 +203,15 @@ public class ItemService implements ItemServiceApp {
 												.sorted(Comparator.comparing(Booking::getStart))
 												.toList();
 
-			Booking	nextBooking = bookingListSorted.stream()
-					.filter(booking -> booking.getStart().isAfter(now))
-					.min(Comparator.comparing(Booking::getStart))
-					.orElse(null);
+			Booking	nextBooking =	bookingListSorted.stream()
+									.filter(booking -> booking.getStart().isAfter(now))
+									.min(Comparator.comparing(Booking::getStart))
+									.orElse(null);
 
-			Booking	lastBooking = bookingListSorted.stream()
-					.filter(booking -> booking.getEnd().isBefore(now))
-					.max(Comparator.comparing(Booking::getEnd))
-					.orElse(null);
+			Booking	lastBooking =	bookingListSorted.stream()
+									.filter(booking -> booking.getEnd().isBefore(now))
+									.max(Comparator.comparing(Booking::getEnd))
+									.orElse(null);
 
 			itemDto.setNextBooking(nextBooking);
 			itemDto.setLastBooking(lastBooking);
@@ -231,10 +244,10 @@ public class ItemService implements ItemServiceApp {
 
 		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:"
 				+ responseItemsList);
-		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream().map(ItemMapper::itemToResponseItemDto)
-				.toList();
-		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:"
-				+ responseItemsListDto);
+		List<ResponseItemDto> responseItemsListDto =	responseItemsList.stream()
+														.map(ItemMapper::itemToResponseItemDto)
+														.toList();
+		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
 		return responseItemsListDto;
 	}
 
@@ -279,7 +292,6 @@ public class ItemService implements ItemServiceApp {
 		Item item = getItem(itemId, errorMessage);
 
 		Comment comment = CommentMapper.createCommentDtoToComment(createCommentDto);
-
 		comment.setCommentator(commentator);
 		comment.setItem(item);
 
@@ -295,7 +307,6 @@ public class ItemService implements ItemServiceApp {
 		        ));
 	}
 
-
 	private Map<Long, List<Booking>> getBookingsByItems(List<Item> itemList) {
 		List<Booking> bookingList = bookingRepository.findByItemIn(itemList);
 	    return bookingList.stream()
@@ -307,7 +318,7 @@ public class ItemService implements ItemServiceApp {
 
 	private Item createItemDtoToItem(CreateItemDto createItemDto, String errorMessage) {
 		Long ownerId = createItemDto.getOwnerId();
-		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = getUser(ownerId, errorMessage);
 		Item item = ItemMapper.createItemDtoToItem(createItemDto);
 		item.setOwner(owner);
 		return item;
@@ -315,7 +326,7 @@ public class ItemService implements ItemServiceApp {
 
 	private Item updateItemDtoToItem(UpdateItemDto updateItemDto, String errorMessage) {
 		Long ownerId = updateItemDto.getOwnerId();
-		User owner = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId, errorMessage));
+		User owner = getUser(ownerId, errorMessage);
 		Item item = ItemMapper.updateItemDtoToItem(updateItemDto);
 		item.setOwner(owner);
 		return item;
@@ -334,5 +345,8 @@ public class ItemService implements ItemServiceApp {
 		commentsList = commentsList == null ? Collections.emptyList() : commentsList;
 		return commentsList;
 	}
-
+	
+	private ItemRequest getItemRequest(Long itemRequestId, String errorMessage) {
+		return itemRequestRepository.findById(itemRequestId).orElseThrow(()->new ItemRequestNotFoundException(itemRequestId, errorMessage));
+	}
 }

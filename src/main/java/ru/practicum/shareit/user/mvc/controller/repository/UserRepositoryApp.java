@@ -8,13 +8,8 @@ import ru.practicum.shareit.user.mvc.model.User;
 
 public interface UserRepositoryApp extends JpaRepository<User, Long> {
 
-	final String isEmailExistsSql = "" + "SELECT EXISTS (SELECT 1 " + "FROM users " + "WHERE user_email = :email)";
-
-	final String isUserExistsSql = "" + "SELECT EXISTS (SELECT 1 " + "FROM users " + "WHERE user_id = :userId)";
+	final String isEmailExistsSql = "SELECT EXISTS (SELECT 1 FROM users WHERE user_email = :email)";
 
 	@Query(value = isEmailExistsSql, nativeQuery = true)
 	public Boolean isEmailExists(@Param("email") String email);
-
-	@Query(value = isUserExistsSql, nativeQuery = true)
-	public Boolean isUserExists(@Param("userId") Long userId);
 }

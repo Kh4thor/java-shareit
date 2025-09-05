@@ -50,10 +50,8 @@ public class ItemController implements ItemControllerApp {
 			@RequestHeader("X-Sharer-User-Id") Long ownerId,
 			@Validated @RequestBody UpdateItemDto itemDto,
 			@PathVariable("id") Long itemId) {
-
 		itemDto.setOwnerId(ownerId);
 		itemDto.setItemId(itemId);
-
 		return itemService.updateItem(itemDto);
 	}
 
