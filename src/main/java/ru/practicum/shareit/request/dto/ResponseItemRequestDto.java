@@ -19,5 +19,5 @@ public class ResponseItemRequestDto {
 	private String description;
 	private Long requestorId;
 	private LocalDateTime created;
-	private List<ResponseItemDto> itemsList;
+	private List<ResponseItemDto> items;
 }
