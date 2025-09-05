@@ -24,7 +24,7 @@ public class UserException {
 	}
 
 	public void checkUserNotFoundException(Long userId, String errorMessage) {
-		if (!userRepository.isUserExists(userId)) {
+		if (!userRepository.existsById(userId)) {
 			RuntimeException exception = new UserNotFoundException(userId, errorMessage);
 			log.warn(errorMessage + " " + exception.getMessage());
 			throw exception;
@@ -32,7 +32,7 @@ public class UserException {
 	}
 
 	public void checkUserAleradyExistsException(Long userId, String errorMessage) {
-		if (userRepository.isUserExists(userId)) {
+		if (userRepository.existsById(userId)) {
 			RuntimeException exception = new UserAlreadyExistsException(userId, errorMessage);
 			log.warn(errorMessage + " " + exception.getMessage());
 			throw exception;

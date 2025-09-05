@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit.request.model;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,15 +21,14 @@ import ru.practicum.shareit.user.mvc.model.User;
 @Entity
 @Getter
 @Setter
-@ToString
 @Builder
+@ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "item_requests")
+@Table(name = "items_request")
 public class ItemRequest {
 
 	@Id
-	@Positive
 	@Column(name = "request_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
