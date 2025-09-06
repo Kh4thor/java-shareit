@@ -40,11 +40,8 @@ public class ItemRequestService {
 	private final ItemRepositoryApp itemRepository;
 	private final ItemRequestRepositoryApp itemRequestRepository;
 
-	public ItemRequestService(
-			ItemRequestRepositoryApp itemRequestRepository,
-			UserRepositoryApp userRepository,
-			ItemRepositoryApp itemRepository,
-			BookingRepositoryApp bookingRepository,
+	public ItemRequestService(ItemRequestRepositoryApp itemRequestRepository, UserRepositoryApp userRepository,
+			ItemRepositoryApp itemRepository, BookingRepositoryApp bookingRepository,
 			CommentRepositoryApp commentRepository) {
 		this.itemRepository = itemRepository;
 		this.userRepository = userRepository;
@@ -57,16 +54,18 @@ public class ItemRequestService {
 		String errorMessge = "Невозможно создать запрос на бронироввание";
 		ItemRequest itemRequestToCreate = enrichAndMappingCreateItemRequestDto(createRequestDto, errorMessge);
 		ItemRequest createdItemRequest = itemRequestRepository.save(itemRequestToCreate);
-		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper.itemRequestToResponseItemRequestDto(createdItemRequest);
+		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper
+				.itemRequestToResponseItemRequestDto(createdItemRequest);
 		return responseItemRequestDto;
 	}
-	
+
 	public ResponseItemRequestDto getItemRequest(GetItemRequestDto getItemRequestDto) {
 		String errorMessage = "Невозможно получить запрос на бронирование";
 		Long itemRequestId = getItemRequestDto.getItemRequestId();
 		ItemRequest itemRequest = getItemRequest(itemRequestId, errorMessage);
-		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper.itemRequestToResponseItemRequestDto(itemRequest);
-		
+		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper
+				.itemRequestToResponseItemRequestDto(itemRequest);
+
 		Long ownerId = getItemRequestDto.getOwnerId();
 		List<ResponseItemDto> itemsList = getItemsOfOwner(ownerId);
 
@@ -76,16 +75,16 @@ public class ItemRequestService {
 
 	public List<ResponseItemRequestDto> getAllItemRequestsOfOwner(Long requestorId) {
 		List<ItemRequest> itemRequestList = itemRequestRepository.getAllItemRequestsOfOwner(requestorId);
-		return	itemRequestList.stream()
-				.map(ItemRequestMapper::itemRequestToResponseItemRequestDto)
-				.toList();
+		return itemRequestList.stream().map(ItemRequestMapper::itemRequestToResponseItemRequestDto).toList();
 	}
 
 	private ItemRequest getItemRequest(Long itemRequestId, String errorMessage) {
-		return itemRequestRepository.findById(itemRequestId).orElseThrow(()->new ItemRequestNotFoundException(itemRequestId, errorMessage));
+		return itemRequestRepository.findById(itemRequestId)
+				.orElseThrow(() -> new ItemRequestNotFoundException(itemRequestId, errorMessage));
 	}
 
-	private ItemRequest enrichAndMappingCreateItemRequestDto(CreateItemRequestDto createItemRequestDto, String errorMessage) {
+	private ItemRequest enrichAndMappingCreateItemRequestDto(CreateItemRequestDto createItemRequestDto,
+			String errorMessage) {
 		Long requestorId = createItemRequestDto.getOwnerId();
 		User requestor = getUser(requestorId, errorMessage);
 		LocalDateTime created = LocalDateTime.now();
@@ -98,17 +97,18 @@ public class ItemRequestService {
 	private User getUser(Long userId, String errorMessage) {
 		return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId, errorMessage));
 	}
-	
+
 	private List<ResponseItemDto> getItemsOfOwner(Long ownerId) {
 		log.info("Начат процесс получения списка предметов владельца. Получен id-владельца=" + ownerId);
 		List<Item> responseItemsList = itemRepository.findByOwnerId(ownerId);
 		log.info("Получен список предметов владельца" + responseItemsList);
 
-		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:" + responseItemsList);
-		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream()
-													.map(ItemMapper::itemToResponseItemDto)
-													.toList();
-		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItemsListDto);
+		log.info("Начато преобразование списка ItemCreateDto в список объектов ResponseItemDt. Получен объект:"
+				+ responseItemsList);
+		List<ResponseItemDto> responseItemsListDto = responseItemsList.stream().map(ItemMapper::itemToResponseItemDto)
+				.toList();
+		log.info("Закончено преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:"
+				+ responseItemsListDto);
 
 		Map<Long, List<Booking>> bookingMap = getBookingsByItems(responseItemsList);
 
@@ -118,30 +118,26 @@ public class ItemRequestService {
 			ResponseItemDto itemDto = responseItemsListDto.get(i);
 			Long itemDtoId = itemDto.getId();
 
-			List<Booking> bookingList = bookingMap.get(itemDtoId) == null ? Collections.emptyList() : bookingMap.get(itemDtoId);
-			List<Booking> bookingListSorted =	bookingList.stream()
-												.sorted(Comparator.comparing(Booking::getStart))
-												.toList();
+			List<Booking> bookingList = bookingMap.get(itemDtoId) == null ? Collections.emptyList()
+					: bookingMap.get(itemDtoId);
+			List<Booking> bookingListSorted = bookingList.stream().sorted(Comparator.comparing(Booking::getStart))
+					.toList();
 
-			Booking	nextBooking =	bookingListSorted.stream()
-									.filter(booking -> booking.getStart().isAfter(now))
-									.min(Comparator.comparing(Booking::getStart))
-									.orElse(null);
+			Booking nextBooking = bookingListSorted.stream().filter(booking -> booking.getStart().isAfter(now))
+					.min(Comparator.comparing(Booking::getStart)).orElse(null);
 
-			Booking	lastBooking =	bookingListSorted.stream()
-									.filter(booking -> booking.getEnd().isBefore(now))
-									.max(Comparator.comparing(Booking::getEnd))
-									.orElse(null);
+			Booking lastBooking = bookingListSorted.stream().filter(booking -> booking.getEnd().isBefore(now))
+					.max(Comparator.comparing(Booking::getEnd)).orElse(null);
 
 			itemDto.setNextBooking(nextBooking);
 			itemDto.setLastBooking(lastBooking);
 
 			List<Long> itemsIdList = bookingMap.keySet().stream().toList();
 			Map<Long, List<Comment>> commemtsMap = getCommentsByItems(itemsIdList);
-			List<Comment> commentsList = commemtsMap.get(itemDtoId) == null ? Collections.emptyList() : commemtsMap.get(itemDtoId);
-			List<ResponseCommentDto> commentsDtoList =	commentsList.stream()
-														.map(CommentMapper::commentToResponseCommentDto)
-														.toList();
+			List<Comment> commentsList = commemtsMap.get(itemDtoId) == null ? Collections.emptyList()
+					: commemtsMap.get(itemDtoId);
+			List<ResponseCommentDto> commentsDtoList = commentsList.stream()
+					.map(CommentMapper::commentToResponseCommentDto).toList();
 			itemDto.setComments(commentsDtoList);
 		}
 		return responseItemsListDto;
@@ -156,9 +152,6 @@ public class ItemRequestService {
 	private Map<Long, List<Comment>> getCommentsByItems(List<Long> itemsIdList) {
 		List<Comment> commentsList = commentRepository.findByItemIn(itemsIdList);
 		return commentsList.stream()
-		        .collect(Collectors.groupingBy(
-		            comment -> comment.getItem().getId(),
-		            Collectors.toList()
-		        ));
+				.collect(Collectors.groupingBy(comment -> comment.getItem().getId(), Collectors.toList()));
 	}
 }

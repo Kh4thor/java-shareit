@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.item.mvc.model.Item;
 
 @Entity
 @Getter
@@ -26,20 +27,20 @@ import ru.practicum.shareit.user.mvc.model.User;
 @Table(name = "comments")
 public class Comment {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "comment_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User commentator;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User commentator;
 
-	@ManyToOne
-	@JoinColumn(name = "item_id")
-	private Item item;
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item item;
 
-	private String text;
+    private String text;
 
-	private LocalDateTime created;
+    private LocalDateTime created;
 }

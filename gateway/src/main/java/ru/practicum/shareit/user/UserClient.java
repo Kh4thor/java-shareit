@@ -1,57 +1,36 @@
 package ru.practicum.shareit.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.shareit.client.BaseClient;
-import ru.practicum.shareit.user.dto.UserDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import ru.practicum.shareit.user.dto.CreateUserDto;
+import ru.practicum.shareit.user.dto.ResponseUserDto;
+import ru.practicum.shareit.user.dto.UpdateUserDto;
 
-import java.util.Map;
+import java.util.List;
 
-@Service
-public class UserClient extends BaseClient {
+@FeignClient(name = "user-client", url = "${shareit.server.url}")
+public interface UserClient {
 
-    private static final String API_PREFIX = "/users";
+    @PostMapping("/users")
+    ResponseUserDto createUser(@RequestBody CreateUserDto createUserDto);
 
-    @Autowired
-    public UserClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
-        super(
-                builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
-                        .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
-                        .build()
-        );
-    }
+    @PatchMapping("/users/{id}")
+    ResponseUserDto updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable("id") Long userId);
 
-    public ResponseEntity<Object> getListOfUsers() {
-        return get("");
-    }
+    @GetMapping("/users/{id}")
+    ResponseUserDto getUser(@PathVariable("id") Long userId);
 
-    public UserDto getUser(Long userId) {
-        ResponseEntity<UserDto> response = rest.exchange(
-                "/{userId}",
-                HttpMethod.GET,
-                null,
-                UserDto.class,
-                Map.of("userId", userId)
-        );
-        return response.getBody(); // ← возвращаем только тело ответа
-    }
+    @DeleteMapping("/users/{id}")
+    void deleteUser(@PathVariable("id") Long userId);
 
-    public ResponseEntity<Object> createUser(UserDto userDto) {
-        return post("", userDto);
-    }
+    @GetMapping("/users")
+    List<ResponseUserDto> getAllUsers();
 
-    public ResponseEntity<Object> editUser(UserDto userDto, Long id) {
-        return patch("/{id}", null, Map.of("id", id), userDto);
-    }
-
-    public void deleteUser(Long id) {
-        delete("/{id}", null, Map.of("id", id));
-    }
+    @DeleteMapping("/users")
+    void deleteAllUsers();
 }

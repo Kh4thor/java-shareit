@@ -1,71 +1,53 @@
 package ru.practicum.shareit.item;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.shareit.client.BaseClient;
-import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemDtoAll;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.practicum.shareit.item.dto.CreateCommentDto;
+import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.ResponseCommentDto;
+import ru.practicum.shareit.item.dto.ResponseItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
 
-import java.util.Map;
+import java.util.List;
 
-@Slf4j
-@Service
-public class ItemClient extends BaseClient {
-    private static final String API_PREFIX = "/items";
+@FeignClient(name = "item-client", url = "${shareit.server.url}")
+public interface ItemClient {
 
-    @Autowired
-    public ItemClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
-        super(
-                builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
-                        .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
-                        .build()
-        );
-    }
+    @PostMapping("/items")
+    ResponseItemDto createItem(
+            @RequestHeader("X-Sharer-User-Id") Long ownerId,
+            @RequestBody CreateItemDto itemDto);
 
-    public ResponseEntity<Object> getAllItems(Long userId) {
-        return get("", userId);
-    }
+    @PatchMapping("/items/{id}")
+    ResponseItemDto updateItem(
+            @RequestHeader("X-Sharer-User-Id") Long ownerId,
+            @RequestBody UpdateItemDto itemDto,
+            @PathVariable("id") Long itemId);
 
-    public ResponseEntity<ItemDtoAll> getItemById(Long id, Long userId) {
-        return rest.exchange(
-                "/" + id,
-                HttpMethod.GET,
-                new HttpEntity<>(createHeaders(userId)),
-                ItemDtoAll.class  // ← конкретный тип!
-        );
-    }
+    @GetMapping("/items/{id}")
+    ResponseItemDto getItem(@PathVariable("id") Long itemId);
 
-    public ResponseEntity<Object> createItem(ItemDto itemDto, Long userId) {
-        log.info("Sending item: {}", itemDto);
-        return post("", userId, itemDto);
-    }
+    @DeleteMapping("/items")
+    void deleteAllItems();
 
-    public ResponseEntity<Object> editItem(Long itemId, ItemDto itemDto, Long userId) {
-        return patch("/{itemId}", userId, Map.of("itemId", itemId), itemDto);
-    }
+    @GetMapping("/items")
+    List<ResponseItemDto> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId);
 
-    public ResponseEntity<Object> searchItems(String text, Long userId) {
-        return get("/search?text={text}", userId, Map.of("text", text));
-    }
+    @GetMapping("/items/search")
+    List<ResponseItemDto> searchItemByText(
+            @RequestParam String text,
+            @RequestHeader("X-Sharer-User-Id") Long ownerId);
 
-    public ResponseEntity<Object> addComment(Long itemId, Long userId, CommentDto comment) {
-        return post("/{itemId}/comment", userId, Map.of("itemId", itemId), comment);
-    }
-
-    private HttpHeaders createHeaders(Long userId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Sharer-User-Id", String.valueOf(userId));
-        return headers;
-    }
+    @PostMapping("/items/{id}/comment")
+    ResponseCommentDto createComment(
+            @RequestHeader("X-Sharer-User-Id") Long commentatorId,
+            @PathVariable("id") Long itemId,
+            @RequestBody CreateCommentDto createCommentDto);
 }
