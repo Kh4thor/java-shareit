@@ -16,8 +16,8 @@ import ru.practicum.shareit.item.dto.ResponseItemDto;
 public class ResponseItemRequestDto {
 
 	private Long id;
-	private String description;
 	private Long requestorId;
+	private String description;
 	private LocalDateTime created;
 	private List<ResponseItemDto> items;
 }
