@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
 import ru.practicum.shareit.booking.mvc.model.Booking;
 import ru.practicum.shareit.item.dto.CreateCommentDto;
@@ -73,7 +72,7 @@ public class ItemService implements ItemServiceApp {
 
 		Long ownerId = createItemDto.getOwnerId();
 		userException.checkUserNotFoundException(ownerId, errorMessage);
-		
+
 		log.info("Начато преобразование (CreateItemDto)createItemDto в объект класса Item. Получен объект: "
 				+ createItemDto);
 		Item createItem = createItemDtoToItem(createItemDto, errorMessage);
@@ -95,13 +94,13 @@ public class ItemService implements ItemServiceApp {
 
 		return responseItemDto;
 	}
-	
+
 	@Override
 	public ResponseItemDto updateItem(UpdateItemDto updateItemDto) {
 
 		String errorMessage = "Невозможно обновить предмет";
 
-		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: "+ updateItemDto);
+		log.info("Начато преобразование (UpdateItemDto)updateItemDto в объект класса User. Получен объект: " + updateItemDto);
 		Item updateItem = updateItemDtoToItem(updateItemDto, errorMessage);
 		log.info("updateUserDto преобразован в объект класса User: " + updateItem);
 
@@ -264,7 +263,7 @@ public class ItemService implements ItemServiceApp {
 		Booking booking =	bookingList.stream()
 							.filter(b -> b.getItem().equals(item))
 							.findAny()
-							.orElseThrow(() -> new BookingNotFoundException(null, errorMessage));
+							.orElseThrow(() -> new UserNotBookerOfItemException(commentatorId, itemId, errorMessage));
 
 		User booker = booking.getBooker();
 		Long bookerId = booker.getId();
@@ -345,8 +344,8 @@ public class ItemService implements ItemServiceApp {
 		commentsList = commentsList == null ? Collections.emptyList() : commentsList;
 		return commentsList;
 	}
-	
+
 	private ItemRequest getItemRequest(Long itemRequestId, String errorMessage) {
-		return itemRequestRepository.findById(itemRequestId).orElseThrow(()->new ItemRequestNotFoundException(itemRequestId, errorMessage));
+		return itemRequestRepository.findById(itemRequestId).orElseThrow(() -> new ItemRequestNotFoundException(itemRequestId, errorMessage));
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.shareit.booking.mvc.model.Booking;
@@ -14,8 +14,8 @@ import ru.practicum.shareit.booking.mvc.model.Booking;
 @Setter
 @Builder
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class ResponseItemDto {
 	private Long id;
 	private String name;

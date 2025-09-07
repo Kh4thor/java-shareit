@@ -7,8 +7,10 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.shareit.booking.utills.BookingStatus;
@@ -17,6 +19,8 @@ import ru.practicum.shareit.booking.utills.BookingStatus;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreateBookingDto {
 
 	private Long bookerId;

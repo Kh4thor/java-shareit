@@ -50,7 +50,7 @@ public class BookingController {
 		ParamsDto paramsDto = 	ParamsDto.builder()
 								.bookingId(bookingId)
 								.approve(approved)
-				.userId(ownerId)
+								.userId(ownerId)
 								.build();
 
 		return bookingService.setApprove(paramsDto);

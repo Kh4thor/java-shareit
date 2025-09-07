@@ -18,6 +18,7 @@ import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
 	private final ItemRequestService itemRequestService;
+
 	public ItemRequestController(ItemRequestService itemRequestService) {
 		this.itemRequestService = itemRequestService;
 	}

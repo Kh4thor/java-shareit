@@ -17,7 +17,7 @@ import ru.practicum.shareit.item.dto.UpdateItemDto;
 
 import java.util.List;
 
-@FeignClient(name = "item-client", url = "${shareit.server.url}")
+@FeignClient(name = "shareit-server", url = "http://server:9090")
 public interface ItemClient {
 
     @PostMapping("/items")

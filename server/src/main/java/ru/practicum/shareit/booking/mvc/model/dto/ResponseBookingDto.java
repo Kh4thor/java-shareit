@@ -2,8 +2,10 @@ package ru.practicum.shareit.booking.mvc.model.dto;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.shareit.booking.utills.BookingStatus;
@@ -14,6 +16,8 @@ import ru.practicum.shareit.user.dto.UserDto;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ResponseBookingDto {
 
 	private Long id;

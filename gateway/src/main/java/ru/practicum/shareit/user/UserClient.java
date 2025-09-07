@@ -13,7 +13,7 @@ import ru.practicum.shareit.user.dto.UpdateUserDto;
 
 import java.util.List;
 
-@FeignClient(name = "user-client", url = "${shareit.server.url}")
+@FeignClient(name = "shareit-server", url = "http://server:9090")
 public interface UserClient {
 
     @PostMapping("/users")

@@ -70,7 +70,7 @@ public class BookingService implements BookingServiceApp {
 	public void deleteBooking(ParamsDto paramsDto) {
 
 		Long paramsOwnerId = paramsDto.getUserId();
-		Long paramsBookingId = paramsDto.getUserId();
+		Long paramsBookingId = paramsDto.getBookingId();
 
 		String errorMessage = "Невозможно удалить бронирование";
 		Booking booking = getBooking(paramsBookingId, errorMessage);

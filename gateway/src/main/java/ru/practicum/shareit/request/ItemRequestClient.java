@@ -12,7 +12,7 @@ import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
 
 import java.util.List;
 
-@FeignClient(name = "item-request-client", url = "${shareit.server.url}")
+@FeignClient(name = "shareit-server", url = "http://server:9090")
 public interface ItemRequestClient {
 
     @PostMapping("/requests")

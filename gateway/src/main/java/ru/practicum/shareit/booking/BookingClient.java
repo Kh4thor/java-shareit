@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
-import ru.practicum.shareit.booking.dto.ParamsDto;
 import ru.practicum.shareit.booking.dto.ResponseBookingDto;
 
 
 import java.util.List;
 
-@FeignClient(name = "booking-client", url = "${shareit.server.url}")
+@FeignClient(name = "shareit-server", url = "http://server:9090")
 public interface BookingClient {
 
     @PostMapping("/bookings")
