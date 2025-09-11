@@ -26,74 +26,74 @@ import ru.practicum.shareit.booking.mvc.model.dto.ResponseBookingDto;
 @RequestMapping(path = "/bookings")
 public class BookingController {
 
-	private final BookingServiceApp bookingService;
+    private final BookingServiceApp bookingService;
 
-	public BookingController(BookingService bookingService) {
-		this.bookingService = bookingService;
-	}
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 
-	@PostMapping
-	public ResponseBookingDto createBooking(
-			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long bookerId,
-			@Validated @RequestBody CreateBookingDto createBookingDto) {
+    @PostMapping
+    public ResponseBookingDto createBooking(
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long bookerId,
+            @Validated @RequestBody CreateBookingDto createBookingDto) {
 
-		createBookingDto.setBookerId(bookerId);
-		return bookingService.createBooking(createBookingDto);
-	}
+        createBookingDto.setBookerId(bookerId);
+        return bookingService.createBooking(createBookingDto);
+    }
 
-	@PatchMapping("/{id}")
-	public ResponseBookingDto approveBooking(
-			@PathVariable("id") Long bookingId,
-			@RequestParam Boolean approved,
-			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
-
-		ParamsDto paramsDto = 	ParamsDto.builder()
-								.bookingId(bookingId)
-								.approve(approved)
-								.userId(ownerId)
-								.build();
-
-		return bookingService.setApprove(paramsDto);
-	}
-
-	@DeleteMapping("/{id}")
-	public void deleteBooking(
-			@PathVariable("id") Long bookingId,
-			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
-
-		ParamsDto paramsDto = 	ParamsDto.builder()
-				.bookingId(bookingId)
-				.userId(ownerId)
-				.build();
-
-		bookingService.deleteBooking(paramsDto);
-	}
-
-	@GetMapping
-    public List<ResponseBookingDto> getAllBookingsOfUser(
-            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long userId,
-			@RequestParam(defaultValue = "ALL") String state) {
+    @PatchMapping("/{id}")
+    public ResponseBookingDto approveBooking(
+            @PathVariable("id") Long bookingId,
+            @RequestParam("approved") Boolean approved,
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
 
         ParamsDto paramsDto = ParamsDto.builder()
-				.userId(userId)
+                .bookingId(bookingId)
+                .approve(approved)
+                .userId(ownerId)
+                .build();
+
+        return bookingService.setApprove(paramsDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBooking(
+            @PathVariable("id") Long bookingId,
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
+
+        ParamsDto paramsDto = ParamsDto.builder()
+                .bookingId(bookingId)
+                .userId(ownerId)
+                .build();
+
+        bookingService.deleteBooking(paramsDto);
+    }
+
+    @GetMapping
+    public List<ResponseBookingDto> getAllBookingsOfUser(
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long userId,
+            @RequestParam(name = "state", defaultValue = "ALL") String state) {
+
+        ParamsDto paramsDto = ParamsDto.builder()
+                .userId(userId)
                 .state(state)
                 .build();
 
-			return bookingService.getAllBookingsOfUser(paramsDto);
+        return bookingService.getAllBookingsOfUser(paramsDto);
     }
 
-	@GetMapping("/bookings/owner?state={state}")
-	public List<ResponseBookingDto> getAllBookingsOfOwner(
-			@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId,
-			@RequestParam(defaultValue = "ALL") String state) {
+    @GetMapping("/owner")
+    public List<ResponseBookingDto> getAllBookingsOfOwner(
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId,
+            @RequestParam(name = "state", defaultValue = "ALL") String state) {
 
-		ParamsDto paramsDto = ParamsDto.builder()
-				.userId(ownerId)
-				.state(state)
-				.build();
+        ParamsDto paramsDto = ParamsDto.builder()
+                .userId(ownerId)
+                .state(state)
+                .build();
 
-		return bookingService.getAllBookingsOfOwner(paramsDto);
-	}
+        return bookingService.getAllBookingsOfOwner(paramsDto);
+    }
 
     @GetMapping("/{id}")
     public ResponseBookingDto getBooking(
@@ -102,7 +102,7 @@ public class BookingController {
 
         ParamsDto paramsDto = ParamsDto.builder()
                 .bookingId(bookingId)
-				.userId(userId)
+                .userId(userId)
                 .build();
 
         return bookingService.getBookingOfOwner(paramsDto);

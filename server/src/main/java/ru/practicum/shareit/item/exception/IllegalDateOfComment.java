@@ -1,22 +1,22 @@
 package ru.practicum.shareit.item.exception;
 
-import java.time.LocalDateTime;
-
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 public class IllegalDateOfComment extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-	private LocalDateTime endOfBooking;
-	private LocalDateTime commentCreated;
-	private String errorMessage;
+    private final LocalDateTime endOfBooking;
+    private final LocalDateTime commentCreated;
+    private final String errorMessage;
+    private final Long bookingId;
 
-	public IllegalDateOfComment(LocalDateTime commentCreated, LocalDateTime endOfBooking, String errorMessage) {
-		super("Дата создания комментария: " + commentCreated + " не может быть раньше окончания бронирования: " + endOfBooking);
-		this.endOfBooking = endOfBooking;
-		this.errorMessage = errorMessage;
-		this.commentCreated = commentCreated;
-	}
-
+    public IllegalDateOfComment(LocalDateTime commentCreated, Long bookingId, LocalDateTime endOfBooking, String errorMessage) {
+        super("Время создания комментария: " + commentCreated + " не может быть раньше окончания бронирования id=:" + bookingId + endOfBooking);
+        this.endOfBooking = endOfBooking;
+        this.errorMessage = errorMessage;
+        this.commentCreated = commentCreated;
+        this.bookingId = bookingId;
+    }
 }

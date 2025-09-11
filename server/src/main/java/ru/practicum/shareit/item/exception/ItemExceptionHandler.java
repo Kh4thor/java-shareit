@@ -44,12 +44,6 @@ public class ItemExceptionHandler {
 	}
 
 	@ExceptionHandler
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public ItemErrorResponse ownerOfItemNotFoundException(final OwnerOfItemNotFoundException exception) {
-		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());
-	}
-
-	@ExceptionHandler
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ItemErrorResponse itemIsUnavailableException(final ItemIsUnavailableException exception) {
 		return new ItemErrorResponse(exception.getErrorMessage(), exception.getMessage());

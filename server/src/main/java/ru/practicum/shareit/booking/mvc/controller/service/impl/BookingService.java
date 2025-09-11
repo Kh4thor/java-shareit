@@ -132,7 +132,9 @@ public class BookingService implements BookingServiceApp {
 
 	@Override
 	public List<ResponseBookingDto> getAllBookingsOfOwner(ParamsDto paramsDto) {
+		String errorMessage = "Невозможно получить список бронирований пользователя";
 		Long ownerId = paramsDto.getUserId();
+		User user = getUser(ownerId, errorMessage);
 		String state = validateAndNormalizeState(paramsDto.getState());
 		List<Booking> bookings = bookingRepository.findByOwnerIdAndState(ownerId, state);
 		return	bookings.stream()

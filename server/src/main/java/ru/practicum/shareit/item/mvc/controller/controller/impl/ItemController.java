@@ -75,8 +75,14 @@ public class ItemController implements ItemControllerApp {
 
 	@Override
 	@GetMapping("/search")
-	public List<ResponseItemDto> searchItemByText(@RequestParam String text, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
-		return itemService.searchItemByText(FindItemDto.builder().text(text).ownerId(ownerId).build());
+	public List<ResponseItemDto> searchItemByText(
+			@RequestParam ("text") String text,
+			@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+		FindItemDto findItemDto =	FindItemDto.builder()
+									.text(text)
+									.ownerId(ownerId)
+									.build();
+		return itemService.searchItemByText(findItemDto);
 	}
 
 	@Override

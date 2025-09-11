@@ -1,3 +1,5 @@
+
+
 DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS bookings CASCADE;
 DROP TABLE IF EXISTS items CASCADE;
@@ -23,7 +25,7 @@ CREATE TABLE items (
     item_description TEXT,
     item_available BOOLEAN NOT NULL DEFAULT TRUE,
     user_id BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
-    request_id BIGINT REFERENCES items_request(request_id) ON DELETE SET NULL  -- ИЗМЕНИТЬ: requests → request_id
+    request_id BIGINT REFERENCES items_request(request_id) ON DELETE SET NULL
 );
 
 CREATE TABLE bookings (
@@ -52,4 +54,4 @@ CREATE INDEX idx_bookings_user_id ON bookings(user_id);
 CREATE INDEX idx_bookings_item_id ON bookings(item_id);
 CREATE INDEX idx_bookings_start_end ON bookings(booking_start, booking_end);
 CREATE INDEX idx_comments_item_id ON comments(item_id);
-CREATE INDEX idx_comments_user_id ON comments(user_id);DROP TABLE IF EXISTS comments CASCADE;
+CREATE INDEX idx_comments_user_id ON comments(user_id);

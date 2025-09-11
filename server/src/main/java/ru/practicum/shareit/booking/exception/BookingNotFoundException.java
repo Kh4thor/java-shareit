@@ -5,9 +5,8 @@ import lombok.Getter;
 @Getter
 public class BookingNotFoundException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
-	private Long bookingId;
-	private String errorMessage;
+	private final Long bookingId;
+	private final String errorMessage;
 
 	public BookingNotFoundException(Long bookingId, String errorMessage) {
 		super("Бронирование id=" + bookingId + " не найдено");
