@@ -88,7 +88,7 @@ public class ItemController implements ItemControllerApp {
 	@Override
 	@PostMapping("/{id}/comment")
 	public ResponseCommentDto createComment(
-			@RequestHeader("X-Sharer-User-Id") Long commentatorId,
+			@RequestHeader ("X-Sharer-User-Id") Long commentatorId,
 			@PathVariable("id") Long itemId,
 			@RequestBody CreateCommentDto createCommentDto) {
 

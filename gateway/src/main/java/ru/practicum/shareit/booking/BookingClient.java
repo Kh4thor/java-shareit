@@ -1,51 +1,47 @@
 package ru.practicum.shareit.booking;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.practicum.shareit.booking.dto.CreateBookingDto;
-import ru.practicum.shareit.booking.dto.ResponseBookingDto;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
-import java.util.List;
+import ru.practicum.shareit.booking.dto.BookItemRequestDto;
+import ru.practicum.shareit.booking.dto.BookingState;
+import ru.practicum.shareit.client.BaseClient;
 
-@FeignClient(name = "shareit-server", url = "http://server:9090")
-public interface BookingClient {
+@Service
+public class BookingClient extends BaseClient {
+    private static final String API_PREFIX = "/bookings";
 
-    @PostMapping("/bookings")
-    ResponseBookingDto createBooking(
-            @RequestHeader("X-Sharer-User-Id") Long bookerId,
-            @RequestBody CreateBookingDto createBookingDto);
+    @Autowired
+    public BookingClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
+        super(
+                builder
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                        .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
+                        .build()
+        );
+    }
 
-    @PatchMapping("/bookings/{id}")
-    ResponseBookingDto approveBooking(
-            @PathVariable("id") Long bookingId,
-            @RequestParam Boolean approved,
-            @RequestHeader("X-Sharer-User-Id") Long ownerId);
+    public ResponseEntity<Object> getBookings(long userId, BookingState state, Integer from, Integer size) {
+        Map<String, Object> parameters = Map.of(
+                "state", state.name(),
+                "from", from,
+                "size", size
+        );
+        return get("?state={state}&from={from}&size={size}", userId, parameters);
+    }
 
-    @DeleteMapping("/bookings/{id}")
-    void deleteBooking(
-            @PathVariable("id") Long bookingId,
-            @RequestHeader("X-Sharer-User-Id") Long ownerId);
+    public ResponseEntity<Object> bookItem(long userId, BookItemRequestDto requestDto) {
+        return post("", userId, requestDto);
+    }
 
-    @GetMapping("/bookings")
-    List<ResponseBookingDto> getAllBookingsOfUser(
-            @RequestHeader("X-Sharer-User-Id") Long userId,
-            @RequestParam(defaultValue = "ALL") String state);
-
-    @GetMapping("/bookings/owner")
-    List<ResponseBookingDto> getAllBookingsOfOwner(
-            @RequestHeader("X-Sharer-User-Id") Long ownerId,
-            @RequestParam(defaultValue = "ALL") String state);
-
-    @GetMapping("/bookings/{id}")
-    ResponseBookingDto getBooking(
-            @PathVariable("id") Long bookingId,
-            @RequestHeader("X-Sharer-User-Id") Long userId);
+    public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
+        return get("/" + bookingId, userId);
+    }
 }
