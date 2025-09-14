@@ -7,22 +7,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.booking.exception.WrongBookingStatusException;
-import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
-import ru.practicum.shareit.booking.mvc.controller.service.impl.BookingService;
-import ru.practicum.shareit.booking.mvc.model.Booking;
-import ru.practicum.shareit.booking.mvc.model.dto.CreateBookingDto;
-import ru.practicum.shareit.booking.mvc.model.dto.ParamsDto;
-import ru.practicum.shareit.booking.mvc.model.dto.ResponseBookingDto;
+import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.booking.service.BookingServiceImpl;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.dto.CreateBookingDto;
+import ru.practicum.shareit.booking.dto.ParamsDto;
+import ru.practicum.shareit.booking.dto.ResponseBookingDto;
 import ru.practicum.shareit.booking.utills.BookingStatus;
 import ru.practicum.shareit.item.exception.ItemDoesNotBelongToTheOwnerException;
 import ru.practicum.shareit.item.exception.ItemIsUnavailableException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
-import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
-import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.exception.UserNotOwnerOfItemException;
-import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -35,16 +35,16 @@ import static org.mockito.Mockito.*;
 class BookingServiceTest {
 
 	@Mock
-	private BookingRepositoryApp bookingRepository;
+	private BookingRepository bookingRepository;
 
 	@Mock
-	private ItemRepositoryApp itemRepository;
+	private ItemRepository itemRepository;
 
 	@Mock
-	private UserRepositoryApp userRepository;
+	private UserRepository userRepository;
 
 	@InjectMocks
-	private BookingService bookingService;
+	private BookingServiceImpl bookingService;
 
 	@Test
 	void createBooking_WhenValidData_ShouldReturnResponseBookingDto() {

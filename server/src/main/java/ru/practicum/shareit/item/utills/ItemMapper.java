@@ -7,7 +7,7 @@ import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
-import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.item.model.Item;
 
 @Slf4j
 @Component

@@ -1,18 +1,19 @@
-package ru.practicum.shareit.user.mvc.controller.service.impl;
+package ru.practicum.shareit.user;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.dto.CreateUserDto;
 import ru.practicum.shareit.user.dto.ResponseUserDto;
 import ru.practicum.shareit.user.dto.UpdateUserDto;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
-import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
+import ru.practicum.shareit.user.service.UserServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,13 +31,13 @@ class UserServiceTest {
 	private UserException userException;
 
 	@Mock
-	private UserRepositoryApp userRepository;
+	private UserRepository userRepository;
 
 	@Mock
-	private ItemRepositoryApp itemRepository;
+	private ItemRepository itemRepository;
 
 	@InjectMocks
-	private UserService userService;
+	private UserServiceImpl userService;
 
 	@Test
 	void createUser_ShouldReturnResponseUserDto() {

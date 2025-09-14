@@ -26,26 +26,26 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> createUser(CreateUserDto createUserDto) {
-        return post ("",createUserDto);
+        return post("", createUserDto);
     }
 
-    public ResponseEntity<Object> updateUser (Long userId, UpdateUserDto updateUserDto){
-        return patch("/"+userId,  updateUserDto);
+    public ResponseEntity<Object> updateUser(Long userId, UpdateUserDto updateUserDto) {
+        return patch("/" + userId, updateUserDto);
     }
 
-    public ResponseEntity<Object> getUser (Long userId){
-        return get(""+ userId);
+    public ResponseEntity<Object> getUser(Long userId) {
+        return get("/" + userId);
     }
 
-    public void deleteUser (Long userId){
-        delete(""+ userId);
+    public ResponseEntity<Object> deleteUser(Long userId) {
+        return delete("/" + userId);
     }
 
-    public ResponseEntity<Object> getAllUsers () {
+    public ResponseEntity<Object> getAllUsers() {
         return get("");
     }
 
-    public void deleteAllUsers() {
-        delete ("");
+    public ResponseEntity<Object> deleteAllUsers() {
+        return delete("");
     }
 }

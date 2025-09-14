@@ -6,6 +6,7 @@
         <groupId>ru.practicum</groupId>
         <artifactId>shareit</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>shareit-gateway</artifactId>
@@ -56,11 +57,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>ru.practicum</groupId>
             <artifactId>shareit-server</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -69,6 +70,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ru.practicum.shareit.ShareItGateway</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

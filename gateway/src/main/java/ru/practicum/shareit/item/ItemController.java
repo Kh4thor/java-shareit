@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item;
 
-import java.util.List;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import jakarta.validation.constraints.NotNull;
@@ -29,24 +29,21 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Object> createItem(
-            @RequestHeader("X-Sharer-User-Id") Long ownerId,
-            @RequestBody CreateItemDto itemDto) {
-        itemDto.setOwnerId(ownerId);
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId,
+            @RequestBody @Valid CreateItemDto itemDto) {
         return itemClient.createItem(ownerId, itemDto);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateItem(
-            @RequestHeader("X-Sharer-User-Id") Long ownerId,
-            @RequestBody UpdateItemDto itemDto,
-            @PathVariable("id") Long itemId) {
-        itemDto.setOwnerId(ownerId);
-        itemDto.setItemId(itemId);
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId,
+            @RequestBody @Valid UpdateItemDto itemDto,
+            @PathVariable("id") @Positive @NotNull Long itemId) {
         return itemClient.updateItem(ownerId, itemDto, itemId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getItem(@PathVariable("id") Long itemId) {
+    public ResponseEntity<Object> getItem(@PathVariable("id") @Positive @NotNull Long itemId) {
         return itemClient.getItemWithComments(itemId);
     }
 
@@ -56,14 +53,14 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public ResponseEntity<Object> getItemsOfOwner(@RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
         return itemClient.getItemsOfOwner(ownerId);
     }
 
     @GetMapping("/search")
     public ResponseEntity<Object> searchItemByText(
-                                                    @RequestParam("text") String text,
-                                                    @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+            @RequestParam("text") String text,
+            @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
         return itemClient.searchItemByText(text, ownerId);
     }
 
@@ -71,7 +68,7 @@ public class ItemController {
     public ResponseEntity<Object> createComment(
             @RequestHeader("X-Sharer-User-Id") @NotNull @Positive Long commentatorId,
             @PathVariable("id") @NotNull @Positive Long itemId,
-            @RequestBody CreateCommentDto createCommentDto) {
+            @RequestBody @Valid CreateCommentDto createCommentDto) {
         return itemClient.createComment(commentatorId, itemId, createCommentDto);
     }
 }

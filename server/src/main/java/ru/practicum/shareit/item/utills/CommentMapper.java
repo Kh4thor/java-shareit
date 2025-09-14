@@ -2,7 +2,7 @@ package ru.practicum.shareit.item.utills;
 
 import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.ResponseCommentDto;
-import ru.practicum.shareit.item.mvc.model.Comment;
+import ru.practicum.shareit.item.model.Comment;
 
 public class CommentMapper {
 

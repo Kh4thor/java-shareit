@@ -3,15 +3,15 @@ package ru.practicum.shareit.request.exception;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.request.ItemRequestRepositoryApp;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 
 @Slf4j
 @Component
 public class ItemRequestException {
 
-	private final ItemRequestRepositoryApp itemRequestRepository;
+	private final ItemRequestRepository itemRequestRepository;
 
-	public ItemRequestException(ItemRequestRepositoryApp itemRequestRepository) {
+	public ItemRequestException(ItemRequestRepository itemRequestRepository) {
 			this.itemRequestRepository = itemRequestRepository;
 		}
 

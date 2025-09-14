@@ -6,6 +6,7 @@ import ru.practicum.shareit.booking.utills.BookingStatus;
 @Getter
 public class WrongBookingStatusException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
 	private final String errorMessage;
 	private final BookingStatus currentValue;
 	private final BookingStatus expectedValue;

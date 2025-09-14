@@ -1,13 +1,14 @@
 package ru.practicum.shareit.item.exception;
 
-import lombok.Getter;
-
 import java.time.LocalDateTime;
+
+import lombok.Getter;
 
 @Getter
 public class IllegalDateOfComment extends RuntimeException {
 
-    private final LocalDateTime endOfBooking;
+	private static final long serialVersionUID = 1L;
+	private final LocalDateTime endOfBooking;
     private final LocalDateTime commentCreated;
     private final String errorMessage;
     private final Long bookingId;

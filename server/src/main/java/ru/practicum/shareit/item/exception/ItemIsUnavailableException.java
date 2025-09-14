@@ -1,11 +1,12 @@
 package ru.practicum.shareit.item.exception;
 
 import lombok.Getter;
-import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.item.model.Item;
 
 @Getter
 public class ItemIsUnavailableException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
 	private final Long itemId;
 	private final Boolean itemStatus;
 	private final String errorMessage;

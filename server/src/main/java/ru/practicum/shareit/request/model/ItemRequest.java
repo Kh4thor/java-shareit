@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.user.model.User;
 
 @Entity
 @Getter

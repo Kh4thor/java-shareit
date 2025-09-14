@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class BookingNotFoundException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
 	private final Long bookingId;
 	private final String errorMessage;
 

@@ -5,15 +5,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
-import ru.practicum.shareit.item.mvc.controller.repository.CommentRepositoryApp;
-import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
+import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.item.repository.CommentRepository;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.CreateItemRequestDto;
 import ru.practicum.shareit.request.dto.GetItemRequestDto;
 import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
 import ru.practicum.shareit.request.model.ItemRequest;
-import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
+import ru.practicum.shareit.request.service.ItemRequestServiceImpl;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -27,22 +29,22 @@ import static org.mockito.Mockito.*;
 class ItemRequestServiceTest {
 
     @Mock
-    private ItemRequestRepositoryApp itemRequestRepository;
+    private ItemRequestRepository itemRequestRepository;
 
     @Mock
-    private UserRepositoryApp userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    private ItemRepositoryApp itemRepository;
+    private ItemRepository itemRepository;
 
     @Mock
-    private BookingRepositoryApp bookingRepository;
+    private BookingRepository bookingRepository;
 
     @Mock
-    private CommentRepositoryApp commentRepository;
+    private CommentRepository commentRepository;
 
     @InjectMocks
-    private ItemRequestService itemRequestService;
+    private ItemRequestServiceImpl itemRequestService;
 
     @Test
     void createItemRequest_ShouldReturnResponseItemRequestDto() {

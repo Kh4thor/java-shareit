@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class ItemRequestNotFoundException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
 	private final String errorMessage;
 	private final Long itemRequestId;
 

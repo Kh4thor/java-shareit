@@ -29,7 +29,7 @@ public class ItemClient extends BaseClient {
     }
 
     public ResponseEntity<Object> updateItem(Long userId, UpdateItemDto itemDto, Long itemId) {
-        return patch("/" + itemId, userId, itemDto); // Исправлен путь
+        return patch("/" + itemId, userId, itemDto);
     }
 
     public ResponseEntity<Object> getItemWithComments(Long itemId) {

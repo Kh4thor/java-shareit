@@ -1,14 +1,14 @@
 package ru.practicum.shareit.booking.utills;
 
 
-import ru.practicum.shareit.booking.mvc.model.Booking;
-import ru.practicum.shareit.booking.mvc.model.dto.CreateBookingDto;
-import ru.practicum.shareit.booking.mvc.model.dto.ResponseBookingDto;
-import ru.practicum.shareit.booking.mvc.model.dto.UpdateBookingDto;
+import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.dto.CreateBookingDto;
+import ru.practicum.shareit.booking.dto.ResponseBookingDto;
+import ru.practicum.shareit.booking.dto.UpdateBookingDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.user.model.User;
 
 public class BookingMapper {
 

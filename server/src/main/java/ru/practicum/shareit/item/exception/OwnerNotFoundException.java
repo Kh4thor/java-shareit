@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class OwnerNotFoundException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
 	private final Long ownerId;
 	private final String errorMessage;
 

@@ -3,15 +3,15 @@ package ru.practicum.shareit.user.exception;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 @Slf4j
 @Component
 public class UserException {
 
-	private final UserRepositoryApp userRepository;
+	private final UserRepository userRepository;
 
-	public UserException(UserRepositoryApp userRepository) {
+	public UserException(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 

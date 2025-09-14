@@ -1,22 +1,23 @@
-package ru.practicum.shareit.item.mvc.controller.service.impl;
+package ru.practicum.shareit.item;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.booking.mvc.controller.repository.BookingRepositoryApp;
+import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.ResponseItemDto;
-import ru.practicum.shareit.item.mvc.controller.repository.CommentRepositoryApp;
-import ru.practicum.shareit.item.mvc.controller.repository.ItemRepositoryApp;
-import ru.practicum.shareit.item.mvc.model.Comment;
-import ru.practicum.shareit.item.mvc.model.Item;
+import ru.practicum.shareit.item.repository.CommentRepository;
+import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.service.ItemServiceImpl;
 import ru.practicum.shareit.user.exception.UserException;
 import ru.practicum.shareit.user.exception.UserNotBookerOfItemException;
-import ru.practicum.shareit.user.mvc.controller.repository.UserRepositoryApp;
-import ru.practicum.shareit.user.mvc.model.User;
+import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,19 +34,19 @@ class ItemServiceTest {
 	private UserException userException;
 
 	@Mock
-	private ItemRepositoryApp itemRepository;
+	private ItemRepository itemRepository;
 
 	@Mock
-	private UserRepositoryApp userRepository;
+	private UserRepository userRepository;
 
 	@Mock
-	private CommentRepositoryApp commentRepository;
+	private CommentRepository commentRepository;
 
 	@Mock
-	private BookingRepositoryApp bookingRepository;
+	private BookingRepository bookingRepository;
 
 	@InjectMocks
-	private ItemService itemService;
+	private ItemServiceImpl itemService;
 
 	@Test
 	void createItem_ShouldReturnResponseItemDto() {
