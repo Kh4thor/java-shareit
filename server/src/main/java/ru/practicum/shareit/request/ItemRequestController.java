@@ -17,34 +17,35 @@ import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
 @RestController
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
-	private final ItemRequestService itemRequestService;
+    private final ItemRequestService itemRequestService;
 
-	public ItemRequestController(ItemRequestService itemRequestService) {
-		this.itemRequestService = itemRequestService;
-	}
+    public ItemRequestController(ItemRequestService itemRequestService) {
+        this.itemRequestService = itemRequestService;
+    }
 
-	@PostMapping
-	public ResponseItemRequestDto createItemRequest(
-			@RequestHeader("X-Sharer-User-Id") Long ownerId,
-			@RequestBody CreateItemRequestDto crateItemRequestDto) {
-		crateItemRequestDto.setOwnerId(ownerId);
-		return itemRequestService.createItemRequest(crateItemRequestDto);
-	}
+    @PostMapping
+    public ResponseItemRequestDto createItemRequest(
+            @RequestHeader("X-Sharer-User-Id") Long ownerId,
+            @RequestBody CreateItemRequestDto crateItemRequestDto) {
+        crateItemRequestDto.setOwnerId(ownerId);
+        return itemRequestService.createItemRequest(crateItemRequestDto);
+    }
 
-	@GetMapping("/{id}")
-	public ResponseItemRequestDto getItemRequest(
-			@RequestHeader("X-Sharer-User-Id") Long ownerId,
-			@PathVariable("id") Long itemRequestId) {
-		GetItemRequestDto getItemRequestDto = GetItemRequestDto.builder()
-												.itemRequestId(itemRequestId)
-												.ownerId(ownerId)
-												.build();
-		return itemRequestService.getItemRequest(getItemRequestDto);
-	}
+    @GetMapping("/{id}")
+    public ResponseItemRequestDto getItemRequest(
+            @RequestHeader("X-Sharer-User-Id") Long ownerId,
+            @PathVariable("id") Long itemRequestId) {
 
-	@GetMapping
-	public List<ResponseItemRequestDto> getAllItemRequestsOfOwner(
-			@RequestHeader("X-Sharer-User-Id") Long requestorId) {
-		return itemRequestService.getAllItemRequestsOfOwner(requestorId);
-	}
+        GetItemRequestDto getItemRequestDto = GetItemRequestDto.builder()
+                .itemRequestId(itemRequestId)
+                .ownerId(ownerId)
+                .build();
+        return itemRequestService.getItemRequest(getItemRequestDto);
+    }
+
+    @GetMapping
+    public List<ResponseItemRequestDto> getAllItemRequestsOfOwner(
+            @RequestHeader("X-Sharer-User-Id") Long requestorId) {
+        return itemRequestService.getAllItemRequestsOfOwner(requestorId);
+    }
 }
