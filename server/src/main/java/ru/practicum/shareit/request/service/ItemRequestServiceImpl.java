@@ -77,8 +77,16 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 	}
 
 	@Override
-	public List<ResponseItemRequestDto> getAllItemRequestsOfRequestor(Long requestorId) {
-		List<ItemRequest> itemRequestList = itemRequestRepository.getAllItemRequestsOfOwner(requestorId);
+	public List<ResponseItemRequestDto> getOwnItemRequestsOfUser(Long requestorId) {
+		List<ItemRequest> itemRequestList = itemRequestRepository.findByRequestorId(requestorId);
+		return	itemRequestList
+				.stream()
+				.map(ItemRequestMapper::itemRequestToResponseItemRequestDto)
+				.toList();
+	}
+
+	public List<ResponseItemRequestDto> getItemRequestsCreatedByOtherUsers(Long requestorId) {
+		List<ItemRequest> itemRequestList = itemRequestRepository.findByRequestorIdNot(requestorId);
 		return	itemRequestList
 				.stream()
 				.map(ItemRequestMapper::itemRequestToResponseItemRequestDto)

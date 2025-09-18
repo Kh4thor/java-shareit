@@ -44,8 +44,14 @@ public class ItemRequestController {
     }
 
     @GetMapping
-    public List<ResponseItemRequestDto> getAllItemRequestsOfOwner(
+	public List<ResponseItemRequestDto> getOwnItemRequestsOfUser(
             @RequestHeader("X-Sharer-User-Id") Long requestorId) {
-		return itemRequestService.getAllItemRequestsOfRequestor(requestorId);
+		return itemRequestService.getOwnItemRequestsOfUser(requestorId);
     }
+
+	@GetMapping("/requests/all")
+	public List<ResponseItemRequestDto> getItemRequestsCreatedByOtherUsers(
+    @RequestHeader("X-Sharer-User-Id") Long requestorId) {
+		return itemRequestService.getItemRequestsCreatedByOtherUsers(requestorId);
+	}
 }

@@ -13,5 +13,8 @@ import ru.practicum.shareit.request.model.ItemRequest;
 public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
 
 	@Query("select ir from ItemRequest ir where ir.requestor.id = :requestorId")
-	List<ItemRequest> getAllItemRequestsOfOwner(@Param("requestorId") Long requestorId);
+	List<ItemRequest> findByRequestorId(@Param("requestorId") Long requestorId);
+
+	@Query("select ir from ItemRequest ir where ir.requestor.id != :requestorId")
+	List<ItemRequest> findByRequestorIdNot(@Param("requestorId") Long requestorId);
 }
