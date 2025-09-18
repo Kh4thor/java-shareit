@@ -1,10 +1,14 @@
 package ru.practicum.shareit.request.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import ru.practicum.shareit.user.model.User;
-
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import ru.practicum.shareit.user.model.User;
 
 @Getter
 @Setter

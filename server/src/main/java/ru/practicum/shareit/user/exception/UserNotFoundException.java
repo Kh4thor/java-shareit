@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public class UserNotFoundException extends RuntimeException {
 
-    private final Long userId;
+	private static final long serialVersionUID = 1L;
+	private final Long userId;
     private final String errorMessage;
 
     public UserNotFoundException(Long userId, String errorMessage) {

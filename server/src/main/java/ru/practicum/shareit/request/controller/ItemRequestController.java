@@ -36,11 +36,10 @@ public class ItemRequestController {
     public ResponseItemRequestDto getItemRequest(
             @RequestHeader("X-Sharer-User-Id") Long ownerId,
             @PathVariable("id") Long itemRequestId) {
-
-        GetItemRequestDto getItemRequestDto = GetItemRequestDto.builder()
-                .itemRequestId(itemRequestId)
-                .ownerId(ownerId)
-                .build();
+        GetItemRequestDto getItemRequestDto =	GetItemRequestDto.builder()
+								                .itemRequestId(itemRequestId)
+								                .ownerId(ownerId)
+								                .build();
         return itemRequestService.getItemRequest(getItemRequestDto);
     }
 

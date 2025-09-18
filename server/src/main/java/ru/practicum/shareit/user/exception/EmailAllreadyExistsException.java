@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class EmailAllreadyExistsException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
 	private final String email;
 	private final String errorMessage;
 
