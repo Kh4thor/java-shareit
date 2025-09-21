@@ -80,10 +80,8 @@ public class ItemController {
             @RequestHeader("X-Sharer-User-Id") Long commentatorId,
             @PathVariable("id") Long itemId,
             @RequestBody CreateCommentDto createCommentDto) {
-
         createCommentDto.setCommentatorId(commentatorId);
         createCommentDto.setItemId(itemId);
-
         return itemService.createComment(createCommentDto);
     }
 }

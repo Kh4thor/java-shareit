@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.item.dto.CreateCommentDto;
 import ru.practicum.shareit.item.dto.CreateItemDto;
 import ru.practicum.shareit.item.dto.FindItemDto;
@@ -22,13 +21,12 @@ import ru.practicum.shareit.item.dto.ResponseItemDto;
 import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.exception.IllegalDateOfComment;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
-import ru.practicum.shareit.item.repository.CommentRepository;
-import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.CommentRepository;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.utills.CommentMapper;
 import ru.practicum.shareit.item.utills.ItemMapper;
-import ru.practicum.shareit.request.exception.ItemRequestException;
 import ru.practicum.shareit.request.exception.ItemRequestNotFoundException;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
@@ -51,17 +49,16 @@ public class ItemServiceImpl implements ItemService {
 
     public ItemServiceImpl(
             UserException userException,
-            ItemRepository itemRepositry,
+			ItemRepository itemRepository,
             UserRepository userRepository,
             CommentRepository commentRepository,
             ItemRequestRepository itemRequestRepository,
-            BookingRepository bookingRepository,
-            ItemRequestException itemRequestException) {
+			BookingRepository bookingRepository) {
         this.userException = userException;
-        this.itemRepository = itemRepositry;
+		this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+		this.bookingRepository = bookingRepository;
         this.commentRepository = commentRepository;
-        this.bookingRepository = bookingRepository;
         this.itemRequestRepository = itemRequestRepository;
     }
 
@@ -77,15 +74,15 @@ public class ItemServiceImpl implements ItemService {
         Item createItem = createItemDtoToItem(createItemDto, errorMessage);
         log.info("(CreateItemDto)createItemDto преобразован в объект класса User: " + createItem);
 
-        log.info("Начато создание предмета. Получен объект:" + createItem);
-        Item responseItem = itemRepository.save(createItem);
-        log.info("Создан предмет: " + responseItem);
-
         if (createItemDto.getRequestId() != null) {
             Long itemRequestId = createItemDto.getRequestId();
             ItemRequest itemRequest = getItemRequest(itemRequestId, errorMessage);
-            responseItem.setItemRequest(itemRequest);
+			createItem.setItemRequest(itemRequest);
         }
+
+		log.info("Начато создание предмета. Получен объект:" + createItem);
+		Item responseItem = itemRepository.save(createItem);
+		log.info("Создан предмет: " + responseItem);
 
         log.info("Начато преобразование ItemCreateDto в объект ResponseItemDt. Получен объект:" + responseItem);
         ResponseItemDto responseItemDto = ItemMapper.itemToResponseItemDto(responseItem);
@@ -147,7 +144,7 @@ public class ItemServiceImpl implements ItemService {
 
         ResponseItemDto responseItemDto = ItemMapper.itemToResponseItemDto(item);
         List<Comment> commentsList = findCommentsByItemId(itemId);
-//        commentsList = commentsList == null ? Collections.emptyList() : commentsList;
+//		commentsList = commentsList == null ? Collections.emptyList() : commentsList;
 
         log.info("Начато преобразование объектов Comment в объекты ResponseCommentDto. Получен объект:" + commentsList);
         List<ResponseCommentDto> responseCommentsList = commentsList.stream()
@@ -233,9 +230,6 @@ public class ItemServiceImpl implements ItemService {
         String errorMessage = "Невозможно начать поиск предмета владельца по строке поиска";
         userException.checkUserNotFoundException(ownerId, errorMessage);
 
-        if (findItemDto.getText().isBlank()) {
-            return new ArrayList<ResponseItemDto>();
-        }
         log.info("Начат поиск предмета. Получен id-владельца: " + ownerId + " и строка поиска:" + text);
         List<Item> responseItemsList = itemRepository.findByOwnerIdAndText(ownerId, text);
 

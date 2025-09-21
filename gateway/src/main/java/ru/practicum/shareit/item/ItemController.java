@@ -1,11 +1,9 @@
 package ru.practicum.shareit.item;
 
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import java.util.Collections;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.practicum.shareit.item.dto.*;
+import ru.practicum.shareit.item.dto.CreateCommentDto;
+import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
 
 @Slf4j
 @Controller
@@ -61,6 +66,9 @@ public class ItemController {
     public ResponseEntity<Object> searchItemByText(
             @RequestParam("text") String text,
             @RequestHeader("X-Sharer-User-Id") @Positive @NotNull Long ownerId) {
+    	 if (text.isBlank()) {
+				return ResponseEntity.ok(Collections.emptyList());
+			}
         return itemClient.searchItemByText(text, ownerId);
     }
 

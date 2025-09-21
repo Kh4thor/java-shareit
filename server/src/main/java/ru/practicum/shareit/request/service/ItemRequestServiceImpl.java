@@ -23,6 +23,7 @@ import ru.practicum.shareit.item.utills.ItemMapper;
 import ru.practicum.shareit.request.dto.CreateItemRequestDto;
 import ru.practicum.shareit.request.dto.GetItemRequestDto;
 import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
+import ru.practicum.shareit.request.dto.ResponseItemRequestListDto;
 import ru.practicum.shareit.request.exception.ItemRequestNotFoundException;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
@@ -56,8 +57,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 		String errorMessge = "Невозможно создать запрос на бронироввание";
 		ItemRequest itemRequestToCreate = enrichAndMappingCreateItemRequestDto(createRequestDto, errorMessge);
 		ItemRequest createdItemRequest = itemRequestRepository.save(itemRequestToCreate);
-		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper
-				.itemRequestToResponseItemRequestDto(createdItemRequest);
+		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper.itemRequestToResponseItemRequestDto(createdItemRequest);
 		return responseItemRequestDto;
 	}
 
@@ -66,8 +66,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 		String errorMessage = "Невозможно получить запрос на бронирование";
 		Long itemRequestId = getItemRequestDto.getItemRequestId();
 		ItemRequest itemRequest = getItemRequest(itemRequestId, errorMessage);
-		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper
-				.itemRequestToResponseItemRequestDto(itemRequest);
+		ResponseItemRequestDto responseItemRequestDto = ItemRequestMapper.itemRequestToResponseItemRequestDto(itemRequest);
 
 		Long ownerId = getItemRequestDto.getOwnerId();
 		List<ResponseItemDto> itemsList = getItemsOfOwner(ownerId);
@@ -77,24 +76,32 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 	}
 
 	@Override
-	public List<ResponseItemRequestDto> getOwnItemRequestsOfUser(Long requestorId) {
-		List<ItemRequest> itemRequestList = itemRequestRepository.findByRequestorId(requestorId);
-		return	itemRequestList
-				.stream()
-				.map(ItemRequestMapper::itemRequestToResponseItemRequestDto)
-				.toList();
+	public List<ResponseItemRequestListDto> getItemsByRequestorId(Long requestorId) {
+		List<ItemRequest> itemRequestsOfRequestorList = itemRequestRepository.getItemsByRequestorId(requestorId);
+		List<Item> itemsList = itemRepository.findRequestedItemsOfUser(requestorId);
+		return setItemDtoListsToItemRequests(itemRequestsOfRequestorList, itemsList);
 	}
 
-	public List<ResponseItemRequestDto> getItemRequestsCreatedByOtherUsers(Long requestorId) {
-		List<ItemRequest> itemRequestList = itemRequestRepository.findByRequestorIdNot(requestorId);
-		return	itemRequestList
-				.stream()
-				.map(ItemRequestMapper::itemRequestToResponseItemRequestDto)
+	public List<ResponseItemRequestListDto> getItemsOfUsersExcludingRequestorById(Long requestorId) {
+		List<ItemRequest> itemsOfOtherUsersList = itemRequestRepository
+				.getItemsOfUsersExcludingRequestorById(requestorId);
+		List<Item> itemsList = itemRepository.findRequestedItemsOfOtherUsers(requestorId);
+		return setItemDtoListsToItemRequests(itemsOfOtherUsersList, itemsList);
+	}
+
+	private List<ResponseItemRequestListDto> setItemDtoListsToItemRequests(List<ItemRequest> itemRequestList,
+			List<Item> itemsList) {
+		return	itemRequestList.stream()
+				.map(ItemRequestMapper::itemRequestToResponseItemRequestListDto)
+				.peek(request -> request.setItems(itemsList.stream()
+												.filter(item -> item.getItemRequest().getId().equals(request.getId()))
+												.map(ItemMapper::itemToItemDto)
+												.toList()))
 				.toList();
 	}
 
 	private ItemRequest getItemRequest(Long itemRequestId, String errorMessage) {
-		return itemRequestRepository.findById(itemRequestId)
+		return	itemRequestRepository.findById(itemRequestId)
 				.orElseThrow(() -> new ItemRequestNotFoundException(itemRequestId, errorMessage));
 	}
 

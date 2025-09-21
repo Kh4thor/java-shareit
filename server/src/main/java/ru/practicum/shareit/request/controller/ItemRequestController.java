@@ -10,17 +10,20 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.dto.CreateItemRequestDto;
 import ru.practicum.shareit.request.dto.GetItemRequestDto;
 import ru.practicum.shareit.request.dto.ResponseItemRequestDto;
+import ru.practicum.shareit.request.dto.ResponseItemRequestListDto;
+import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.request.service.ItemRequestServiceImpl;
 
 @RestController
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
-    private final ItemRequestServiceImpl itemRequestService;
+    private final ItemRequestService itemRequestService;
 
-	public ItemRequestController(ItemRequestServiceImpl itemRequestService) {
+	public ItemRequestController(ItemRequestServiceImpl itemRequestService, ItemService itemService) {
         this.itemRequestService = itemRequestService;
     }
 
@@ -44,14 +47,14 @@ public class ItemRequestController {
     }
 
     @GetMapping
-	public List<ResponseItemRequestDto> getOwnItemRequestsOfUser(
+	public List<ResponseItemRequestListDto> getUserRequests(
             @RequestHeader("X-Sharer-User-Id") Long requestorId) {
-		return itemRequestService.getOwnItemRequestsOfUser(requestorId);
+		return itemRequestService.getItemsByRequestorId(requestorId);
     }
 
-	@GetMapping("/requests/all")
-	public List<ResponseItemRequestDto> getItemRequestsCreatedByOtherUsers(
+	@GetMapping("/all")
+	public List<ResponseItemRequestListDto> getItemsOfUsersExcludingRequestor(
     @RequestHeader("X-Sharer-User-Id") Long requestorId) {
-		return itemRequestService.getItemRequestsCreatedByOtherUsers(requestorId);
+		return itemRequestService.getItemsOfUsersExcludingRequestorById(requestorId);
 	}
 }

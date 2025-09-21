@@ -1,9 +1,14 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.*;
-import ru.practicum.shareit.booking.model.Booking;
-
 import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import ru.practicum.shareit.booking.model.Booking;
 
 @Getter
 @Setter

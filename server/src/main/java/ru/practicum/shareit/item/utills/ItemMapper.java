@@ -45,6 +45,7 @@ public class ItemMapper {
         return	ItemDto.builder()
                 .id(item.getId())
                 .name(item.getName())
+				.ownerId(item.getOwner() == null ? null : item.getOwner().getId())
                 .build();
     }
 }
