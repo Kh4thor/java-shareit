@@ -1,0 +1,51 @@
+package ru.practicum.shareit.item.utills;
+
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
+import ru.practicum.shareit.item.dto.CreateItemDto;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ResponseItemDto;
+import ru.practicum.shareit.item.dto.UpdateItemDto;
+import ru.practicum.shareit.item.model.Item;
+
+@Slf4j
+@Component
+public class ItemMapper {
+
+    public static ResponseItemDto itemToResponseItemDto(Item item) {
+		return	ResponseItemDto.builder()
+				.id(item.getId())
+				.name(item.getName())
+				.available(item.getAvailable())
+				.ownerId(item.getOwner().getId())
+				.description(item.getDescription())
+				.itemRequestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
+				.build();
+    }
+
+    public static Item createItemDtoToItem(CreateItemDto createItemDto) {
+        return	Item.builder()
+                .name(createItemDto.getName())
+                .description(createItemDto.getDescription())
+                .available(createItemDto.getAvailable())
+                .build();
+    }
+
+    public static Item updateItemDtoToItem(UpdateItemDto updateItemDto) {
+        return	Item.builder()
+                .id(updateItemDto.getItemId())
+                .name(updateItemDto.getName())
+                .description(updateItemDto.getDescription())
+                .available(updateItemDto.getAvailable())
+                .build();
+    }
+
+    public static ItemDto itemToItemDto(Item item) {
+        return	ItemDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+				.ownerId(item.getOwner() == null ? null : item.getOwner().getId())
+                .build();
+    }
+}

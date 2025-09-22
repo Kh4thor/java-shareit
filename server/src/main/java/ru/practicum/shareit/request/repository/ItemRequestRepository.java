@@ -1,0 +1,20 @@
+package ru.practicum.shareit.request.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import ru.practicum.shareit.request.model.ItemRequest;
+
+@Repository
+public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
+
+	@Query("select ir from ItemRequest ir where ir.requestor is not null and ir.requestor.id = :requestorId")
+	List<ItemRequest> getItemsByRequestorId(@Param("requestorId") Long requestorId);
+
+	@Query("select ir from ItemRequest ir where ir.requestor is not null and ir.requestor.id != :requestorId")
+	List<ItemRequest> getItemsOfUsersExcludingRequestorById(@Param("requestorId") Long requestorId);
+}
